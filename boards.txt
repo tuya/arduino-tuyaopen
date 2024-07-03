@@ -1,0 +1,51 @@
+t2.name=T2
+t2.build.board=TUYA_T2
+t2.build.variant=T2
+t2.build.core=tuya_open_sdk
+t2.build.variant=t2
+
+# T2 toolchain
+t2.compiler.path={runtime.tools.gcc-arm-none-eabi.path}/bin/
+t2.compiler.c.cmd={compiler.path}arm-none-eabi-gcc
+t2.compiler.cpp.cmd={compiler.path}arm-none-eabi-g++
+t2.compiler.S.cmd={compiler.path}arm-none-eabi-gcc
+t2.compiler.as.cmd={compiler.path}arm-none-eabi-as
+t2.compiler.ar.cmd={compiler.path}arm-none-eabi-ar
+t2.compiler.combine.cmd={compiler.path}arm-none-eabi-gcc
+
+# T2 port path
+t2.compiler.port.path={runtime.platform.path}/port/t2/
+
+# T2 flags files
+t2.compiler.flags.path={compiler.port.path}flags/
+t2.compiler.c.flags={compiler.flags.path}c_flags.txt
+t2.compiler.cpp.flags={compiler.flags.path}cpp_flags.txt
+t2.compiler.S.flags={compiler.flags.path}S_flags.txt
+t2.compiler.ar.flags={compiler.flags.path}ar_flags.txt
+t2.compiler.combine.flags={compiler.flags.path}combine_flags.txt
+
+# T2 port(tkl) include files
+t2.compiler.port_includes.prefix={runtime.tools.tuyaopen-arduino-libs.path}/t2/tuyaos/tuyaos_adapter/
+t2.compiler.port_includes.flags={compiler.flags.path}port_includes.txt
+
+# T2 vendor include files
+t2.compiler.vendor_includes.prefix={runtime.tools.tuyaopen-arduino-libs.path}/t2/beken_os/beken378/
+t2.compiler.vendor_includes.flags={compiler.flags.path}vendor_includes.txt
+
+# T2 ld script
+t2.ld_scripts.flags=-Wl,-Map={build.path}/{build.project_name}.map -T{runtime.platform.path}/port/t2/bk7231n_ota.ld  -o "{build.path}/{build.project_name}.axf"
+
+# T2 package script
+t2.compiler.extend.cmd.l={compiler.port.path}script/linux/bin_package.sh "{compiler.path}" "{build.path}/{build.project_name}.axf" "{build.path}"
+t2.compiler.extend.cmd.m=echo "TODO"
+t2.compiler.extend.cmd.w={compiler.port.path}script/win/bin_package.bat "{compiler.path}" "{build.path}/{build.project_name}.axf" "{build.path}"
+
+t2.compiler.libs.path={compiler.port.path}libs/
+t2.compiler.libs.flags={compiler.flags.path}libs.txt
+
+t2.prebuild.cmd.w={runtime.tools.python.path}/python.exe {compiler.port.path}script/prebuild.py --compiler-path {compiler.path} --port-path {runtime.platform.path}/port/t2/ --vendor-path {runtime.tools.tuyaopen-arduino-libs.path}/t2/ --platform-path {runtime.platform.path}/
+t2.prebuild.cmd.l=echo "TODO"
+t2.prebuild.cmd.m=echo "TODO"
+
+t2.upload.tool=tyutool
+t2.upload.tool.default=tyutool

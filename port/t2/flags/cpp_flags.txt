@@ -1,0 +1,16 @@
+-c
+-g
+-mthumb
+-mcpu=arm968e-s
+-march=armv5te
+-mthumb-interwork
+-mlittle-endian
+-Os
+-std=c++11
+-ffunction-sections
+-Wall
+-fsigned-char
+-fdata-sections
+-Wunknown-pragmas
+-nostdlib
+-Wno-unused-function
