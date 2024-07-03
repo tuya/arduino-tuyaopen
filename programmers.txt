@@ -1,0 +1,8 @@
+tyutool.name=tyutool
+tyutool.communication=serial
+tyutool.protocol=serial
+tyutool.program.protocol=serial
+tyutool.program.tool=tyutool
+tyutool.program.tool.default=tyutool
+tyutool.program.extra_params=
+tyutool.extra_params=
