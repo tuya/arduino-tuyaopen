@@ -1,0 +1,6 @@
+[submodule "ArduinoCore-API"]
+	path = ArduinoCore-API
+	url = https://github.com/arduino/ArduinoCore-API
+[submodule "open-sdk"]
+	path = open-sdk
+	url = https://github.com/tuya/tuya-open-sdk-for-device.git

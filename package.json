@@ -1,0 +1,19 @@
+{
+    "name": "framework-arduinotuya",
+    "version": "0.0.1",
+    "description": "Arduino Wiring-based Framework for the Tuya T2,T3 and T5 series of SoCs",
+    "keywords": [
+      "framework",
+      "arduino",
+      "tuya",
+      "t2",
+      "t3",
+      "t5"
+      ],
+    "license": "LGPL-2.1-or-later",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/tuya/arduino-tuyaopen"
+    }
+  }
+  

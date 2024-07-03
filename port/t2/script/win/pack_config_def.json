@@ -1,0 +1,21 @@
+{
+    "count": 4,
+    "magic": "RT-Thread",
+    "section": [
+        {
+            "firmware": "t2_bootloader_enc.bin",
+            "partition": "bootloader",
+            "size": "68K",
+            "start_addr": "0x00000000",
+            "version": "1.00"
+        },
+        {
+            "firmware": "bk7231_common_1.0.1_enc.bin",
+            "partition": "app",
+            "size": "1150832",
+            "start_addr": "0x00011000",
+            "version": "1.00"
+        }
+    ],
+    "version": "0.1"
+}
