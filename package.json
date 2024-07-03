@@ -1,19 +1,140 @@
 {
-    "name": "framework-arduinotuya",
-    "version": "0.0.1",
-    "description": "Arduino Wiring-based Framework for the Tuya T2,T3 and T5 series of SoCs",
-    "keywords": [
-      "framework",
-      "arduino",
-      "tuya",
-      "t2",
-      "t3",
-      "t5"
+  "packages": [
+    {
+      "name": "tuya_open",
+      "maintainer": "tuya",
+      "websiteURL": "http://www.tuya.com/",
+      "email": "xxxx@tuya.com",
+      "help": {
+        "online": ""
+      },
+      "platforms": [
+        {
+          "name": "Tuya Open SDK",
+          "architecture": "tuya_open",
+          "version": "0.0.1",
+          "category": "Contributed",
+          "help": {
+            "online": ""
+          },
+          "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/arduino-tuya-open.zip",
+          "archiveFileName": "arduino-tuya-open.zip",
+          "size": "37471777",
+          "checksum": "SHA-256:079f8876101c098f7b768a230e25434bf792aacd54461d5a2a0e9f88c7ca79c8",
+          "help": {
+            "online": ""
+          },
+          "boards": [
+            {
+              "name": "t2"
+            }
+          ],
+          "toolsDependencies" : [
+            {
+              "packager": "tuya_open",
+              "name": "gcc-arm-none-eabi",
+              "version": "10.3"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "tuyaopen-arduino-libs",
+              "version": "0.0.1"
+            },
+			{
+              "packager": "tuya_open",
+              "name": "python",
+              "version": "0.0.1"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "tyutool",
+              "version": "0.0.1"
+            }
+          ]
+        }
       ],
-    "license": "LGPL-2.1-or-later",
-    "repository": {
-      "type": "git",
-      "url": "https://github.com/tuya/arduino-tuyaopen"
+      "tools": [
+        {
+          "name": "gcc-arm-none-eabi",
+          "version": "10.3",
+          "systems": [
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2",
+              "archiveFileName": "gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2",
+              "size": "157089706",
+              "checksum": "SHA-256:97dbb4f019ad1650b732faffcc881689cedc14e2b7ee863d390e0a41ef16c9a3"
+            },
+            {
+              "host": "x86_64-cygwin",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/gcc-arm-none-eabi-10.3-2021.10-win32.zip",
+              "archiveFileName": "gcc-arm-none-eabi-10.3-2021.10-win32.zip",
+              "size": "200578763",
+              "checksum": "SHA-256:d287439b3090843f3f4e29c7c41f81d958a5323aecefcf705c203bfd8ae3f2e7"
+            }
+          ]
+        },
+        {
+          "name": "tuyaopen-arduino-libs",
+          "version": "0.0.1",
+          "systems": [
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/tuyaopen-arduino-libs.zip",
+              "archiveFileName": "tuyaopen-arduino-libs.zip",
+              "size": "10003376",
+              "checksum": "SHA-256:3ef3b50b2a3f82aad440f46f16117ffec04872760aaa0ffc94e08c478298390a"
+            },
+            {
+              "host": "x86_64-cygwin",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/tuyaopen-arduino-libs.zip",
+              "archiveFileName": "tuyaopen-arduino-libs.zip",
+              "size": "10003376",
+              "checksum": "SHA-256:3ef3b50b2a3f82aad440f46f16117ffec04872760aaa0ffc94e08c478298390a"
+            }
+          ]
+        },
+		{
+          "name": "python",
+          "version": "0.0.1",
+          "systems": [
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/python.zip",
+              "archiveFileName": "python.zip",
+              "size": "29075352",
+              "checksum": "SHA-256:f1543aaaeb45ea272a1a9204ffed5eb5866e419196ab7b9c7fc29bda883e0716"
+            },
+            {
+              "host": "x86_64-cygwin",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/python.zip",
+              "archiveFileName": "python.zip",
+              "size": "29075352",
+              "checksum": "SHA-256:f1543aaaeb45ea272a1a9204ffed5eb5866e419196ab7b9c7fc29bda883e0716"
+            }
+          ]
+        },
+        {
+          "name": "tyutool",
+          "version": "0.0.1",
+          "systems": [
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/tyutool_linux.tar.bz2",
+              "archiveFileName": "tyutool_linux.tar.bz2",
+              "size": "9318684",
+              "checksum": "SHA-256:fe81eaab381a26998e7dc1f0878440a8a9a1af346e659419d7890f2d926f8235"
+            },
+            {
+              "host": "x86_64-cygwin",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/tyutool_win.zip",
+              "archiveFileName": "tyutool_win.zip",
+              "size": "9134046",
+              "checksum": "SHA-256:848a78c52bab89682967aedc936dd0e285f34984dceee33788ef58cffd8c0469"
+            }
+          ]
+        }
+      ]
     }
-  }
-  
+  ]
+}
