@@ -30,14 +30,14 @@ set "AXF_PATH=%~2"
 rem 获取第三个参数（输出文件路径）
 set "OUTPUT_PATH=%~3"
 
-rem 打印编译器的绝对路径
-echo 编译器的绝对路径: %COMPILER_PATH%
+@REM rem 打印编译器的绝对路径
+@REM echo 编译器的绝对路径: %COMPILER_PATH%
 
-rem 打印 .axf 文件的绝对路径
-echo .axf 文件的绝对路径: %AXF_PATH%
+@REM rem 打印 .axf 文件的绝对路径
+@REM echo .axf 文件的绝对路径: %AXF_PATH%
 
-rem 打印输出文件路径
-echo 输出文件路径: %OUTPUT_PATH%
+@REM rem 打印输出文件路径
+@REM echo 输出文件路径: %OUTPUT_PATH%
 
 rem 从 AXF_PATH 中提取文件名
 for %%i in ("%AXF_PATH%") do set "AXF_NAME=%%~ni"
