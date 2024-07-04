@@ -41,7 +41,6 @@ set "OUTPUT_PATH=%~3"
 
 rem 从 AXF_PATH 中提取文件名
 for %%i in ("%AXF_PATH%") do set "AXF_NAME=%%~ni"
-echo AXF 文件名: %AXF_NAME%
 
 rem .axf -> .bin
 %COMPILER_PATH%arm-none-eabi-objcopy.exe -O binary %AXF_PATH% %OUTPUT_PATH%\%AXF_NAME%.bin
