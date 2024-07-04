@@ -47,7 +47,7 @@ t2.compiler.extend.cmd.w={compiler.port.path}script/win/bin_package.bat "{compil
 t2.compiler.libs.path={compiler.port.path}libs/
 t2.compiler.libs.flags={compiler.flags.path}libs.txt
 
-t2.prebuild.cmd.w={runtime.tools.python.path}/python.exe {compiler.port.path}script/prebuild.py --compiler-path {compiler.path} --port-path {runtime.platform.path}/port/t2/ --vendor-path {runtime.tools.tuyaopen-arduino-libs.path}/t2/ --platform-path {runtime.platform.path}/
+t2.prebuild.cmd.w={runtime.tools.env-python.path}/python.exe {compiler.port.path}script/prebuild.py --compiler-path {compiler.path} --port-path {runtime.platform.path}/port/t2/ --vendor-path {runtime.tools.tuyaopen-arduino-libs.path}/t2/ --platform-path {runtime.platform.path}/
 t2.prebuild.cmd.l=echo "TODO"
 t2.prebuild.cmd.m=echo "TODO"
 
