@@ -1,9 +1,6 @@
 name=Tuya
 version=0.0.1
 
-compiler.open_sdk_includes.prefix={runtime.platform.path}/open-sdk/
-compiler.open_sdk_includes.flags={runtime.platform.path}/port/open_sdk_includes.txt
-
 #
 ## Arduino build
 #
