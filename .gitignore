@@ -26,10 +26,10 @@
 *.a
 *.lib
 
-# Don't ignore all the library files under libs/
-!libs/*.a
-
 # Executables
 *.exe
 *.out
 *.app
+
+# The preceding rules do not apply to the port folder
+!port/**
