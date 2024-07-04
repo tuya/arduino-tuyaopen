@@ -26,6 +26,9 @@
 *.a
 *.lib
 
+# Don't ignore all the library files under libs/
+!libs/*.a
+
 # Executables
 *.exe
 *.out
