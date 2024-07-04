@@ -60,6 +60,10 @@ IF EXIST "%project_name%_enc_uart_1.00.bin" (
 	DEL "%project_name%_enc_uart_1.00.bin"
 	@REM echo "delete %project_name%_enc_uart_1.00.bin"
 )
+IF EXIST "%project_name%_QIO.bin" (
+	DEL "%project_name%_QIO.bin"
+	@REM echo "delete %project_name%_QIO.bin"
+)
 IF EXIST "%project_name%_UA.bin" (
 	DEL "%project_name%_UA.bin"
 	@REM echo "delete %project_name%_UA.bin"
