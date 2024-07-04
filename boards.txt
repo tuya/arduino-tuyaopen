@@ -1,7 +1,7 @@
 t2.name=T2
 t2.build.board=TUYA_T2
 t2.build.variant=T2
-t2.build.core=tuya_open_sdk
+t2.build.core=tuya_open
 t2.build.variant=t2
 
 # T2 toolchain
@@ -25,12 +25,16 @@ t2.compiler.ar.flags={compiler.flags.path}ar_flags.txt
 t2.compiler.combine.flags={compiler.flags.path}combine_flags.txt
 
 # T2 port(tkl) include files
-t2.compiler.port_includes.prefix={runtime.tools.tuyaopen-arduino-libs.path}/t2/tuyaos/tuyaos_adapter/
+t2.compiler.port_includes.prefix={runtime.tools.vendor-t2.path}/tuyaos_adapter/
 t2.compiler.port_includes.flags={compiler.flags.path}port_includes.txt
 
 # T2 vendor include files
-t2.compiler.vendor_includes.prefix={runtime.tools.tuyaopen-arduino-libs.path}/t2/beken_os/beken378/
+t2.compiler.vendor_includes.prefix={runtime.tools.vendor-t2.path}/beken_os/beken378/
 t2.compiler.vendor_includes.flags={compiler.flags.path}vendor_includes.txt
+
+# Tuya open sdk include files
+t2.compiler.open_sdk_includes.prefix={runtime.tools.vendor-t2.path}/tuya_open_sdk/
+t2.compiler.open_sdk_includes.flags={compiler.port.path}open_sdk_includes.txt
 
 # T2 ld script
 t2.ld_scripts.flags=-Wl,-Map={build.path}/{build.project_name}.map -T{runtime.platform.path}/port/t2/bk7231n_ota.ld  -o "{build.path}/{build.project_name}.axf"
