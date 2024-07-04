@@ -1,4 +1,4 @@
-{
+ {
   "packages": [
     {
       "name": "tuya_open",
@@ -10,7 +10,7 @@
       },
       "platforms": [
         {
-          "name": "Tuya Open SDK",
+          "name": "Tuya Open",
           "architecture": "tuya_open",
           "version": "0.0.1",
           "category": "Contributed",
@@ -19,8 +19,8 @@
           },
           "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/arduino-tuya-open.zip",
           "archiveFileName": "arduino-tuya-open.zip",
-          "size": "37471777",
-          "checksum": "SHA-256:079f8876101c098f7b768a230e25434bf792aacd54461d5a2a0e9f88c7ca79c8",
+          "size": "19002728",
+          "checksum": "SHA-256:522d41a3bce76bf73420adec80b49a03da62ecd8d3b75ccc2805c9c69792999b",
           "help": {
             "online": ""
           },
@@ -37,13 +37,13 @@
             },
             {
               "packager": "tuya_open",
-              "name": "tuyaopen-arduino-libs",
+              "name": "vendor-t2",
               "version": "0.0.1"
             },
 			{
               "packager": "tuya_open",
-              "name": "python",
-              "version": "0.0.1"
+              "name": "env-python",
+              "version": "3.12.4"
             },
             {
               "packager": "tuya_open",
@@ -75,42 +75,42 @@
           ]
         },
         {
-          "name": "tuyaopen-arduino-libs",
+          "name": "vendor-t2",
           "version": "0.0.1",
           "systems": [
             {
               "host": "x86_64-linux-gnu",
-              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/tuyaopen-arduino-libs.zip",
-              "archiveFileName": "tuyaopen-arduino-libs.zip",
-              "size": "10003376",
-              "checksum": "SHA-256:3ef3b50b2a3f82aad440f46f16117ffec04872760aaa0ffc94e08c478298390a"
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/vendor-t2.zip",
+              "archiveFileName": "vendor-t2.zip",
+              "size": "25979117",
+              "checksum": "SHA-256:7b363367b07a6f88c94d9b91038785cfcf478f650d8a64179b531237410b474c"
             },
             {
               "host": "x86_64-cygwin",
-              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/tuyaopen-arduino-libs.zip",
-              "archiveFileName": "tuyaopen-arduino-libs.zip",
-              "size": "10003376",
-              "checksum": "SHA-256:3ef3b50b2a3f82aad440f46f16117ffec04872760aaa0ffc94e08c478298390a"
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/vendor-t2.zip",
+              "archiveFileName": "vendor-t2.zip",
+              "size": "25979117",
+              "checksum": "SHA-256:7b363367b07a6f88c94d9b91038785cfcf478f650d8a64179b531237410b474c"
             }
           ]
         },
 		{
-          "name": "python",
-          "version": "0.0.1",
+          "name": "env-python",
+          "version": "3.12.4",
           "systems": [
             {
               "host": "x86_64-linux-gnu",
-              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/python.zip",
-              "archiveFileName": "python.zip",
-              "size": "29075352",
-              "checksum": "SHA-256:f1543aaaeb45ea272a1a9204ffed5eb5866e419196ab7b9c7fc29bda883e0716"
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/env-python-linux.zip",
+              "archiveFileName": "env-python-linux.zip",
+              "size": "428",
+              "checksum": "SHA-256:7b5ed51935d471659663d456a3c72b746673c6e1225de0bf8e88245e55eff502"
             },
             {
               "host": "x86_64-cygwin",
-              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/python.zip",
-              "archiveFileName": "python.zip",
-              "size": "29075352",
-              "checksum": "SHA-256:f1543aaaeb45ea272a1a9204ffed5eb5866e419196ab7b9c7fc29bda883e0716"
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.1/env-python-win.zip",
+              "archiveFileName": "env-python-win.zip",
+              "size": "29231288",
+              "checksum": "SHA-256:a9bd1bd75fee12e90f3ceca63f090c303c5a96fbdbf4d6d6d5341ca0a16130db"
             }
           ]
         },
