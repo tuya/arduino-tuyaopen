@@ -33,3 +33,8 @@ recipe.hooks.linking.postlink.1.pattern.mac={compiler.extend.cmd.m}
 ## upload
 tools.tyutool.upload.protocol=serial
 tools.tyutool.upload.pattern={runtime.tools.tyutool.path}/tyutool_cli write -d t2 -p {upload.port.address} -b 921600 -s 0x000000 -f {build.path}/{build.project_name}_QIO.bin --tqdm
+
+## export compiled binary
+recipe.hooks.savehex.postsavehex.1.pattern.windows={export.binary.cmd.w}
+recipe.hooks.savehex.postsavehex.1.pattern.linux={export.binary.cmd.l}
+recipe.hooks.savehex.postsavehex.1.pattern.macosx={export.binary.cmd.m}
