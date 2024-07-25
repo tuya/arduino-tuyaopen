@@ -100,6 +100,13 @@ if not os.path.exists(buildPath):
     logging.debug("Create build directory: " + buildPath)
     os.makedirs(buildPath)
 
+#
+## 将当前脚本所在路径添加为搜索模块的路径
+#
+scriptSelfPath = os.path.dirname(os.path.realpath(__file__))
+logging.debug("scriptSelfPath: " + scriptSelfPath)
+sys.path.append(scriptSelfPath)
+
 from FileLock import FileLock
 
 # 获取当前Python解释器路径
