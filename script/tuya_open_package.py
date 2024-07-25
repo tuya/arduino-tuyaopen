@@ -74,6 +74,8 @@ os.remove(os.path.join(copy_folder, 'ArduinoCore-API', 'README.md'))
 shutil.rmtree(os.path.join(copy_folder, 'ArduinoCore-API', 'test'))
 ## script
 shutil.rmtree(os.path.join(copy_folder, 'script'))
+## package.json
+os.remove(os.path.join(copy_folder, 'package.json'))
 
 # 压缩文件夹
 need_zip_folder = os.path.join(output_path, 'tuya_open')
