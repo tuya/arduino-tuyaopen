@@ -22,6 +22,14 @@ else
     exit 1
 fi
 
+# Check whether python3-venv is installed
+if dpkg -l | grep -q "python3-venv"; then
+    echo "Python3 venv already install"
+else
+    echo "Python3 venv not install. You can run \"apt install python3-venv\" command. You may need to use sudo with that command."
+    exit 0
+fi
+
 # 检查虚拟环境是否存在
 if [ ! -d "${VENV_DIR}" ]; then
     echo "Virtual environment not found. Creating one..."
