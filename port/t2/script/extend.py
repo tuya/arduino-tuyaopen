@@ -10,10 +10,17 @@ import argparse
 import shutil
 import json
 import logging
+import subprocess
 
 logging.basicConfig(
-    level=logging.WARNING,
-    format='[%(levelname)s][%(filename)s:%(lineno)d]%(message)s')
+    level=logging.DEBUG,
+    format='[%(levelname)s][%(filename)s:%(lineno)d]%(message)s'
+)
+
+# 获取当前Python解释器路径
+pythonExecutable = sys.executable
+pythonExecutable = os.path.normpath(pythonExecutable)
+logging.debug("pythonExecutable: " + pythonExecutable)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--compiler-path', type=str, help='compiler path')
@@ -170,12 +177,13 @@ bekenPackCommand = [
 logging.debug("bekenPackCommand: " + ' '.join(bekenPackCommand))
 os.system(' '.join(bekenPackCommand))
 
-# rename bin file
+# Output binary name
 allBinFile = os.path.join(binFilePath, "all_1.00.bin")
 QIOBinFile = os.path.join(binFilePath, outputName + "_QIO.bin")
 encUartBinFile = os.path.join(binFilePath, outputName + "_enc_uart_1.00.bin")
 UABinFile = os.path.join(binFilePath, outputName + "_UA.bin")
 
+# Check allBin and UartBin
 if not os.path.exists(allBinFile):
     logging.debug("allBinFile: " + allBinFile)
     logging.debug("pack failed")
@@ -185,5 +193,19 @@ if not os.path.exists(encUartBinFile):
     logging.debug("pack failed")
     exit(1)
 
-shutil.move(allBinFile, QIOBinFile)
+t2_ate_path = os.path.join(portPath, 'tools', 't2_ate')
+if os.path.exists(t2_ate_path):
+    output_bin = os.path.join(binFilePath, 'QIO_no_ate')
+    combine_qio_ate_path = os.path.join(portPath, 'script', 'combine_qio_ate.py')
+    result = subprocess.run([pythonExecutable, combine_qio_ate_path, output_bin, "2097152", allBinFile, "0", t2_ate_path, "1253376"], check=True)
+    if result.returncode == 0:
+        shutil.move(output_bin, QIOBinFile)
+        os.remove(allBinFile)
+    else:
+        logging.error("combine allBin and t2_ate fail")
+        shutil.move(allBinFile, QIOBinFile)
+else:
+    shutil.move(allBinFile, QIOBinFile)
+
+# rename UA Bin
 shutil.move(encUartBinFile, UABinFile)
