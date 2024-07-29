@@ -140,6 +140,7 @@ env['BUILDERS']['Assemble'] = Builder(action='$ASCOM', suffix='.o', src_suffix='
 cFlags = os.path.join(flagsPath, "c_flags.txt")
 vendorFlags = [
     '@' + cFlags,
+    '-DWOLFSSL_BEKEN',
     '-iprefix', vendorPath,
     '@' + vendorIncludeFlags,
     '-iprefix', openSdkPath,
@@ -352,6 +353,7 @@ vendorOSFlags = [
     '@' + tklIncludeFlags,
 ]
 envVendorOS = env.Clone()
+envVendorOS['OBJSUFFIX'] = ".marm.o"
 envVendorOS.Append(CCFLAGS=vendorOSFlags)
 
 ## vendor OS .c 文件
@@ -386,6 +388,7 @@ vendorASMFlags = [
     '@' + vendorIncludeFlags,
 ]
 envVendorAMS = env.Clone()
+envVendorAMS['OBJSUFFIX'] = ".O"
 envVendorAMS.Append(ASFLAGS=vendorASMFlags)
 ## vendor .S 文件
 vendorAMSSources = [
