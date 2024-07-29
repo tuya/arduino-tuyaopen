@@ -441,7 +441,7 @@ SECTIONS
 		*bluetooth*.c.o(.bss .bss.* .scommon .sbss .dynbss COMMON)
 
 		*tuya_iot_com_api.c.o(.bss .bss.* .scommon .sbss .dynbss COMMON)
-		*aes.c.o(.bss .bss.* .scommon .sbss .dynbss COMMON)
+		/* *aes.c.o(.bss .bss.* .scommon .sbss .dynbss COMMON) */
 		*tuya_tls.c.o(.bss .bss.* .scommon .sbss .dynbss COMMON)
 		*tuya_iot_api_pre_handle.c.o(.bss .bss.* .scommon .bss .dynbss COMMON)
 		*ble_att_svr.c.o(.bss .bss.* .scommon .sbss .dynbss COMMON)
@@ -449,11 +449,20 @@ SECTIONS
 		*tkl_wifi.o(.bss .bss.* .scommon .sbss .dynbss COMMON)
 		*tkl*.o(.bss .bss.* .scommon .sbss .dynbss COMMON)
 		*tal*.c.o(.bss .bss.* .scommon .sbss .dynbss COMMON)
-		*boot_handlers.o(.bss .bss.* .scommon .sbss .dynbss COMMON)
+		*boot_handlers.O(.bss .bss.* .scommon .sbss .dynbss COMMON)
     } >tcm AT>flash
     _tcmbss_start = ADDR(.tcm);
     _tcmbss_end = _tcmbss_start + SIZEOF(.tcm);
-    
+ 
+ 	. = ALIGN(0x8);
+	.gfw_cmd :
+	{
+		KEEP(*(*.gfw_cmd))
+		KEEP(*(*.gfw_cmd.*))
+	} > flash
+	_gfw_cmd_begin = ADDR(.gfw_cmd);
+	_gfw_cmd_end = _gfw_cmd_begin + SIZEOF(.gfw_cmd);
+
     . = ORIGIN(dtcm);
     .user.ram.data ALIGN(8) :
     {
