@@ -13,7 +13,7 @@ import logging
 import subprocess
 
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='[%(levelname)s][%(filename)s:%(lineno)d]%(message)s'
 )
 
