@@ -46,7 +46,7 @@ tuya_iot_client_t ArduinoIoTClient;
 /******************************************************************************
  * LOCAL MODULE FUNCTIONS
  ******************************************************************************/
-static void arduino_output_cb(const CHAR_T *str);
+static void arduino_output_cb(const char *str);
 static void user_event_handler_on(tuya_iot_client_t* client, tuya_event_msg_t* event);
 static bool user_network_check(void);
 static void tuya_app_thread(void *arg);
