@@ -13,7 +13,7 @@
 #include "lwip_init.h"
 #endif
 
-static VOID_T __wifi_callback_event(WF_EVENT_E event, VOID_T *arg)
+static void __wifi_callback_event(WF_EVENT_E event, void *arg)
 {
   return;
 }

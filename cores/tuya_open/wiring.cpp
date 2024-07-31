@@ -15,7 +15,7 @@ unsigned long millis()
 
 void delay(unsigned long ms)
 {
-    return tal_system_sleep((UINT_T)ms);
+    return tal_system_sleep((uint32_t)ms);
 }
 
 void yield(void)
