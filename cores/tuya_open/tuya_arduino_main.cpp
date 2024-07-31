@@ -66,6 +66,7 @@ static void arduino_thread(void *arg)
 
   // tuya log init
   tal_log_init(TAL_LOG_LEVEL_DEBUG, 1024, (TAL_LOG_OUTPUT_CB)log_output_cb);
+  tal_log_color_enable_set(FALSE);
 
   app_open_sdk_init();
 
