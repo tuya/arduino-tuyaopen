@@ -6,7 +6,7 @@
 int analogRead(pin_size_t pinNumber)
 {
     OPERATE_RET rt = OPRT_OK;
-    int readValue = 0;
+    int32_t readValue = 0;
 
     uint8_t adcChannel = adcPinToChannel(pinNumber);
     if (TUYA_ADC_INVALID_VALUE == adcChannel) {

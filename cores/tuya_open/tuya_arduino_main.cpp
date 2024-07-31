@@ -87,7 +87,7 @@ void tuya_app_main(void)
   __asm("BL __libc_init_array");
 #endif // defined(ARDUINO_TUYA_T2)
 
-  THREAD_CFG_T thrd_param = {1024 * 4, THREAD_PRIO_3, (CHAR_T *)"arduino_thread"};
+  THREAD_CFG_T thrd_param = {1024 * 4, THREAD_PRIO_3, "arduino_thread"};
   tal_thread_create_and_start(&arduino_thrd_hdl, NULL, NULL, arduino_thread, NULL, &thrd_param);
 }
 

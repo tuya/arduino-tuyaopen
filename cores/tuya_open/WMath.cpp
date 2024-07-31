@@ -4,7 +4,7 @@
 
 long random(long howbig)
 {
-    UINT_T rang = 0;
+    uint32_t rang = 0;
 
     if (howbig == 0) {
         return 0;
