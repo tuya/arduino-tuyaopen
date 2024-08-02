@@ -15,7 +15,7 @@ void setup()
 
     // We start by connecting to a WiFi network
     //WiFiMulti.addAP("BK-SZ", "sundray123");
-    WiFi.begin("BK-SZ","sundray123");
+    WiFi.begin("*******","*******");
     Serial.println();
     Serial.println();
     Serial.print("Waiting for WiFi... ");

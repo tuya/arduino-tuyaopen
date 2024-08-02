@@ -5,8 +5,8 @@ WiFiMulti wifiMulti;
 
 
 #define MAX_SRV_CLIENTS 1
-const char* ssid = "BK-SZ";
-const char* password = "sundray123";
+const char* ssid = "******";
+const char* password = "******";
 
 WiFiServer server;
 WiFiClient serverClients[MAX_SRV_CLIENTS];
