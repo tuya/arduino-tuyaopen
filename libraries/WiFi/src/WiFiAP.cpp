@@ -1,7 +1,7 @@
 #include "WiFi.h"
 #include "WiFiGeneric.h"
 #include "WiFiAP.h"
-#include "tkl_output.h"
+#include "tal_log.h"
 
 extern "C" {
 #include <stdint.h>
@@ -21,16 +21,16 @@ bool WiFiAPClass::softAP(const char* ssid, const char* passphrase, int channel, 
 {
 
     if(!ssid || *ssid == 0) {
-        tkl_log_output("SSID missing!\r\n");
+        PR_ERR("SSID missing!\r\n");
         return false;
     }
     if(passphrase && (strlen(passphrase) > 0 && strlen(passphrase) < 8)) {
-        tkl_log_output("passphrase too short!\r\n");
+        PR_ERR("passphrase too short!\r\n");
         return false;
     }
 
     if(!WiFi.enableAP(true)) {
-        tkl_log_output("enable AP first!\r\n");
+        PR_ERR("enable AP first!\r\n");
         return false;
     }
 
@@ -73,7 +73,7 @@ bool WiFiAPClass::softAPConfig(IPAddress local_ip, IPAddress gateway, IPAddress 
     strcpy((char *)ap_cfg_info.ip.gw, gateway.toString().c_str());
     strcpy((char *)ap_cfg_info.ip.mask, subnet.toString().c_str());
 
-    tkl_log_output("ip:%s,Gateway: %s,Netmask: %s,dns:%s\r\n", local_ip.toString().c_str(), gateway.toString().c_str(), subnet.toString().c_str());
+    PR_INFO("ip:%s,Gateway: %s,Netmask: %s,dns:%s\r\n", local_ip.toString().c_str(), gateway.toString().c_str(), subnet.toString().c_str());
     return  err == OPRT_OK; 
 }
 
@@ -107,7 +107,7 @@ IPAddress WiFiAPClass::softAPIP()
     }
     NW_IP_S ip;
     if( tkl_wifi_get_ip(WF_AP,&ip)!= OPRT_OK){
-    	tkl_log_output("Netif Get IP Failed!\r\n");
+    	PR_ERR("Netif Get IP Failed!\r\n");
     	return IPAddress();
     }
     return IPAddress(ip.ip);
@@ -120,7 +120,7 @@ IPAddress WiFiAPClass::softAPBroadcastIP()
     }
     NW_IP_S ip;
     if(tkl_wifi_get_ip(WF_AP,&ip) != OPRT_OK){
-    	tkl_log_output("Netif Get IP Failed!\r\n");
+    	PR_ERR("Netif Get IP Failed!\r\n");
     	return IPAddress();
     }
     return WiFiGenericClass::calculateBroadcast(IPAddress(ip.gw), IPAddress(ip.mask));
@@ -134,7 +134,7 @@ IPAddress WiFiAPClass::softAPNetworkID()
     }
     NW_IP_S ip;
     if(tkl_wifi_get_ip(WF_AP,&ip) != OPRT_OK){
-    	tkl_log_output("Netif Get IP Failed!\r\n");
+    	PR_ERR("Netif Get IP Failed!\r\n");
     	return IPAddress();
     }
     return WiFiGenericClass::calculateNetworkID(IPAddress(ip.gw), IPAddress(ip.mask));
@@ -147,7 +147,7 @@ IPAddress WiFiAPClass::softAPSubnetMask()
     }
     NW_IP_S ip;
     if(tkl_wifi_get_ip(WF_AP,&ip) != OPRT_OK){
-    	tkl_log_output("Netif Get IP Failed!\r\n");
+    	PR_ERR("Netif Get IP Failed!\r\n");
     	return IPAddress();
     }
     return IPAddress(ip.mask);

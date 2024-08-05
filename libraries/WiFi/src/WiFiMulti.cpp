@@ -1,13 +1,12 @@
 #include <Arduino.h>
 #include "WiFiMulti.h"
+#include "tkl_system.h"
+#include "tal_log.h"
 
 extern "C" {
 #include <limits.h>
 #include <string.h>
 }
-//#include <bk_hal.h>
-#include "tkl_system.h"
-#include "tkl_output.h"
 
 WiFiMulti::WiFiMulti()
 {
@@ -29,35 +28,32 @@ WiFiMulti::~WiFiMulti()
 
 bool WiFiMulti::addAP(const char* ssid, const char *passphrase)
 {
-#if 1
     WifiAPlist_t newAP;
 
     if(!ssid || *ssid == 0x00 || strlen(ssid) > 31) {
         // fail SSID too long or missing!
-        tkl_log_output("[WIFI][APlistAdd] no ssid or ssid too long\r\n");
+        PR_ERR("[WIFI][APlistAdd] no ssid or ssid too long\r\n");
         return false;
     }
 
     if(passphrase && strlen(passphrase) > 64) {
         // fail passphrase too long!
-        tkl_log_output("[WIFI][APlistAdd] passphrase too long\r\n");
+        PR_ERR("[WIFI][APlistAdd] passphrase too long\r\n");
         return false;
     }
     newAP.ssid =(char*) malloc(sizeof(char)*strlen(ssid));
     strcpy(newAP.ssid,ssid);
-    //newAP.ssid = strdup(ssid);
 
     if(!newAP.ssid) {
-        tkl_log_output("[WIFI][APlistAdd] fail newAP.ssid == 0\r\n");
+        PR_ERR("[WIFI][APlistAdd] fail newAP.ssid == 0\r\n");
         return false;
     }
 
     if(passphrase && *passphrase != 0x00) {
         newAP.passphrase =(char*) malloc(sizeof(char)*strlen(passphrase));
         strcpy(newAP.passphrase,passphrase);
-        //newAP.passphrase = strdup(passphrase);
         if(!newAP.passphrase) {
-            tkl_log_output("[WIFI][APlistAdd] fail newAP.passphrase == 0\r\n");
+            PR_ERR("[WIFI][APlistAdd] fail newAP.passphrase == 0\r\n");
             free(newAP.ssid);
             return false;
         }
@@ -66,8 +62,7 @@ bool WiFiMulti::addAP(const char* ssid, const char *passphrase)
     }
 
     APlist.push_back(newAP);
-    tkl_log_output("[WIFI][APlistAdd] add SSID: %s\r\n", newAP.ssid);
-#endif
+    PR_INFO("[WIFI][APlistAdd] add SSID: %s\r\n", newAP.ssid);
     return true;
 }
 
@@ -83,7 +78,7 @@ uint8_t WiFiMulti::run(uint32_t connectTimeout)
                 return status;
             }
         }
-        tkl_log_output("WiFi.disconnect\r\n");
+        PR_ERR("WiFi.disconnect\r\n");
         WiFi.disconnect(false,false);
     
         tkl_system_delay(10);
@@ -102,12 +97,12 @@ uint8_t WiFiMulti::run(uint32_t connectTimeout)
         uint8_t bestBSSID[6];
         int32_t bestChannel = 0;
 
-        tkl_log_output("[WIFI] scan done\r\n");
+        PR_INFO("[WIFI] scan done\r\n");
 
         if(scanResult == 0) {
-            tkl_log_output("[WIFI] no networks found\r\n");
+            PR_INFO("[WIFI] no networks found\r\n");
         } else {
-            tkl_log_output("[WIFI] %d networks found\r\n", scanResult);
+            PR_INFO("[WIFI] %d networks found\r\n", scanResult);
             for(int8_t i = 0; i < scanResult; ++i) {
 
                 String ssid_scan;
@@ -137,9 +132,9 @@ uint8_t WiFiMulti::run(uint32_t connectTimeout)
                 }
 
                 if(known) {
-                    tkl_log_output(" --->   %d: [%d][%02X:%02X:%02X:%02X:%02X:%02X] %s (%d) %c\r\n", i, chan_scan, BSSID_scan[0], BSSID_scan[1], BSSID_scan[2], BSSID_scan[3], BSSID_scan[4], BSSID_scan[5], ssid_scan, rssi_scan, (sec_scan == WAAM_OPEN) ? ' ' : '*');
+                    PR_INFO(" --->   %d: [%d][%02X:%02X:%02X:%02X:%02X:%02X] %s (%d) %c\r\n", i, chan_scan, BSSID_scan[0], BSSID_scan[1], BSSID_scan[2], BSSID_scan[3], BSSID_scan[4], BSSID_scan[5], ssid_scan, rssi_scan, (sec_scan == WAAM_OPEN) ? ' ' : '*');
                 } else {
-                    tkl_log_output("       %d: [%d][%02X:%02X:%02X:%02X:%02X:%02X] %s (%d) %c\r\n", i, chan_scan, BSSID_scan[0], BSSID_scan[1], BSSID_scan[2], BSSID_scan[3], BSSID_scan[4], BSSID_scan[5], ssid_scan, rssi_scan, (sec_scan == WAAM_OPEN) ? ' ' : '*');
+                    PR_INFO("       %d: [%d][%02X:%02X:%02X:%02X:%02X:%02X] %s (%d) %c\r\n", i, chan_scan, BSSID_scan[0], BSSID_scan[1], BSSID_scan[2], BSSID_scan[3], BSSID_scan[4], BSSID_scan[5], ssid_scan, rssi_scan, (sec_scan == WAAM_OPEN) ? ' ' : '*');
                 }
             }
         }
@@ -148,7 +143,7 @@ uint8_t WiFiMulti::run(uint32_t connectTimeout)
         WiFi.scanDelete();
 
         if(bestNetwork.ssid) {
-            tkl_log_output("[WIFI] Connecting BSSID: %02X:%02X:%02X:%02X:%02X:%02X SSID: %s Channel: %d (%d)\r\n", bestBSSID[0], bestBSSID[1], bestBSSID[2], bestBSSID[3], bestBSSID[4], bestBSSID[5], bestNetwork.ssid, bestChannel, bestNetworkDb);
+            PR_INFO("[WIFI] Connecting BSSID: %02X:%02X:%02X:%02X:%02X:%02X SSID: %s Channel: %d (%d)\r\n", bestBSSID[0], bestBSSID[1], bestBSSID[2], bestBSSID[3], bestBSSID[4], bestBSSID[5], bestNetwork.ssid, bestChannel, bestNetworkDb);
 
             WiFi.begin(bestNetwork.ssid, bestNetwork.passphrase, bestChannel, bestBSSID);
             status = WiFi.status();
@@ -163,33 +158,33 @@ uint8_t WiFiMulti::run(uint32_t connectTimeout)
 
             switch(status) {
             case WSS_GOT_IP:
-                tkl_log_output("[WIFI] Connecting done.\r\n");
-                tkl_log_output("[WIFI] SSID: %s\r\n", WiFi.SSID().c_str());
-                tkl_log_output("[WIFI] IP: %s\r\n", WiFi.localIP().toString().c_str());
-                tkl_log_output("[WIFI] MAC: %s\r\n", WiFi.BSSIDstr().c_str());
-                tkl_log_output("[WIFI] Channel: %d\r\n", WiFi.channel());
+                PR_INFO("[WIFI] Connecting done.\r\n");
+                PR_INFO("[WIFI] SSID: %s\r\n", WiFi.SSID().c_str());
+                PR_INFO("[WIFI] IP: %s\r\n", WiFi.localIP().toString().c_str());
+                PR_INFO("[WIFI] MAC: %s\r\n", WiFi.BSSIDstr().c_str());
+                PR_INFO("[WIFI] Channel: %d\r\n", WiFi.channel());
                 break;
             case WSS_NO_AP_FOUND:
-                tkl_log_output("[WIFI] Connecting Failed AP not found.\r\n");
+                PR_ERR("[WIFI] Connecting Failed AP not found.\r\n");
                 break;
             case WSS_CONN_FAIL:
-                tkl_log_output("[WIFI] Connecting Failed.\r\n");
+                PR_ERR("[WIFI] Connecting Failed.\r\n");
                 break;
             default:
-                tkl_log_output("[WIFI] Connecting Failed (%d).\r\n", status);
+                PR_ERR("[WIFI] Connecting Failed (%d).\r\n", status);
                 break;
             }
         } 
         else {
-            tkl_log_output("[WIFI] no matching wifi found!\r\n");
+            PR_ERR("[WIFI] no matching wifi found!\r\n");
         }
     } 
     else {
         // start scan
-        tkl_log_output("[WIFI] delete old wifi config...\r\n");
+        PR_INFO("[WIFI] delete old wifi config...\r\n");
         WiFi.disconnect();
 
-        tkl_log_output("[WIFI] start scan\r\n");
+        PR_INFO("[WIFI] start scan\r\n");
         // scan wifi async mode
         WiFi.scanNetworks(true);
     }

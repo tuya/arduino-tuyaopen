@@ -2,7 +2,7 @@
 #include "WiFi.h"
 #include "WiFiGeneric.h"
 #include "WiFiScan.h"
-#include "tkl_output.h"
+#include "tal_log.h"
 
 extern "C" {
 #include <stdint.h>
@@ -28,7 +28,7 @@ void WiFiScanClass::scanDelete()
     if( ap_info != NULL)
         tkl_wifi_release_ap(ap_info);
     ap_num = 0;
-    tkl_log_output("scanDelete Done!\n"); 
+    PR_INFO("scanDelete Done!\n"); 
 }
 
 void * WiFiScanClass::_getScanInfoByIndex(int i)

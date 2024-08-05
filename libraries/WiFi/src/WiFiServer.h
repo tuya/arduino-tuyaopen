@@ -4,7 +4,7 @@
 #include "api/Server.h"
 #include "WiFiClient.h"
 #include "api/IPAddress.h"
-#include "tkl_output.h"
+#include "tal_log.h"
 class WiFiServer : public Server {
   private:
     int sockfd;
@@ -20,10 +20,10 @@ class WiFiServer : public Server {
 
     // _addr(INADDR_ANY) is the same as _addr() ==> 0.0.0.0
     WiFiServer(uint16_t port=80, uint8_t max_clients=4):sockfd(-1),_accepted_sockfd(-1),_addr(),_port(port),_max_clients(max_clients),_listening(false),_noDelay(false) {
-      tkl_log_output("WiFiServer::WiFiServer(port=%d, ...)\r\n", port);
+      PR_INFO("WiFiServer::WiFiServer(port=%d, ...)\r\n", port);
     }
     WiFiServer(const IPAddress& addr, uint16_t port=80, uint8_t max_clients=4):sockfd(-1),_accepted_sockfd(-1),_addr(addr),_port(port),_max_clients(max_clients),_listening(false),_noDelay(false) {
-      tkl_log_output("WiFiServer::WiFiServer(addr=%s, port=%d, ...)\r\n", addr.toString().c_str(), port);
+      PR_INFO("WiFiServer::WiFiServer(addr=%s, port=%d, ...)\r\n", addr.toString().c_str(), port);
     }
     ~WiFiServer(){ end();}
     WiFiClient available();

@@ -9,8 +9,8 @@
 #include <string.h>
 #include "projdefs.h"
 #include "portmacro.h"
-#include "tkl_thread.h"
-#include "tkl_queue.h"
+#include "tal_thread.h"
+#include "tal_queue.h"
 #include "FreeRTOS.h"
 #include "event_groups.h"
 #include "lwip/ip_addr.h"
@@ -22,9 +22,11 @@
 #include "lwip_netif_address.h"
 #include "net.h"
 
-#include "tkl_output.h"
+#include "tal_log.h"
 #include "tkl_wifi.h"
 #include "tal_wifi.h"
+
+#define QUEUE_WAIT_FROEVER 0xFFFFFFFF
 
 typedef struct WiFiEventCbList {
     static wifi_event_id_t current_id;
@@ -38,7 +40,7 @@ typedef struct WiFiEventCbList {
 } WiFiEventCbList_t;
 
 static bool _bk_wifi_started = false;
-static TKL_QUEUE_HANDLE _arduino_event_queue = NULL;
+static QUEUE_HANDLE _arduino_event_queue = NULL;
 static TaskHandle_t _arduino_event_task_handle = NULL;
 static EventGroupHandle_t _arduino_event_group = NULL;
 static bool lowLevelInitDone = false;
@@ -50,15 +52,16 @@ bool WiFiGenericClass::_long_range = false;
 
 wifi_event_id_t WiFiEventCbList::current_id = 1;
 
+
 static void _arduino_event_task(void * arg)
 {
     arduino_event_t data ;
     for (;;) {
-        if(tkl_queue_fetch(_arduino_event_queue, &data, TKL_QUEUE_WAIT_FROEVER) == OPRT_OK){
+        if(tal_queue_fetch(_arduino_event_queue, &data,QUEUE_WAIT_FROEVER) == OPRT_OK){
             WiFiGenericClass::_eventCallback(&data);
         }
     }
-    tkl_thread_release(NULL);
+    tal_thread_delete(NULL);
     _arduino_event_task_handle = NULL;
 
 }
@@ -69,9 +72,9 @@ int postArduinoEvent(arduino_event_t *data)
         return OPRT_COM_ERROR;
 	}
      
-    int ret = tkl_queue_post(_arduino_event_queue, data, 0) ;
+    int ret = tal_queue_post(_arduino_event_queue, data, 0) ;
     if (ret != OPRT_OK) {
-        tkl_log_output("Arduino Event Send Failed!\r\n");
+        PR_ERR("Arduino Event Send Failed!\r\n");
         return OPRT_COM_ERROR;
     }
     return OPRT_OK;
@@ -84,7 +87,7 @@ static void __netconn_wifi_event(WF_EVENT_E event, void *arg)
 
     if (event == WFE_CONNECTED) {
         arduino_event.event_id = ARDUINO_EVENT_WIFI_STA_GOT_IP;
-        tkl_log_output("ARDUINO_EVENT_WIFI_STA_GOT_IP\n");
+        PR_INFO("ARDUINO_EVENT_WIFI_STA_GOT_IP\n");
         NW_IP_S ip;
         tkl_wifi_get_ip(WF_STATION,&ip);
         memcpy(&arduino_event.event_info.got_ip.ip_info.ip,ip.ip,16);
@@ -93,12 +96,12 @@ static void __netconn_wifi_event(WF_EVENT_E event, void *arg)
     } 
     else if (event == WFE_CONNECT_FAILED)
     {   
-        tkl_log_output("EVT_CONNECT_FAILED\r\n");
+        PR_INFO("EVT_CONNECT_FAILED\r\n");
     }
     else
     {  
         arduino_event.event_id = ARDUINO_EVENT_WIFI_STA_DISCONNECTED;
-        tkl_log_output("EVT_STA_DISCONNECTED\r\n");
+        PR_INFO("EVT_STA_DISCONNECTED\r\n");
     }
 
     if(arduino_event.event_id < ARDUINO_EVENT_MAX){
@@ -113,26 +116,31 @@ static bool _start_network_event_task()
     if(!_arduino_event_group){
         _arduino_event_group = xEventGroupCreate();
         if(!_arduino_event_group){
-            tkl_log_output("Network Event Group Create Failed!");
+            PR_ERR("Network Event Group Create Failed!");
             return false;
         }
         xEventGroupSetBits(_arduino_event_group, WIFI_DNS_IDLE_BIT);
     }
     if(!_arduino_event_queue){
-    	tkl_queue_create_init(&_arduino_event_queue,sizeof(arduino_event_t),32);
+    	tal_queue_create_init(&_arduino_event_queue,sizeof(arduino_event_t),32);
         if(!_arduino_event_queue){
-            tkl_log_output("Network Event Queue Create Failed!");
+            PR_ERR("Network Event Queue Create Failed!");
             return false;
         }
     }
    
     tkl_wifi_init(__netconn_wifi_event);
+
+    THREAD_CFG_T param;
+    param.priority = THREAD_PRIO_3;
+    param.stackDepth = 4096;
+    param.thrdname =  "arduino_events";
  
     if(!_arduino_event_task_handle)
     {        
-        tkl_thread_create( &_arduino_event_task_handle,"arduino_events", 4096, 5 ,_arduino_event_task,NULL);
+        tal_thread_create_and_start( &_arduino_event_task_handle, NULL, NULL, _arduino_event_task, NULL, &param);
         if(!_arduino_event_task_handle){
-            tkl_log_output("Network Event Task Start Failed!");
+            PR_ERR("Network Event Task Start Failed!");
             return false;
         }
     }
@@ -147,7 +155,7 @@ bool tcpipInit(){
         if(initialized){
         	initialized = _start_network_event_task();
         } else {
-            tkl_log_output("netif_init failed!\r\n");
+            PR_ERR("netif_init failed!\r\n");
         }
     }
     return initialized;
@@ -160,7 +168,7 @@ bool WiFiGenericClass::useStaticBuffers(){
 
 void WiFiGenericClass::useStaticBuffers(bool bufferMode){
     if (lowLevelInitDone) {
-        tkl_log_output("WiFi already started. Call WiFi.mode(WIFI_MODE_NULL) before setting Static Buffer Mode.\r\n");
+        PR_INFO("WiFi already started. Call WiFi.mode(WIFI_MODE_NULL) before setting Static Buffer Mode.\r\n");
     } 
     _wifiUseStaticBuffers = bufferMode;
 }
@@ -170,7 +178,7 @@ bool wifiLowLevelInit(bool persistent){
         lowLevelInitDone = true;
         if(!tcpipInit()){
         	lowLevelInitDone = false;
-            tkl_log_output("FALSE  lowLevelInitDone:%d \n",lowLevelInitDone);
+            PR_ERR("FALSE  lowLevelInitDone:%d \n",lowLevelInitDone);
         	return lowLevelInitDone;
         }
         
@@ -325,7 +333,6 @@ void WiFiGenericClass::removeEvent(wifi_event_id_t id)
 
 int WiFiGenericClass::_eventCallback(arduino_event_t *event)
 {
-    //static bool first_connect = true; 
     if(!event) return OPRT_OK;        
     if(event->event_id == ARDUINO_EVENT_WIFI_STA_GOT_IP  ) {
         WiFiSTAClass::_setStatus(WSS_GOT_IP);
@@ -388,12 +395,12 @@ bool WiFiGenericClass::mode(WiFiMode_t m)
         }
     } 
     else if(cm && !m){
-        tkl_log_output("bkWiFiStop return\n");
+        PR_INFO("bkWiFiStop return\n");
         return bkWiFiStop();
     }
     err = tkl_wifi_set_work_mode(m);
     if(err){
-        tkl_log_output("Could not set mode! %d", err);
+        PR_ERR("Could not set mode! %d", err);
         return false;
     }
     if(!bkWiFiStart()){
@@ -409,7 +416,7 @@ WF_WK_MD_E WiFiGenericClass::getMode()
     }
     WF_WK_MD_E mode;
     if(tkl_wifi_get_work_mode(&mode) != 0){
-        tkl_log_output("WiFi not started");
+        PR_ERR("WiFi not started");
         return WWM_POWERDOWN;
     }
     return mode;
@@ -448,6 +455,11 @@ bool WiFiGenericClass::setSleep(bool enabled){
         return tal_wifi_lp_disable();
 }
 
+bool WiFiGenericClass::setDualAntennaConfig(uint8_t gpio_ant1, uint8_t gpio_ant2, wifi_rx_ant_t rx_mode, wifi_tx_ant_t tx_mode)
+{
+    return false;
+}
+
 static void wifi_dns_found_callback(const char *name, const ip_addr_t *ipaddr, void *callback_arg)
 {
     if(ipaddr) {
@@ -474,7 +486,7 @@ int WiFiGenericClass::hostByName(const char* aHostname, IPAddress& aResult)
         }
         setStatusBits(WIFI_DNS_IDLE_BIT);
         if((uint32_t)aResult == 0){
-            tkl_log_output("DNS Failed for %s\r\n", aHostname);
+            PR_ERR("DNS Failed for %s\r\n", aHostname);
         }
     }
 

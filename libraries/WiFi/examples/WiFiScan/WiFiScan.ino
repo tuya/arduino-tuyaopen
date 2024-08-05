@@ -6,7 +6,6 @@
 #include "WiFi.h"
 void setup()
 {
-
     Serial.begin(115200);
 
     // Set WiFi to station mode and disconnect from an AP if it was previously connected.

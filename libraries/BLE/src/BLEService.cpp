@@ -43,8 +43,8 @@ int hexstr2bin(const char *hex, uint8_t *buf, size_t len)
 	return 0;
 }
 
-TKL_BLE_GATTS_PARAMS_T * BLEService:: ble_gatt_service = NULL;
-TKL_BLE_SERVICE_PARAMS_T*  BLEService:: ble_service = NULL;
+TKL_BLE_GATTS_PARAMS_T* BLEService:: ble_gatt_service = NULL;
+TKL_BLE_SERVICE_PARAMS_T* BLEService:: ble_service = NULL;
 TKL_BLE_CHAR_PARAMS_T* BLEService :: ble_service_char = NULL;
 uint8_t BLEService::char_index ;
 
@@ -85,7 +85,6 @@ BLEService::BLEService(std::string uuid)
     ble_service->char_num  = TKL_BLE_GATT_CHAR_MAX_NUM,
     ble_service->p_char     = ble_service_char;
 } 
-
 
 BLECharacteristic* BLEService::createCharacteristic(const char* uuid, uint32_t properties) 
 {

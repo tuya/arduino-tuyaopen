@@ -23,7 +23,7 @@
 #include <lwip/netdb.h>
 #include <lwip/inet.h>
 #include <errno.h>
-#include "tkl_output.h"
+#include "tal_log.h"
 #include "tal_network.h"
 
 #undef write
@@ -51,25 +51,25 @@ uint8_t WiFiUDP::begin(IPAddress address, uint16_t port){
 
   tx_buffer = (char *)malloc(1460);
   if(!tx_buffer){
-    tkl_log_output("could not create tx buffer: %d\r\n", errno);
+    PR_ERR("could not create tx buffer: %d\r\n", errno);
     return 0;
   }
 
   if ((udp_server = tal_net_socket_create(PROTOCOL_UDP)) == -1){
-    tkl_log_output("could not create socket: %d\r\n", errno);
+    PR_ERR("could not create socket: %d\r\n", errno);
     return 0;
   }
 
   int yes = 1;
   if (tal_net_setsockopt(udp_server,SOL_SOCKET,SO_REUSEADDR,&yes,sizeof(yes)) < 0) {
-      tkl_log_output("could not set socket option: %d\r\n", errno);
+      PR_ERR("could not set socket option: %d\r\n", errno);
       stop();
       return 0;
   }
   uint32_t tmpIP = static_cast<uint32_t>(address);
   TUYA_IP_ADDR_T serverIP = (TUYA_IP_ADDR_T)UNI_HTONL(tmpIP);
   if(tal_net_bind(udp_server,serverIP,server_port) == -1){
-    tkl_log_output("could not bind socket: %d", errno);
+    PR_ERR("could not bind socket: %d", errno);
     stop();
     return 0;
   }
@@ -88,7 +88,7 @@ uint8_t WiFiUDP::beginMulticast(IPAddress a, uint16_t p){
       mreq.imr_multiaddr.s_addr = (in_addr_t)a;
       mreq.imr_interface.s_addr = INADDR_ANY;
       if (tal_net_setsockopt(udp_server, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq)) < 0) {
-          tkl_log_output("could not join igmp: %d", errno);
+          PR_ERR("could not join igmp: %d", errno);
           stop();
           return 0;
       }
@@ -139,7 +139,7 @@ int WiFiUDP::beginPacket(){
   if(!tx_buffer){
     tx_buffer = (char *)malloc(1460);
     if(!tx_buffer){
-      tkl_log_output("could not create tx buffer: %d", errno);
+      PR_ERR("could not create tx buffer: %d", errno);
       return 0;
     }
   }
@@ -151,7 +151,7 @@ int WiFiUDP::beginPacket(){
     return 1;
  
   if ((udp_server = tal_net_socket_create(PROTOCOL_UDP)) == -1){
-    tkl_log_output("could not create socket: %d", errno);
+    PR_ERR("could not create socket: %d", errno);
     return 0;
   }
 
@@ -169,7 +169,7 @@ int WiFiUDP::beginPacket(const char *host, uint16_t port){
   TUYA_IP_ADDR_T addr;
   int res = tal_net_gethostbyname(host,&addr);
   if (res != OPRT_OK){
-    tkl_log_output("could not get host from dns: %d", errno);
+    PR_ERR("could not get host from dns: %d", errno);
     return 0;
   }
   return beginPacket(IPAddress((const uint8_t*)addr), port);
@@ -178,7 +178,7 @@ int WiFiUDP::beginPacket(const char *host, uint16_t port){
 int WiFiUDP::endPacket(){
   int sent = tal_net_send_to(udp_server, tx_buffer, tx_buffer_len,(uint32_t)remote_ip,remote_port);
   if(sent < 0){
-    tkl_log_output("could not send data: %d", errno);
+    PR_ERR("could not send data: %d", errno);
     return 0;
   }
   return 1;
@@ -215,7 +215,7 @@ int WiFiUDP::parsePacket(){
     if(errno == EWOULDBLOCK){
       return 0;
     }
-    tkl_log_output("could not receive data: %d", errno);
+    PR_ERR("could not receive data: %d", errno);
     return 0;
   }
   remote_ip = IPAddress(ip);

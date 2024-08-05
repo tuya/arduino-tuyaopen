@@ -19,7 +19,7 @@
 #include "WiFiServer.h"
 #include <lwip/sockets.h>
 #include <lwip/netdb.h>
-#include "tkl_output.h"
+#include "tal_log.h"
 #include "tal_network.h"
 
 #undef write
@@ -88,7 +88,7 @@ void WiFiServer::begin(uint16_t port, int enable){
   _listening = true;
   _noDelay = false;
   _accepted_sockfd = -1;
-  tkl_log_output("server begin ok!\n");
+  PR_INFO("server begin ok!\n");
 }
 
 void WiFiServer::setNoDelay(bool nodelay) {

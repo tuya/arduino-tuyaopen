@@ -1,7 +1,7 @@
 #include <WiFi.h>
 
-const char* ssid     = "*******“ // Change this to your WiFi SSID
-const char* password = "*******"; // Change this to your WiFi password
+const char* ssid     = "********"; // Change this to your WiFi SSID
+const char* password = "********"; // Change this to your WiFi password
 
 const char* host = "api.thingspeak.com"; // This should not be changed
 const int httpPort = 80; // This should not be changed

@@ -4,7 +4,6 @@
 #include "BLECharacteristic.h"
 #include "BLEService.h"
 #include "BLEDEV.h"
-#include "tkl_output.h"
 
 BLECharacteristic::BLECharacteristic(std::string uuid, uint32_t properties) 
 {
