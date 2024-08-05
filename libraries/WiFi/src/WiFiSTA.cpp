@@ -12,6 +12,7 @@
 #include "lwip/dns.h"
 #include "FreeRTOS.h"
 #include "event_groups.h"
+#include "tal_log.h"
 
 bool WiFiSTAClass::_autoReconnect = true;
 bool WiFiSTAClass::_useStaticIp = false;
@@ -23,7 +24,7 @@ void WiFiSTAClass::_setStatus(WF_STATION_STAT_E status)
     if(!_sta_status_group){
         _sta_status_group = xEventGroupCreate();
         if(!_sta_status_group){
-            tkl_log_output("STA Status Group Create Failed!");
+            PR_ERR("STA Status Group Create Failed!");
             _sta_status = status;
             return;
         }
@@ -54,22 +55,22 @@ WF_STATION_STAT_E WiFiSTAClass::begin(const char* wpa2_ssid, wpa2_auth_method_t 
 WF_STATION_STAT_E WiFiSTAClass::begin(const char* ssid, const char *passphrase, int32_t channel, const uint8_t* bssid, bool connect)
 {
     if(!WiFi.enableSTA(true)) {
-        tkl_log_output("STA enable failed!");
+        PR_ERR("STA enable failed!");
         return WSS_CONN_FAIL;
     }
 
     if(!ssid || *ssid == 0x00 || strlen(ssid) > 32) {
-        tkl_log_output("SSID too long or missing!");
+        PR_ERR("SSID too long or missing!");
         return WSS_CONN_FAIL;
     }
 
     if(passphrase && strlen(passphrase) > 64) {
-        tkl_log_output("passphrase too long!");
+        PR_ERR("passphrase too long!");
         return WSS_CONN_FAIL;
     }
     if(connect){
     	if( tkl_wifi_station_connect((const int8_t *)ssid,(const int8_t *)passphrase) != OPRT_OK) {
-			tkl_log_output("connect failed!");			
+			PR_ERR("connect failed!");			
 		}
     }
     return status();
@@ -173,7 +174,7 @@ IPAddress WiFiSTAClass::localIP()
     }
     NW_IP_S ip_info;
     if(tkl_wifi_get_ip(WF_STATION,&ip_info) != OPRT_OK){
-        tkl_log_output("Netif Get IP Failed!\r\n");
+        PR_ERR("Netif Get IP Failed!\r\n");
     	return IPAddress();
     }
     return IPAddress(ip_info.ip);
@@ -213,7 +214,7 @@ IPAddress WiFiSTAClass::gatewayIP()
     }
     NW_IP_S ip_info;
     if(tkl_wifi_get_ip(WF_STATION,&ip_info) != OPRT_OK){
-        tkl_log_output("Netif Get IP Failed!\r\n");
+        PR_ERR("Netif Get IP Failed!\r\n");
     	return IPAddress();
     }
     return IPAddress(ip_info.gw);
@@ -227,7 +228,7 @@ IPAddress WiFiSTAClass::dnsIP(uint8_t dns_no)
     }
     NW_IP_S ip_info;
     if(tkl_wifi_get_ip(WF_STATION,&ip_info) != OPRT_OK){
-        tkl_log_output("Netif Get IP Failed!\r\n");
+        PR_ERR("Netif Get IP Failed!\r\n");
     	return IPAddress();
     }
     return IPAddress(ip_info.dns);
@@ -241,7 +242,7 @@ IPAddress WiFiSTAClass::broadcastIP()
     }
     NW_IP_S ip_info;
     if(tkl_wifi_get_ip(WF_STATION,&ip_info) != OPRT_OK){
-        tkl_log_output("Netif Get IP Failed!\r\n");
+        PR_ERR("Netif Get IP Failed!\r\n");
     	return IPAddress();
     }
 
@@ -255,7 +256,7 @@ IPAddress WiFiSTAClass::networkID()
     }
     NW_IP_S ip_info;
     if(tkl_wifi_get_ip(WF_STATION,&ip_info) != OPRT_OK){
-        tkl_log_output("Netif Get IP Failed!\r\n");
+        PR_ERR("Netif Get IP Failed!\r\n");
     	return IPAddress();
     }
 
@@ -271,7 +272,7 @@ uint8_t WiFiSTAClass::subnetCIDR()
     }
     NW_IP_S ip_info;
     if(tkl_wifi_get_ip(WF_STATION,&ip_info) != OPRT_OK){
-        tkl_log_output("Netif Get IP Failed!\r\n");
+        PR_ERR("Netif Get IP Failed!\r\n");
     	return IPAddress();
     }
 

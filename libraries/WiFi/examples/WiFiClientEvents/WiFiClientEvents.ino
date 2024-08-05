@@ -1,7 +1,7 @@
 #include <WiFi.h>
 
-const char* ssid     = "*******";
-const char* password = "*******";
+const char* ssid     = "********";
+const char* password = "********";
 
 
 void WiFiEvent(WiFiEvent_t event)

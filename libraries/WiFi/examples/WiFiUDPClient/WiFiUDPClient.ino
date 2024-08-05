@@ -2,14 +2,10 @@
 #include <WiFiUdp.h>
 
 // WiFi network name and password:
-const char * networkName = "******";
-const char * networkPswd = "******";
+const char * networkName = "********";
+const char * networkPswd = "********";
 
-//IP address to send UDP data to:
-// either use the ip address of the server or 
-// a network broadcast address
-//const char * udpAddress = "192.168.15.255";
-const int udpPort = 3333;
+const int udpPort = 4556;
 
 #define UDP_TX_MAX_SIZE 1024
 

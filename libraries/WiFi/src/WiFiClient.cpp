@@ -22,7 +22,7 @@
 #include "lwip/sockets.h"
 #include "lwip/netdb.h"
 #include <errno.h>
-#include "tkl_output.h"
+#include "tal_log.h"
 #include "tal_network.h"
 
 #define WIFI_CLIENT_DEF_CONN_TIMEOUT_MS  (3000)
@@ -94,11 +94,11 @@ int WiFiClient::connect(IPAddress ip, uint16_t port)
 
 int WiFiClient::connect(IPAddress ip, uint16_t port, int32_t timeout_ms)
 {
-    tkl_log_output("connect: %s,port:%d\r\n", ip.toString().c_str(),port);
+    PR_INFO("connect: %s,port:%d\r\n", ip.toString().c_str(),port);
     _timeout = timeout_ms;
     int sockfd = tal_net_socket_create(PROTOCOL_TCP);
     if (sockfd < 0) {
-        tkl_log_output("socket: %d\r\n", errno);
+        PR_ERR("socket: %d\r\n", errno);
         return 0;
     }
     tal_net_set_block(sockfd,0);
@@ -117,18 +117,18 @@ int WiFiClient::connect(IPAddress ip, uint16_t port, int32_t timeout_ms)
     int res = tal_net_connect(sockfd,serverIP,port);
 
     if (res < 0 && errno != EINPROGRESS) {
-        tkl_log_output("connect on fd %d, errno: %d, \"%s\"", sockfd, errno, strerror(errno));
+        PR_ERR("connect on fd %d, errno: %d, \"%s\"", sockfd, errno, strerror(errno));
         tal_net_close(sockfd);
         return 0;
     }
 
     res = tal_net_select(sockfd + 1, nullptr, &fdset, nullptr, _timeout<0 ? 50 :_timeout);
     if (res < 0) {
-        tkl_log_output("select on fd %d, errno: %d, \"%s\"", sockfd, errno, strerror(errno));
+        PR_ERR("select on fd %d, errno: %d, \"%s\"", sockfd, errno, strerror(errno));
         tal_net_close(sockfd);
         return 0;
     } else if (res == 0) {
-        tkl_log_output("select returned due to timeout %d ms for fd %d", _timeout, sockfd);
+        PR_ERR("select returned due to timeout %d ms for fd %d", _timeout, sockfd);
         tal_net_close(sockfd);
         return 0;
     } else {
@@ -136,13 +136,13 @@ int WiFiClient::connect(IPAddress ip, uint16_t port, int32_t timeout_ms)
         int  len = (int)sizeof(int);
         res = tal_net_getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &sockerr, &len);
         if (res < 0) {
-            tkl_log_output("getsockopt on fd %d, errno: %d, \"%s\"", sockfd, errno, strerror(errno));
+            PR_ERR("getsockopt on fd %d, errno: %d, \"%s\"", sockfd, errno, strerror(errno));
             tal_net_close(sockfd);
             return 0;
         }
 
         if (sockerr != 0) {
-            tkl_log_output("socket error on fd %d, errno: %d, \"%s\"", sockfd, sockerr, strerror(sockerr));
+            PR_ERR("socket error on fd %d, errno: %d, \"%s\"", sockfd, sockerr, strerror(sockerr));
             tal_net_close(sockfd);
             return 0;
         }
@@ -186,7 +186,7 @@ int WiFiClient::setSocketOption(int level, int option, const void* value, size_t
 {
     int res = tal_net_setsockopt(fd(), level, option, value, len);
     if(res < 0) {
-        tkl_log_output("fail on %d, errno: %d, \"%s\"", fd(), errno, strerror(errno));
+        PR_ERR("fail on %d, errno: %d, \"%s\"", fd(), errno, strerror(errno));
     }
     return res;
 }
@@ -219,7 +219,7 @@ int WiFiClient::getOption(int option, int *value)
     int size = sizeof(int);
     int res = tal_net_getsockopt(fd(), IPPROTO_TCP, option, (char *)value, &size);
     if(res < 0) {
-        tkl_log_output("getOption fail on fd %d, errno: %d, \"%s\"", fd(), errno, strerror(errno));
+        PR_ERR("getOption fail on fd %d, errno: %d, \"%s\"", fd(), errno, strerror(errno));
     }
     return res;
 }
@@ -288,7 +288,7 @@ size_t WiFiClient::write(const uint8_t *buf, size_t size)
                 }
             }
             else if(res < 0) {
-                tkl_log_output("write fail on fd %d, errno: %d, \"%s\"", fd(), errno, strerror(errno));
+                PR_ERR("write fail on fd %d, errno: %d, \"%s\"", fd(), errno, strerror(errno));
                 if(errno != EAGAIN) {
                     //if resource was busy, can try again, otherwise give up
                     stop();
@@ -334,7 +334,7 @@ int WiFiClient::read(uint8_t *buf, size_t size)
     if (nullptr == _rxBuff) {
         _rxBuff = new cbuf(TCP_RX_PACKET_MAX_SIZE);
         if (nullptr == _rxBuff) {
-            tkl_log_output("_rxBuff new fail!\n");
+            PR_ERR("_rxBuff new fail!\n");
             return -1;
         }
     }
@@ -354,7 +354,7 @@ int WiFiClient::read(uint8_t *buf, size_t size)
     if (res > 0 && TAL_FD_ISSET( fd(), &readfds)) {
         tmpBuff = (uint8_t *)malloc(RECV_TMP_BUFF_SIZE);
         if (NULL == tmpBuff) {
-            tkl_log_output("tmpBuff malloc fail!\n");
+            PR_ERR("tmpBuff malloc fail!\n");
             return -1;
         }
         while (1) {
@@ -424,10 +424,10 @@ uint8_t WiFiClient::connected()
               case ECONNREFUSED:
               case ECONNABORTED:
                   _connected = false;
-                  tkl_log_output("Disconnected: RES: %d, ERR: %d", res, errno);
+                  PR_ERR("Disconnected: RES: %d, ERR: %d", res, errno);
                   break;
               default:
-                  tkl_log_output("Unexpected: RES: %d, ERR: %d", res, errno);
+                  PR_ERR("Unexpected: RES: %d, ERR: %d", res, errno);
                   _connected = true;
                   break;
           }

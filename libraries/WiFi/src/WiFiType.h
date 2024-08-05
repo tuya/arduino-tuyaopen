@@ -16,4 +16,4 @@
 #define WiFiEventInfo_t arduino_event_info_t
 #define WiFiEventId_t wifi_event_id_t
 
-#endif /* WIFITYPE_H_ */
+#endif 

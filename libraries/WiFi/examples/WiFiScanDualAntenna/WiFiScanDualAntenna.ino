@@ -7,8 +7,8 @@ void setup()
     Serial.begin(115200);
 
     WiFi.mode(WIFI_STA);
-    //err = WiFi.setDualAntennaConfig(GPIO_ANT1, GPIO_ANT2, WIFI_RX_ANT_AUTO, WIFI_TX_ANT_AUTO);
-
+    err = WiFi.setDualAntennaConfig(GPIO_ANT1, GPIO_ANT2, WIFI_RX_ANT_AUTO, WIFI_TX_ANT_AUTO);
+    
     if(err == false) {
         Serial.println("Dual Antenna configuration failed!");
     } else {

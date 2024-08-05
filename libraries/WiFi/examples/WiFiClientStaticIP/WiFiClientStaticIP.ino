@@ -6,8 +6,8 @@
 
 #include <WiFi.h>
 
-const char* ssid     = "*******";
-const char* password = "*******";
+const char* ssid     = "********";
+const char* password = "********";
 const char* host     = "example.com";
 const char* url      = "/index.html";
 
@@ -38,7 +38,7 @@ void setup()
   Serial.println("WiFi connected!");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-  Serial.print("BK7238 Mac Address: ");
+  Serial.print("Mac Address: ");
   Serial.println(WiFi.macAddress());
   Serial.print("Subnet Mask: ");
   Serial.println(WiFi.subnetMask());

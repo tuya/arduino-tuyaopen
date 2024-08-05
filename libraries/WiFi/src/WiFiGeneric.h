@@ -199,7 +199,8 @@ class WiFiGenericClass
     bool enableAP(bool enable);
 
     bool setSleep(bool enabled);
-    
+    static bool setDualAntennaConfig(uint8_t gpio_ant1, uint8_t gpio_ant2, wifi_rx_ant_t rx_mode, wifi_tx_ant_t tx_mode);
+
     static int _eventCallback(arduino_event_t *event);
     
     static void useStaticBuffers(bool bufferMode);
@@ -226,4 +227,4 @@ class WiFiGenericClass
     friend class WiFiAPClass;
 };
 
-#endif /* WIFIGENERIC_H_ */
+#endif 

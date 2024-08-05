@@ -65,12 +65,12 @@ void setup() {
 
 	adv_data[0] = 0x0A;
 	adv_data[1] = 0x09;
-	memcpy(&adv_data[2], "7238_BLE", 9);
+	memcpy(&adv_data[2], "TEST_BLE", 9);
   pAdvertising->setAdvertisementData((uint8_t*)&adv_data,0xb);
 
 	adv_rsp_data[0] = 0x06;
 	adv_rsp_data[1] = 0x08;
-	memcpy(&adv_rsp_data[2], "7238", 5);
+	memcpy(&adv_rsp_data[2], "TEST", 5);
   pAdvertising->setScanResponseData((uint8_t*)&adv_rsp_data,7);
 
   pAdvertising->start();

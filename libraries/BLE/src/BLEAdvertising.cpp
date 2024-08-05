@@ -38,7 +38,6 @@ void BLEAdvertising::start()
 	advParams.adv_type = TKL_BLE_GAP_ADV_TYPE_CONN_SCANNABLE_UNDIRECTED;
 	advParams.adv_channel_map =  0x01 | 0x02 | 0x04;
 	tkl_ble_gap_adv_start(&advParams);
-	
 } 
 
 void BLEAdvertising::stop() 

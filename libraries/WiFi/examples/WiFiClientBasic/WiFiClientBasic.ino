@@ -4,9 +4,6 @@
  */
 
 #include <WiFi.h>
-#include <WiFiMulti.h>
-
-//WiFiMulti WiFiMulti;
 
 void setup()
 {
@@ -14,8 +11,8 @@ void setup()
     delay(10);
 
     // We start by connecting to a WiFi network
-    //WiFiMulti.addAP("BK-SZ", "sundray123");
-    WiFi.begin("*******","*******");
+
+    WiFi.begin("********","********");
     Serial.println();
     Serial.println();
     Serial.print("Waiting for WiFi... ");
@@ -39,7 +36,7 @@ void loop()
 //    const uint16_t port = 80;
 //    const char * host = "192.168.1.1"; // ip or dns
     const uint16_t port = 1337;
-    const char * host = "192.168.15.86"; // ip or dns
+    const char * host = "192.168.15.37"; // ip or dns
 
     Serial.print("Connecting to ");
     Serial.println(host);

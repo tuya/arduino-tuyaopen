@@ -5,8 +5,8 @@ WiFiMulti wifiMulti;
 
 
 #define MAX_SRV_CLIENTS 1
-const char* ssid = "******";
-const char* password = "******";
+const char* ssid     = "********";
+const char* password = "********";
 
 WiFiServer server;
 WiFiClient serverClients[MAX_SRV_CLIENTS];
@@ -15,9 +15,9 @@ void setup() {
   Serial.begin(115200);
   Serial.println("\nConnecting");
 
-  wifiMulti.addAP(ssid, password);
-//  wifiMulti.addAP("ssid_from_AP_2", "your_password_for_AP_2");
-//  wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
+  wifiMulti.addAP(ssid,password);
+  wifiMulti.addAP("ssid_from_AP_2", "your_password_for_AP_2");
+  wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
 
   Serial.println("Connecting Wifi ");
   for (int loops = 10; loops > 0; loops--) {

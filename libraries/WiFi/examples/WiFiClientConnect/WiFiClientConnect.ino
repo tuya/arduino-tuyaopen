@@ -80,7 +80,6 @@ void setup()
 void loop()
 {
     // Read the button state
-    
     btnState = digitalRead(btnGPIO);
     if (btnState == LOW) {
       // Disconnect from WiFi
