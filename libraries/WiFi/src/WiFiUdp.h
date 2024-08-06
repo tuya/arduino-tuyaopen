@@ -35,7 +35,7 @@
 #ifndef _WIFIUDP_H_
 #define _WIFIUDP_H_
 
-#include "api/udp.h"
+#include "api/Udp.h"
 #include <cbuf.h>
 
 using namespace arduino;
