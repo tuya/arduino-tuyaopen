@@ -88,7 +88,6 @@ void WiFiServer::begin(uint16_t port, int enable){
   _listening = true;
   _noDelay = false;
   _accepted_sockfd = -1;
-  PR_INFO("server begin ok!\n");
 }
 
 void WiFiServer::setNoDelay(bool nodelay) {
