@@ -22,6 +22,9 @@
 #ifndef STREAMSTRING_H_
 #define STREAMSTRING_H_
 
+#include <Arduino.h>
+
+namespace arduino {
 
 class StreamString: public Stream, public String
 {
@@ -33,7 +36,17 @@ public:
     int read() override;
     int peek() override;
     void flush() override;
+
+    inline void clear(void) {
+        setLen(0);
+    }
+private:
+    inline void setLen(int l) {
+       len = l;
+        buffer[l] = 0;
+    }
 };
 
+}
 
 #endif /* STREAMSTRING_H_ */

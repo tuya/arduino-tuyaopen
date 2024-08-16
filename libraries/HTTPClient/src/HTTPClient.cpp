@@ -564,7 +564,7 @@ int HTTPClient::sendRequest(const char * type, uint8_t * payload, size_t size)
         // wipe out any existing headers from previous request
         for(size_t i = 0; i < _headerKeysCount; i++) {
             if (_currentHeaders[i].value.length() > 0) {
-                _currentHeaders[i].value.clear();
+                _currentHeaders[i].value.remove(0, _currentHeaders[i].value.length());
             }
         }
 
