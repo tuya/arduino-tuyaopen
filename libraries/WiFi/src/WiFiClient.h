@@ -3,12 +3,11 @@
 
 #include <Arduino.h>
 #include "api/Client.h"
-#include "cbuf.h"
 #include <memory>
 
 class WiFiClientSocketHandle;
-#define TCP_TX_PACKET_MAX_SIZE 1436
-#define TCP_RX_PACKET_MAX_SIZE 1436
+class WiFiClientRxBuffer;
+
 class LwIPClient : public Client
 {
 public:
@@ -21,9 +20,10 @@ class WiFiClient : public LwIPClient
 {
 protected:
     std::shared_ptr<WiFiClientSocketHandle> clientSocketHandle;
-    bool _connected ;
+    std::shared_ptr<WiFiClientRxBuffer> _rxBuffer;
+    bool _connected;
     int _timeout;
-    cbuf *_rxBuff;
+
 public:
     WiFiClient *next;
     WiFiClient();
