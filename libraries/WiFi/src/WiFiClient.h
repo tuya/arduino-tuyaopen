@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "api/Client.h"
+
 #include <memory>
 
 class WiFiClientSocketHandle;
