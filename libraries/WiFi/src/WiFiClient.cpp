@@ -22,12 +22,14 @@
 #include "lwip/sockets.h"
 #include "lwip/netdb.h"
 #include <errno.h>
-#include "tal_network.h"
+
 #include "tal_log.h"
+#include "tal_network.h"
 
 #define WIFI_CLIENT_DEF_CONN_TIMEOUT_MS  (3000)
 #define WIFI_CLIENT_MAX_WRITE_RETRY      (10)
 #define WIFI_CLIENT_SELECT_TIMEOUT_US    (1000000)
+
 #define WIFI_CLIENT_FLUSH_BUFFER_SIZE    (1024)
 
 #undef connect
@@ -161,6 +163,7 @@ public:
     }
 };
 
+
 class WiFiClientSocketHandle {
 private:
     int sockfd;
@@ -180,6 +183,7 @@ public:
         return sockfd;
     }
 };
+
 
 WiFiClient::WiFiClient():_rxBuffer(nullptr),_connected(false),_timeout(WIFI_CLIENT_DEF_CONN_TIMEOUT_MS),next(NULL)
 {
@@ -216,6 +220,7 @@ int WiFiClient::connect(IPAddress ip, uint16_t port)
 {
     return connect(ip,port,_timeout);
 }
+
 int WiFiClient::connect(IPAddress ip, uint16_t port, int32_t timeout_ms)
 {
     PR_INFO("connect: %s,port:%d\r\n", ip.toString().c_str(),port);
@@ -227,7 +232,7 @@ int WiFiClient::connect(IPAddress ip, uint16_t port, int32_t timeout_ms)
         return 0;
     }
     tal_net_set_block(sockfd,0);
-   
+
     uint32_t tmpIP = static_cast<uint32_t>(ip);
     TUYA_IP_ADDR_T serverIP = (TUYA_IP_ADDR_T)UNI_HTONL(tmpIP);
 
@@ -240,7 +245,9 @@ int WiFiClient::connect(IPAddress ip, uint16_t port, int32_t timeout_ms)
     tv.tv_sec = _timeout / 1000;
     tv.tv_usec = (_timeout  % 1000) * 1000;
 
+
     int res = tal_net_connect(sockfd,serverIP, port);
+
 
     if (res < 0 && errno != EINPROGRESS) {
         PR_ERR("connect on fd %d, errno: %d, \"%s\"", sockfd, errno, strerror(errno));
@@ -259,9 +266,9 @@ int WiFiClient::connect(IPAddress ip, uint16_t port, int32_t timeout_ms)
         return 0;
     } else {
         int sockerr;
+
         int len = (int  )sizeof(int);
         res =  tal_net_getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &sockerr, &len);
-
         if (res < 0) {
             PR_ERR("getsockopt on fd %d, errno: %d, \"%s\"", sockfd, errno, strerror(errno));
             tal_net_close(sockfd);
@@ -275,11 +282,14 @@ int WiFiClient::connect(IPAddress ip, uint16_t port, int32_t timeout_ms)
         }
     }
 
-#define ROE_WIFICLIENT(x,msg) { if (((x)<0)) { PR_ERR("Setsockopt '" msg "'' on fd %d failed. errno: %d, \"%s\"", sockfd, errno, strerror(errno)); return 0; }}
+
+    #define ROE_WIFICLIENT(x,msg) { if (((x)<0)) { printf("Setsockopt '" msg "'' on fd %d failed. errno: %d, \"%s\"", sockfd, errno, strerror(errno)); return 0; }}
+
     ROE_WIFICLIENT(tal_net_setsockopt(sockfd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv)),"SO_SNDTIMEO");
     ROE_WIFICLIENT(tal_net_setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)),"SO_RCVTIMEO");
 
     // These are also set in WiFiClientSecure, should be set here too?
+
     //ROE_WIFICLIENT(tal_net_setsockopt(sockfd, IPPROTO_TCP, TCP_NODELAY, &enable, sizeof(enable)),"TCP_NODELAY"); 
     //ROE_WIFICLIENT (tal_net_setsockopt(sockfd, SOL_SOCKET, SO_KEEPALIVE, &enable, sizeof(enable)),"SO_KEEPALIVE");
 
@@ -344,7 +354,8 @@ int WiFiClient::setOption(int option, int *value)
 
 int WiFiClient::getOption(int option, int *value)
 {
-	int size = sizeof(int);
+
+    int size = sizeof(int);
     int res = tal_net_getsockopt(fd(), IPPROTO_TCP, option, (char *)value, &size);
     if(res < 0) {
         PR_ERR("getOption fail on fd %d, errno: %d, \"%s\"", fd(), errno, strerror(errno));
@@ -410,7 +421,9 @@ size_t WiFiClient::write(const uint8_t *buf, size_t size)
         }
 
         if(TAL_FD_ISSET(socketFileDescriptor, &set)) {
+
             res = send(socketFileDescriptor, (void*) buf, bytesRemaining, MSG_DONTWAIT);
+
             if(res > 0) {
                 totalBytesSent += res;
                 if (totalBytesSent >= size) {
@@ -464,6 +477,7 @@ size_t WiFiClient::write(Stream &stream)
 
 int WiFiClient::read(uint8_t *buf, size_t size)
 {
+
     int res = -1;
     if (_rxBuffer) {
         res = _rxBuffer->read(buf, size);
@@ -500,6 +514,7 @@ int WiFiClient::available()
         stop();
     }
     return res;
+
 }
 
 // Though flushing means to send all pending data,
