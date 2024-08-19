@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include "StreamString.h"
 
 size_t StreamString::write(const uint8_t *data, size_t size) {
