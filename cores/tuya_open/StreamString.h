@@ -33,6 +33,11 @@ public:
     int read() override;
     int peek() override;
     void flush() override;
+private:
+    inline void setLen(int L) {
+       len = L;
+	   buffer[L] = 0;
+    }
 };
 
 
