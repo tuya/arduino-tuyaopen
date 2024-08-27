@@ -1,0 +1,36 @@
+#######################################
+# Syntax Coloring Map For TuyaIoT
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+TuyaIoT	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+write	KEYWORD2
+remove	KEYWORD2
+
+setLicense	KEYWORD2
+setLogLevel	KEYWORD2
+setEventCallback	KEYWORD2
+
+getEventId	KEYWORD2
+getEventDpNum	KEYWORD2
+getEventDpId	KEYWORD2
+readBool	KEYWORD2
+readValue	KEYWORD2
+readEnum	KEYWORD2
+readString	KEYWORD2
+readBitmap	KEYWORD2
+readRaw	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
