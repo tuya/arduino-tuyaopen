@@ -1,0 +1,34 @@
+#######################################
+# Syntax Coloring Map For SPI
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+SPI	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+transfer	KEYWORD2
+transfer16	KEYWORD2
+
+usingInterrupt	KEYWORD2
+notUsingInterrupt	KEYWORD2
+beginTransaction	KEYWORD2
+endTransaction	KEYWORD2
+
+attachInterrupt	KEYWORD2
+detachInterrupt	KEYWORD2
+
+begin	KEYWORD2
+end	KEYWORD2
+
+setCS	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
