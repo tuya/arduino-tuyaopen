@@ -1,3 +1,6 @@
+#
+## T2
+#
 t2.name=T2
 t2.build.board=TUYA_T2
 t2.build.core=tuya_open
@@ -14,6 +17,9 @@ t2.compiler.combine.cmd={compiler.path}arm-none-eabi-gcc
 
 # T2 port path
 t2.compiler.port.path={runtime.platform.path}/port/t2/
+
+# T2 app define (-D)
+t2.appBuild.flags=@{build.path}/tuyaTmp/appConfig/appBuildDefine.txt
 
 # T2 flags files
 t2.compiler.flags.path={compiler.port.path}flags/
@@ -42,13 +48,15 @@ t2.ld_scripts.flags=-Wl,-Map={build.path}/{build.project_name}.map -T{runtime.pl
 t2.compiler.libs.path={compiler.port.path}libs/
 t2.compiler.libs.flags={compiler.flags.path}libs.txt
 
+t2.libs.files = -L{compiler.libs.path} -Wl,--start-group @{compiler.libs.flags} "{archive_file_path}" -Wl,--end-group
+
 # python3 path
 t2.python3.cmd.w={runtime.tools.env-python.path}/python.exe
 t2.python3.cmd.l={runtime.tools.env-python.path}/venv/bin/python3
 
 # prebuild
-t2.prebuild.cmd.w={python3.cmd.w} -u {compiler.port.path}script/prebuild.py --compiler-path {compiler.path} --port-path {runtime.platform.path}/port/t2/ --vendor-path {runtime.tools.vendor-t2.path}/ --platform-path {runtime.platform.path}/
-t2.prebuild.cmd.l=bash {compiler.port.path}script/prebuild.sh {runtime.tools.env-python.path}/venv/ {compiler.port.path}script --compiler-path {compiler.path} --port-path {runtime.platform.path}/port/t2/ --vendor-path {runtime.tools.vendor-t2.path}/ --platform-path {runtime.platform.path}/
+t2.prebuild.cmd.w={python3.cmd.w} -u {compiler.port.path}script/prebuild.py --compiler-path {compiler.path} --port-path {runtime.platform.path}/port/t2/ --vendor-path {runtime.tools.vendor-t2.path}/ --platform-path {runtime.platform.path}/ --build-path {build.path}/ --sketch-path {sketch_path}/ --use-python-venv 1
+t2.prebuild.cmd.l=bash {compiler.port.path}script/prebuild.sh {runtime.tools.env-python.path}/venv/ {compiler.port.path}script --compiler-path {compiler.path} --port-path {runtime.platform.path}/port/t2/ --vendor-path {runtime.tools.vendor-t2.path}/ --platform-path {runtime.platform.path}/ --build-path {build.path}/ --sketch-path {sketch_path}/
 t2.prebuild.cmd.m=echo "TODO"
 
 # extend
@@ -64,3 +72,84 @@ t2.export.binary.cmd.m=echo "TODO"
 # upload tool
 t2.upload.tool=tyutool
 t2.upload.tool.default=tyutool
+
+# monitor
+t2.monitor_port.serial.baudrate=115200
+
+#
+############################################ T3 ############################################
+#
+t3.name=T3
+t3.build.board=TUYA_T3
+t3.build.core=tuya_open
+t3.build.variant=t3
+
+# T3 toolchain
+t3.compiler.path={runtime.tools.gcc-arm-none-eabi.path}/bin/
+t3.compiler.c.cmd={compiler.path}arm-none-eabi-gcc
+t3.compiler.cpp.cmd={compiler.path}arm-none-eabi-g++
+t3.compiler.S.cmd={compiler.path}arm-none-eabi-gcc
+t3.compiler.as.cmd={compiler.path}arm-none-eabi-as
+t3.compiler.ar.cmd={compiler.path}arm-none-eabi-ar
+t3.compiler.combine.cmd={compiler.path}arm-none-eabi-gcc
+
+# T3 port path
+t3.compiler.port.path={runtime.platform.path}/port/t3/
+
+# T3 app define (-D)
+t3.appBuild.flags=@{compiler.port.path}flags/appBuildDefine.txt
+
+# T3 flags files
+t3.compiler.flags.path={compiler.port.path}flags/
+t3.compiler.c.flags={compiler.flags.path}c_flags.txt
+t3.compiler.cpp.flags={compiler.flags.path}cpp_flags.txt
+t3.compiler.S.flags={compiler.flags.path}S_flags.txt
+t3.compiler.ar.flags={compiler.flags.path}ar_flags.txt
+t3.compiler.combine.flags={compiler.flags.path}combine_flags.txt
+
+# T3 ld script
+t3.ld_scripts.flags=-Wl,--cref -Wl,-Map={build.path}/{build.project_name}.map -T{compiler.port.path}bk7236_out.ld -o "{build.path}/{build.project_name}.elf"
+
+# T3 port(tkl) include files
+t3.compiler.port_includes.prefix={runtime.tools.vendor-t3.path}/tuyaos_adapter/
+t3.compiler.port_includes.flags={compiler.flags.path}port_includes.txt
+
+# T3 vendor include files
+t3.compiler.vendor_includes.prefix={runtime.tools.vendor-t3.path}/t3_os/
+t3.compiler.vendor_includes.flags={compiler.flags.path}vendor_includes.txt
+
+# Tuya open sdk include files
+t3.compiler.open_sdk_includes.prefix={runtime.tools.vendor-t3.path}/tuya_open_sdk/
+t3.compiler.open_sdk_includes.flags={compiler.port.path}open_sdk_includes.txt
+
+# T3 libs
+t3.compiler.libs.path={compiler.port.path}libs/armino
+t3.compiler.libs.flags={compiler.flags.path}libs.txt
+
+t3.libs.files = -L{compiler.libs.path} -Wl,--start-group @{compiler.libs.flags} "{archive_file_path}" {compiler.port.path}libs/libbluetooth_controller_controller_only.a {compiler.port.path}libs/libbk_phy.a {compiler.port.path}libs/libwifi.a {compiler.port.path}libs/libble_wifi_exchange.a {compiler.port.path}libs/libusb.a -lm -lgcc -lc -lnosys -ltuyaos -Wl,--end-group
+
+# python3 path
+t3.python3.cmd.w={runtime.tools.env-python.path}/python.exe
+t3.python3.cmd.l={runtime.tools.env-python.path}/venv/bin/python3
+
+# prebuild
+t3.prebuild.cmd.w={python3.cmd.w} -u {compiler.port.path}script/prebuild.py --compiler-path {compiler.path} --port-path {runtime.platform.path}/port/t3/ --vendor-path {runtime.tools.vendor-t3.path}/ --platform-path {runtime.platform.path}/ --build-path {build.path}/ --sketch-path {sketch_path}/ --use-python-venv 1
+t3.prebuild.cmd.l=bash {compiler.port.path}script/prebuild.sh {runtime.tools.env-python.path}/venv/ {compiler.port.path}script --compiler-path {compiler.path} --port-path {runtime.platform.path}/port/t3/ --vendor-path {runtime.tools.vendor-t3.path}/ --platform-path {runtime.platform.path}/ --build-path {build.path}/ --sketch-path {sketch_path}/
+t3.prebuild.cmd.m=echo "TODO"
+
+# extend
+t3.compiler.extend.cmd.w={python3.cmd.w} {compiler.port.path}script/extend.py --compiler-path "{compiler.path}" --port-path {runtime.platform.path}/port/t3/ --output-path "{build.path}" --output-name "{build.project_name}"
+t3.compiler.extend.cmd.l={python3.cmd.l} {compiler.port.path}script/extend.py --compiler-path "{compiler.path}" --port-path {runtime.platform.path}/port/t3/ --output-path "{build.path}" --output-name "{build.project_name}"
+t3.compiler.extend.cmd.m=echo "TODO"
+
+# export compiled binary
+t3.export.binary.cmd.w=echo "TODO"
+t3.export.binary.cmd.l=echo "TODO"
+t3.export.binary.cmd.m=echo "TODO"
+
+# upload tool
+t3.upload.tool=tyutool
+t3.upload.tool.default=tyutool
+
+# monitor
+t3.monitor_port.serial.baudrate=115200

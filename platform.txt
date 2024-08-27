@@ -11,19 +11,19 @@ recipe.hooks.prebuild.1.pattern.linux={prebuild.cmd.l}
 recipe.hooks.prebuild.1.pattern.macosx={prebuild.cmd.m}
 
 ## Compile c files
-recipe.c.o.pattern="{compiler.c.cmd}" @{compiler.c.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" -iprefix "{compiler.vendor_includes.prefix}" "@{compiler.vendor_includes.flags}" {includes} {source_file} -o {object_file}
+recipe.c.o.pattern="{compiler.c.cmd}" @{compiler.c.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" -iprefix "{compiler.vendor_includes.prefix}" "@{compiler.vendor_includes.flags}" {includes} {source_file} -o {object_file}
 
 ## Compile cpp files
-recipe.cpp.o.pattern="{compiler.cpp.cmd}" @{compiler.cpp.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" -iprefix "{compiler.vendor_includes.prefix}" "@{compiler.vendor_includes.flags}" {includes} {source_file} -o {object_file}
+recipe.cpp.o.pattern="{compiler.cpp.cmd}" @{compiler.cpp.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" -iprefix "{compiler.vendor_includes.prefix}" "@{compiler.vendor_includes.flags}" {includes} {source_file} -o {object_file}
 
 ## Compile S files
-recipe.S.o.pattern="{compiler.S.cmd}" @{compiler.S.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" -iprefix "{compiler.vendor_includes.prefix}" "@{compiler.vendor_includes.flags}" {includes} {source_file} -o {object_file}
+recipe.S.o.pattern="{compiler.S.cmd}" @{compiler.S.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" -iprefix "{compiler.vendor_includes.prefix}" "@{compiler.vendor_includes.flags}" {includes} {source_file} -o {object_file}
 
 ## ar
 recipe.ar.pattern="{compiler.ar.cmd}" @{compiler.ar.flags} "{archive_file_path}" "{object_file}"
 
 ## combine
-recipe.c.combine.pattern="{compiler.combine.cmd}" "@{compiler.combine.flags}" {object_files} -L{compiler.libs.path} -Wl,--start-group @{compiler.libs.flags} "{archive_file_path}" -Wl,--end-group {ld_scripts.flags}
+recipe.c.combine.pattern="{compiler.combine.cmd}" "@{compiler.combine.flags}" {object_files} {libs.files} {ld_scripts.flags}
 
 ## pack
 recipe.hooks.linking.postlink.1.pattern.windows={compiler.extend.cmd.w}
@@ -32,7 +32,7 @@ recipe.hooks.linking.postlink.1.pattern.mac={compiler.extend.cmd.m}
 
 ## upload
 tools.tyutool.upload.protocol=serial
-tools.tyutool.upload.pattern={runtime.tools.tyutool.path}/tyutool_cli write -d t2 -p {upload.port.address} -b 921600 -s 0x000000 -f {build.path}/output/{build.project_name}_QIO.bin --tqdm
+tools.tyutool.upload.pattern={runtime.tools.tyutool.path}/tyutool_cli write -d t2 -p {upload.port.address} -b 921600 -s 0x000000 -f {build.path}/{build.project_name}_QIO.bin --tqdm
 
 ## export compiled binary
 recipe.hooks.savehex.postsavehex.1.pattern.windows={export.binary.cmd.w}
