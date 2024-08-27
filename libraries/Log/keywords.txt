@@ -1,0 +1,55 @@
+#######################################
+# Syntax Coloring Map For Log
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Log	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+setLevel	KEYWORD2
+enableMsInfo	KEYWORD2
+enableColor	KEYWORD2
+setColor	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+ERROR	LITERAL1
+WARN	LITERAL1
+NOTICE	LITERAL1
+INFO	LITERAL1
+DEBUG	LITERAL1
+TRACE	LITERAL1
+
+MODE_DEFAULT	LITERAL1
+MODE_HIGH_LIGHT	LITERAL1
+MODE_UNDER_LINE	LITERAL1
+MODE_FLASH	LITERAL1
+MODE_REVERSE	LITERAL1
+
+FONT_BLACK	LITERAL1
+FONT_RED	LITERAL1
+FONT_GREEN	LITERAL1
+FONT_YELLOW	LITERAL1
+FONT_BLUE	LITERAL1
+FONT_PURPLE	LITERAL1
+FONT_CYAN	LITERAL1
+FONT_WHITE	LITERAL1
+FONT_DEFAULT	LITERAL1
+
+BG_BLACK	LITERAL1
+BG_RED	LITERAL1
+BG_GREEN	LITERAL1
+BG_YELLOW	LITERAL1
+BG_BLUE	LITERAL1
+BG_PURPLE	LITERAL1
+BG_CYAN	LITERAL1
+BG_WHITE	LITERAL1
+BG_DEFAULT	LITERAL1
