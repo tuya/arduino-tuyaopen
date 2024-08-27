@@ -185,12 +185,21 @@ void SerialUART::flush(void)
 
 size_t SerialUART::write(uint8_t c)
 {
+  if (__serialPtr[__uartID] == nullptr) {
+    return 0;
+  }
+
   return tkl_uart_write(static_cast<TUYA_UART_NUM_E>(__uartID), &c, 1);
 }
 
 size_t SerialUART::write(const uint8_t* c, size_t len)
 {
   uint8_t *p = const_cast<uint8_t*>(c);
+
+  if (__serialPtr[__uartID] == nullptr) {
+    return 0;
+  }
+
   return tkl_uart_write(static_cast<TUYA_UART_NUM_E>(__uartID), p, len);
 }
 

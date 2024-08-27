@@ -1,0 +1,8 @@
+-c
+-g
+-mcpu=cortex-m33+nodsp
+-mfpu=fpv5-sp-d16
+-mfloat-abi=hard
+-mcmse
+-x
+assembler-with-cpp
