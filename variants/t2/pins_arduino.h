@@ -27,6 +27,9 @@ extern "C" {
 #define p26 (26u)
 #define p28 (28u)
 
+#define LED_BUILTIN     p26
+#define BUTTON_BUILTIN  p7
+
 static const uint8_t A0 = (23u);
 static const uint8_t A1 = (22u);
 static const uint8_t A2 = (24u);
@@ -52,6 +55,14 @@ TUYA_ADC_BASE_CFG_T adcCfgGet(uint8_t pin);
 // pwm
 TUYA_PWM_NUM_E pwmPinToNum(uint8_t pin);
 TUYA_PWM_BASE_CFG_T pwmCfgGet(uint8_t pin);
+
+// SPI
+#define SPI_DEFAULT_CLOCK  (8000000u)
+
+#define PIN_SPI0_MISO       (p17)
+#define PIN_SPI0_MOSI       (p16)
+#define PIN_SPI0_SCK        (p14)
+#define PIN_SPI0_CS         (p15)
 
 #if defined(__cplusplus) && !defined(c_plusplus)
 }

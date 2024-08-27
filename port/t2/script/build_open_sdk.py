@@ -1,9 +1,18 @@
 import os
 import argparse
 import sys
+import logging
 from SCons.Script import *
 
-outputLibName = 'libtuyaos.a'
+#
+## log config
+#
+FORMAT = '[%(levelname)s][%(asctime)s][%(filename)s]%(message)s'
+logging.basicConfig(
+    level=logging.INFO,
+    format=FORMAT,
+    datefmt='%H:%M:%S'
+)
 
 def checkPath(path):
     """
@@ -16,7 +25,7 @@ def checkPath(path):
         bool: True if the path exists, False otherwise.
     """
     if not os.path.exists(path):
-        print("Path not exist: " + path)
+        logging.error("Path not exist: " + path)
         return False
     else:
         return True
@@ -33,12 +42,13 @@ parser.add_argument('--open-sdk-path', type=str, required=True, help='Specify th
 parser.add_argument('--tkl-path', type=str, required=True, help='Specify the tkl path')
 parser.add_argument('--object-output-dir', type=str, required=True, help='Specify the object output directory')
 parser.add_argument('--lib-output-dir', type=str, required=True, help='Specify the library output directory')
+parser.add_argument('--lib-output-name', type=str, required=True, help='Specify the library output name')
 
 # 使用SCons自定义参数
 if 'CUSTOM_ARGS' in ARGUMENTS:
     args = parser.parse_args(ARGUMENTS['CUSTOM_ARGS'].split())
 else:
-    print("Error: CUSTOM_ARGS is missing.")
+    logging.error("Error: CUSTOM_ARGS is missing.")
     sys.exit(1)
 
 compilerPath = os.path.join(args.compiler_path, '')
@@ -48,23 +58,24 @@ openSdkPath = os.path.join(args.open_sdk_path, '')
 tklPath = os.path.join(args.tkl_path, '')
 
 objectOutputDir=args.object_output_dir
-# libOutputDir=args.lib_output_dir
 libOutputDir=objectOutputDir
 openSdkIncludeFlags = os.path.join(flagsPath, "open_sdk_includes.txt")
 vendorIncludeFlags = os.path.join(flagsPath, "vendor_includes.txt")
 tklIncludeFlags = os.path.join(flagsPath, "port_includes.txt")
+outputLibName = args.lib_output_name
 
 # 打印输入参数
-print("compiler path: ", compilerPath)
-print("vendor path: ", vendorPath)
-print("flags path: ", flagsPath)
-print("open-sdk path: ", openSdkPath)
-print("open-sdk port path: ", tklPath)
-print("object output directory: ", objectOutputDir)
-print("library output directory: ", libOutputDir)
-print("openSdkIncludeFlags: ", openSdkIncludeFlags)
-print("vendorIncludeFlags: ", vendorIncludeFlags)
-print("tklIncludeFlags: ", tklIncludeFlags)
+logging.debug("compiler path: " + compilerPath)
+logging.debug("vendor path: " + vendorPath)
+logging.debug("flags path: " + flagsPath)
+logging.debug("open-sdk path: " + openSdkPath)
+logging.debug("open-sdk port path: " + tklPath)
+logging.debug("object output directory: " + objectOutputDir)
+logging.debug("library output directory: " + libOutputDir)
+logging.debug("openSdkIncludeFlags: " + openSdkIncludeFlags)
+logging.debug("vendorIncludeFlags: " + vendorIncludeFlags)
+logging.debug("tklIncludeFlags: " + tklIncludeFlags)
+logging.debug("outputLibName: " + outputLibName)
 
 # 路径和文件是否存在判断
 if checkPath(compilerPath) == False:
@@ -96,9 +107,9 @@ cross_compiler = "arm-none-eabi-"
 def print_cmd_line(s, target, src, env):
     nameStr = os.path.basename(str(target[0]))
     if outputLibName in s :
-        print("AR {}...".format(nameStr))
+        logging.info("AR {}...".format(nameStr))
     else :
-        print("CC {}...".format(nameStr))
+        logging.info("CC {}...".format(nameStr))
 
 # 
 VariantDir(objectOutputDir, openSdkPath, duplicate=0)
@@ -120,8 +131,8 @@ for (tool, name) in [
     elif sys.platform.startswith('linux'):
         env[tool] = os.path.join(compilerPath, cross_compiler + name)
     else:
-        print("Error: Unsupported platform.")
-        Exit(1)
+        logging.error("Error: Unsupported platform.")
+        sys.exit(1)
 
 env['AS'] = env['CC']  # 使用C编译器作为汇编器
 
@@ -151,7 +162,6 @@ includesList = [
     os.path.join(openSdkPath, 'src', 'tal_bluetooth', 'nimble', 'host'),
     os.path.join(openSdkPath, 'src', 'tal_kv', 'port'),
 ]
-print("includesList: ", includesList)
 envOpenSDK.Append(CPPPATH=includesList)
 
 allSource = []
