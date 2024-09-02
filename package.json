@@ -137,6 +137,57 @@
               "version": "0.0.2"
             }
           ]
+        },
+        {
+          "name": "Tuya Open",
+          "architecture": "tuya_open",
+          "version": "0.0.4",
+          "category": "Contributed",
+          "help": {
+            "online": ""
+          },
+          "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.4/arduino_tuya_open-0.0.4.zip",
+          "archiveFileName": "arduino_tuya_open-0.0.4.zip",
+          "size": "33738435",
+          "checksum": "SHA-256:a1376a7d4509b0b74fb8458fd939002c9c817538539fada0d51c3d20e8c17bdf",
+          "help": {
+            "online": ""
+          },
+          "boards": [
+            {
+              "name": "t2"
+            },
+            {
+              "name": "t3"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "tuya_open",
+              "name": "gcc-arm-none-eabi",
+              "version": "10.3"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "vendor-t2",
+              "version": "0.0.3"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "vendor-t3",
+              "version": "0.0.1"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "env-python",
+              "version": "3.12.4"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "tyutool",
+              "version": "0.0.2"
+            }
+          ]
         }
       ],
       "tools": [
@@ -187,16 +238,56 @@
             {
               "host": "x86_64-linux-gnu",
               "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.3/vendor-t2-0.0.2.zip",
-              "archiveFileName": "vendor-t2.zip",
+              "archiveFileName": "vendor-t2-0.0.2.zip",
               "size": "25627526",
               "checksum": "SHA-256:244853cf1c6878354ffe658020bedfcdcb3431fab081a598de1eff9fd4f4d520"
             },
             {
               "host": "x86_64-cygwin",
               "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.3/vendor-t2-0.0.2.zip",
-              "archiveFileName": "vendor-t2.zip",
+              "archiveFileName": "vendor-t2-0.0.2.zip",
               "size": "25627526",
               "checksum": "SHA-256:244853cf1c6878354ffe658020bedfcdcb3431fab081a598de1eff9fd4f4d520"
+            }
+          ]
+        },
+		{
+          "name": "vendor-t2",
+          "version": "0.0.3",
+          "systems": [
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.4/vendor-t2-0.0.3.zip",
+              "archiveFileName": "vendor-t2-0.0.3.zip",
+              "size": "16069994",
+              "checksum": "SHA-256:3790acee622e3fd1987969f36165f269fe1a751e9a01e17ddda828b4c3bd8e4b"
+            },
+            {
+              "host": "x86_64-cygwin",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.4/vendor-t2-0.0.3.zip",
+              "archiveFileName": "vendor-t2-0.0.3.zip",
+              "size": "16069994",
+              "checksum": "SHA-256:3790acee622e3fd1987969f36165f269fe1a751e9a01e17ddda828b4c3bd8e4b"
+            }
+          ]
+        },
+        {
+          "name": "vendor-t3",
+          "version": "0.0.1",
+          "systems": [
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.4/vendor-t3-0.0.1.zip",
+              "archiveFileName": "vendor-t3-0.0.1.zip",
+              "size": "95098821",
+              "checksum": "SHA-256:294f1f366e3faec758dd9ee6de5152b1720a79936c708af2f84f1a0e5004151a"
+            },
+            {
+              "host": "x86_64-cygwin",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/0.0.4/vendor-t3-0.0.1.zip",
+              "archiveFileName": "vendor-t3-0.0.1.zip",
+              "size": "95098821",
+              "checksum": "SHA-256:294f1f366e3faec758dd9ee6de5152b1720a79936c708af2f84f1a0e5004151a"
             }
           ]
         },
