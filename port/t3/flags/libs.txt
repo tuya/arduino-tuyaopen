@@ -116,3 +116,4 @@
 -lbk_cli
 -lbk_event
 -lbk_common
+-lmftest
