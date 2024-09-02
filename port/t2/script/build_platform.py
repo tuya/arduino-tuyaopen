@@ -265,6 +265,7 @@ vendorSources = [
     os.path.join('func', 'libc', 'stdlib', 'lib_qsort.c'),
     os.path.join('func', 'joint_up', 'role_launch.c'),
     os.path.join('func', 'misc', 'fake_clock.c'),
+    os.path.join('func', 'misc', 'flash_bypass.c'),
     os.path.join('func', 'misc', 'start_type.c'),
     os.path.join('func', 'misc', 'target_util.c'),
     os.path.join('func', 'misc', 'soft_encrypt.c'),
