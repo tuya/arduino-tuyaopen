@@ -57,10 +57,19 @@ appVersion = appVersionParse(appConfigTmpFile)
 binFilePath = os.path.join(outputPath, 'tuyaTmp', 'output', appVersion)
 
 # delete binFilePath
-if os.path.exists(binFilePath):
-    shutil.rmtree(binFilePath)
+def deleteDirectoryContents(directory_path):
+    for item in os.listdir(directory_path):
+        item_path = os.path.join(directory_path, item)
+        if os.path.isfile(item_path):
+            os.remove(item_path)
+        elif os.path.isdir(item_path):
+            shutil.rmtree(item_path)
 
-os.makedirs(binFilePath)
+if os.path.exists(binFilePath):
+    deleteDirectoryContents(binFilePath)
+else:
+    os.makedirs(binFilePath)
+
 # change to binFilePath
 os.chdir(binFilePath)
 
