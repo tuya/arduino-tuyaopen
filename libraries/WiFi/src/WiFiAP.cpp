@@ -45,9 +45,12 @@ bool WiFiAPClass::softAP(const char* ssid, const char* passphrase, int channel, 
     ap_cfg_info.p_len = strlen(passphrase);
     strcpy((char *)ap_cfg_info.passwd,passphrase);
 
-    strcpy((char *)ap_cfg_info.ip.ip, WLAN_DEFAULT_IP);
-    strcpy((char *)ap_cfg_info.ip.gw, WLAN_DEFAULT_GW);
-    strcpy((char *)ap_cfg_info.ip.mask, WLAN_DEFAULT_MASK);
+    if(!ap_cfg_info.ip.ip[0])
+    {
+        strcpy((char *)ap_cfg_info.ip.ip, WLAN_DEFAULT_IP);
+        strcpy((char *)ap_cfg_info.ip.gw, WLAN_DEFAULT_GW);
+        strcpy((char *)ap_cfg_info.ip.mask, WLAN_DEFAULT_MASK);
+    }
     
     int ret = tkl_wifi_start_ap(&ap_cfg_info);
     return (ret == OPRT_OK) ? true : false;
