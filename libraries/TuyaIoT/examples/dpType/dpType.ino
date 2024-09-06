@@ -13,6 +13,10 @@ OneButton button(buttonPin);
 #define DPID_STRING 102
 #define DPID_RAW    103
 
+// Tuya license
+#define TUYA_DEVICE_UUID    "uuidxxxxxxxxxxxxxxxx"
+#define TUYA_DEVICE_AUTHKEY "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
@@ -22,7 +26,18 @@ void setup() {
   button.attachLongPressStart(buttonLongPressStart);
 
   TuyaIoT.setEventCallback(tuyaIoTEventCallback);
-  TuyaIoT.setLicense("uuidxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
+  // license
+  tuya_iot_license_t license;
+  int rt = TuyaIoT.readBoardLicense(&license);
+  if (OPRT_OK != rt) {
+    license.uuid = TUYA_DEVICE_UUID;
+    license.authkey = TUYA_DEVICE_AUTHKEY;
+    Serial.println("Replace the TUYA_DEVICE_UUID and TUYA_DEVICE_AUTHKEY contents, otherwise the demo cannot work");
+  }
+  Serial.print("uuid: "); Serial.println(license.uuid);
+  Serial.print("authkey: "); Serial.println(license.authkey);
+  TuyaIoT.setLicense(license.uuid, license.authkey);
 
   // The "PROJECT_VERSION" comes from the "PROJECT_VERSION" field in "appConfig.json"
   TuyaIoT.begin("2avicuxv6zgeiquf", PROJECT_VERSION);

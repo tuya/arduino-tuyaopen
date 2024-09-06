@@ -41,8 +41,6 @@ void pinMode(pin_size_t pinNumber, PinMode pinMode)
 
 void digitalWrite(pin_size_t pinNumber, PinStatus status)
 {
-    TUYA_GPIO_BASE_CFG_T gpioCfg;
-
     TUYA_GPIO_NUM_E tuyaPin = (TUYA_GPIO_NUM_E)pinNumber;
     TUYA_GPIO_LEVEL_E tuyaLevel = (status == HIGH) ? (TUYA_GPIO_LEVEL_HIGH) : (TUYA_GPIO_LEVEL_LOW);
 
