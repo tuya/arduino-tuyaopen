@@ -269,8 +269,12 @@ uint8_t TuyaIoTCloudClass::eventGetDpId(tuya_event_msg_t* event, uint16_t index)
 
 int TuyaIoTCloudClass::remove(void)
 {
-  tuya_iot_reset(&ArduinoIoTClient);
-  return OPRT_OK;
+  return tuya_iot_reset(&ArduinoIoTClient);
+}
+
+int TuyaIoTCloudClass::readBoardLicense(tuya_iot_license_t* license)
+{
+  return tuya_iot_license_read(license);
 }
 
 /******************************************************************************

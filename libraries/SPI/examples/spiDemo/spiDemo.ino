@@ -1,8 +1,8 @@
 // SPI Pin      T2
-//   SCK -----> p14
-//  MOSI -----> p16
-//  MISO -----> p17
-//   CS  -----> p15
+//   SCK -----> 14
+//  MOSI -----> 16
+//  MISO -----> 17
+//   CS  -----> 15
 
 #include "SPI.h"
 
