@@ -239,6 +239,57 @@
               "version": "0.0.2"
             }
           ]
+        },
+        {
+          "name": "Tuya Open",
+          "architecture": "tuya_open",
+          "version": "1.0.1",
+          "category": "Contributed",
+          "help": {
+            "online": ""
+          },
+          "url": "https://images.tuyacn.com/rms-static/f5238950-71b9-11ef-b0cc-e3c2773225b9-1726222896741.zip?tyName=arduino_tuya_open-1.0.1.zip",
+          "archiveFileName": "arduino_tuya_open-1.0.1.zip",
+          "size": "34039899",
+          "checksum": "SHA-256:b976df492386138a70ce688dd064130282ddce5c71e9a5b27507a541f666a982",
+          "help": {
+            "online": ""
+          },
+          "boards": [
+            {
+              "name": "t2"
+            },
+            {
+              "name": "t3"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "tuya_open",
+              "name": "gcc-arm-none-eabi",
+              "version": "10.3"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "vendor-t2",
+              "version": "1.0.0"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "vendor-t3",
+              "version": "0.0.1"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "env-python",
+              "version": "3.12.4"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "tyutool",
+              "version": "0.0.2"
+            }
+          ]
         }
       ],
       "tools": [
@@ -319,6 +370,26 @@
               "archiveFileName": "vendor-t2-0.0.3.zip",
               "size": "16069994",
               "checksum": "SHA-256:3790acee622e3fd1987969f36165f269fe1a751e9a01e17ddda828b4c3bd8e4b"
+            }
+          ]
+        },
+        {
+          "name": "vendor-t2",
+          "version": "1.0.0",
+          "systems": [
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "https://images.tuyacn.com/rms-static/05840a90-71ba-11ef-bbfb-4f17c9c7ca49-1726222924217.zip?tyName=vendor-t2-1.0.0.zip",
+              "archiveFileName": "vendor-t2-1.0.0.zip",
+              "size": "37671726",
+              "checksum": "SHA-256:ee4d514007e4e218e061beaab472acd65165fac7fe17b2d9747b81b25850b997"
+            },
+            {
+              "host": "x86_64-cygwin",
+              "url": "https://images.tuyacn.com/rms-static/05840a90-71ba-11ef-bbfb-4f17c9c7ca49-1726222924217.zip?tyName=vendor-t2-1.0.0.zip",
+              "archiveFileName": "vendor-t2-1.0.0.zip",
+              "size": "37671726",
+              "checksum": "SHA-256:ee4d514007e4e218e061beaab472acd65165fac7fe17b2d9747b81b25850b997"
             }
           ]
         },
@@ -406,4 +477,3 @@
     }
   ]
 }
-
