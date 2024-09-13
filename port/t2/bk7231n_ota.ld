@@ -31,9 +31,9 @@
 MEMORY
 {
         flash  (rx) : ORIGIN = 0x00010000, LENGTH = 2M - 64k
-        tcm   (rw!x): ORIGIN = 0x003F0000, LENGTH = 55k
-        dtcm   (rw!x): ORIGIN = 0x003FDC00, LENGTH = 5k - 512
-        itcm   (rwx): ORIGIN = 0X003FEE00, LENGTH = 4608
+        tcm   (rw!x): ORIGIN = 0x003F0000, LENGTH = 56k
+        dtcm   (rw!x): ORIGIN = 0x003FE000, LENGTH = 2k
+        itcm   (rwx): ORIGIN = 0X003FE800, LENGTH = 6144
         ram   (rw!x): ORIGIN = 0x00400100, LENGTH = 192k - 0x100
 }
 
@@ -98,6 +98,8 @@ SECTIONS
         *(.text.portDISABLE_IRQ)
         *(.text.vPortEnterCritical)
         *(.text.vPortExitCritical)
+        *(.text.flash_bypass_op_write)
+        *(.text.flash_bypass_op_read)
     } > itcm AT>flash
     _itcmcode_flash_begin = LOADADDR(.itcm.code);
     _itcmcode_ram_begin = ADDR(.itcm.code);
