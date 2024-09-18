@@ -290,6 +290,57 @@
               "version": "0.0.2"
             }
           ]
+        },
+        {
+          "name": "Tuya Open",
+          "architecture": "tuya_open",
+          "version": "1.0.2",
+          "category": "Contributed",
+          "help": {
+            "online": ""
+          },
+          "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/1.0.2/arduino_tuya_open-1.0.2.zip",
+          "archiveFileName": "arduino_tuya_open-1.0.2.zip",
+          "size": "34041854",
+          "checksum": "SHA-256:97eecbe3e20454c88e7a33a4ed012a527eb9270c230a9470ddd7c2af613210d3",
+          "help": {
+            "online": ""
+          },
+          "boards": [
+            {
+              "name": "t2"
+            },
+            {
+              "name": "t3"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "tuya_open",
+              "name": "gcc-arm-none-eabi",
+              "version": "10.3"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "vendor-t2",
+              "version": "1.0.0"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "vendor-t3",
+              "version": "0.0.1"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "env-python",
+              "version": "3.12.4"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "tyutool",
+              "version": "0.0.2"
+            }
+          ]
         }
       ],
       "tools": [
