@@ -76,6 +76,9 @@ shutil.rmtree(os.path.join(copy_folder, 'ArduinoCore-API', 'test'))
 shutil.rmtree(os.path.join(copy_folder, 'script'))
 ## package.json
 os.remove(os.path.join(copy_folder, 'package.json'))
+os.remove(os.path.join(copy_folder, 'package_cn.json'))
+## CMakeLists.txt
+os.remove(os.path.join(copy_folder, 'CMakeLists.txt'))
 
 # 压缩文件夹
 need_zip_folder = os.path.join(output_path, 'tuya_open')
