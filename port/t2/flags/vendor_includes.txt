@@ -51,7 +51,6 @@
 -iwithprefixbefore driver/sys_ctrl
 -iwithprefixbefore driver/gpio
 -iwithprefixbefore driver/general_dma
--iwithprefixbefore driver/spi
 -iwithprefixbefore driver/spidma
 -iwithprefixbefore driver/icu
 -iwithprefixbefore func/include
