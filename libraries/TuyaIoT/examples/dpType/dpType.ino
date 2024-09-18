@@ -1,10 +1,11 @@
-#include "OneButton.h"
-
 #include "TuyaIoT.h"
 #include "Log.h"
 
-#define buttonPin BUTTON_BUILTIN
-OneButton button(buttonPin);
+// button
+#define buttonPin         BUTTON_BUILTIN
+#define buttonPressLevel  LOW
+#define buttonDebounceMs  (50u)
+#define buttonLongPressMs (3*1000u)
 
 #define DPID_SWITCH 20
 #define DPID_MODE   21
@@ -22,8 +23,7 @@ void setup() {
   Serial.begin(115200);
 
   // button
-  button.setPressMs(3*1000);
-  button.attachLongPressStart(buttonLongPressStart);
+  pinMode(buttonPin, INPUT_PULLUP);
 
   TuyaIoT.setEventCallback(tuyaIoTEventCallback);
 
@@ -45,7 +45,9 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  button.tick();
+
+  // button press check
+  buttonCheck();
 
   delay(10);
 }
@@ -55,6 +57,12 @@ void tuyaIoTEventCallback(tuya_event_msg_t *event)
   tuya_event_id_t event_id = TuyaIoT.eventGetId(event);
   
   switch (event_id) {
+    case TUYA_EVENT_BIND_START: {
+      PR_DEBUG("TUYA_EVENT_BIND_START");
+    } break;
+    case TUYA_EVENT_ACTIVATE_SUCCESSED: {
+      PR_DEBUG("TUYA_EVENT_ACTIVATE_SUCCESSED");
+    } break;
     case TUYA_EVENT_TIMESTAMP_SYNC: {
       tal_time_set_posix(event->value.asInteger, 1);
     } break;
@@ -102,8 +110,46 @@ void tuyaIoTEventCallback(tuya_event_msg_t *event)
   }
 }
 
+void buttonCheck(void)
+{
+  static uint32_t buttonPressMs = 0;
+  static uint8_t isPress = 0;
+
+  if (digitalRead(buttonPin) == buttonPressLevel) {
+    if (isPress == 0) {
+      buttonPressMs = millis();
+      isPress = 1;
+    }
+
+    // button debounce
+    if ((1 == isPress) && ((millis() - buttonPressMs) > buttonDebounceMs)) {
+      isPress = 2;
+    }
+
+    // long press check
+    if ((2 == isPress) && ((millis() - buttonPressMs) >= buttonLongPressMs)) {
+      isPress = 3;
+      buttonLongPressStart();
+    }
+  } else {
+    if (isPress == 2) {
+      if ((millis() - buttonPressMs) < buttonLongPressMs) {
+        buttonClick();
+      } else {
+        buttonLongPressStart();
+      }
+    }
+    isPress = 0;
+  }
+}
+
+void buttonClick()
+{
+  Serial.println("Button clicked");
+}
+
 void buttonLongPressStart()
 {
-  Serial.println("Button long press, remove IoT device.");
+  Serial.println("Button long press, remove Tuya IoT device.");
   TuyaIoT.remove();
 }

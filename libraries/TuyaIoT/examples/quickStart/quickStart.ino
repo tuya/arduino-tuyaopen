@@ -1,15 +1,17 @@
-#include "OneButton.h"
-#include "SimpleLed.h"
+#include "tLed.h"
 
 #include "TuyaIoT.h"
 #include <Log.h>
 
 #define ledPin  LED_BUILTIN
 // Turn on LED when output low level
-SimpleLed led(ledPin, LOW);
+tLed led(ledPin, LOW);
 
-#define buttonPin BUTTON_BUILTIN
-OneButton button(buttonPin);
+// button
+#define buttonPin         BUTTON_BUILTIN
+#define buttonPressLevel  LOW
+#define buttonDebounceMs  (50u)
+#define buttonLongPressMs (3*1000u)
 
 // Tuya license
 #define TUYA_DEVICE_UUID    "uuidxxxxxxxxxxxxxxxx"
@@ -24,10 +26,8 @@ void setup() {
   // led
   led.off();
 
-  // button
-  button.attachClick(buttonClick);
-  button.setPressMs(3*1000);
-  button.attachLongPressStart(buttonLongPressStart);
+  // button init
+  pinMode(buttonPin, INPUT_PULLUP);
 
   TuyaIoT.setEventCallback(tuyaIoTEventCallback);
 
@@ -49,8 +49,10 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  button.tick();
   led.update();
+
+  // button press check
+  buttonCheck();
 
   delay(10);
 }
@@ -96,16 +98,53 @@ void tuyaIoTEventCallback(tuya_event_msg_t *event)
   }
 }
 
+void buttonCheck(void)
+{
+  static uint32_t buttonPressMs = 0;
+  static uint8_t isPress = 0;
+
+  if (digitalRead(buttonPin) == buttonPressLevel) {
+    if (isPress == 0) {
+      buttonPressMs = millis();
+      isPress = 1;
+    }
+
+    // button debounce
+    if ((1 == isPress) && ((millis() - buttonPressMs) > buttonDebounceMs)) {
+      isPress = 2;
+    }
+
+    // long press check
+    if ((2 == isPress) && ((millis() - buttonPressMs) >= buttonLongPressMs)) {
+      isPress = 3;
+      buttonLongPressStart();
+    }
+  } else {
+    if (isPress == 2) {
+      if ((millis() - buttonPressMs) < buttonLongPressMs) {
+        buttonClick();
+      } else {
+        buttonLongPressStart();
+      }
+    }
+    isPress = 0;
+  }
+}
+
 void buttonClick()
 {
   Serial.println("Button clicked");
   uint8_t ledState = led.getState();
+
+  ledState = !ledState;
+  led.setState(ledState);
+
   Serial.print("Upload DPID_SWITCH: "); Serial.println(ledState);
   TuyaIoT.write(DPID_SWITCH, ledState);
 }
 
 void buttonLongPressStart()
 {
-  Serial.println("Button long press, remove IoT device.");
+  Serial.println("Button long press, remove Tuya IoT device.");
   TuyaIoT.remove();
 }
