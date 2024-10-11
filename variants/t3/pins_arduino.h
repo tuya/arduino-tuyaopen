@@ -10,27 +10,30 @@ extern "C" {
 #endif // __cplusplus
 
 // Number of pins defined in PinDescription array
-#define p0  (0u)
-#define p1  (1u)
-#define p10 (10u)
-#define p11 (11u)
-#define p12 (12u)
-#define p13 (13u)
-#define p14 (14u)
-#define p15 (15u)
-#define p16 (16u)
-#define p17 (17u)
-#define p18 (18u)
-#define p19 (19u)
-#define p24 (24u)
-#define p25 (25u)
-#define p28 (28u)
-#define p32 (32u)
-#define p34 (34u)
-#define p36 (36u)
-#define p41 (41u)
-#define p40 (40u)
-#define p48 (48u)
+#define pin0  (0u)
+#define pin1  (1u)
+#define pin10 (10u)
+#define pin11 (11u)
+#define pin12 (12u)
+#define pin13 (13u)
+#define pin14 (14u)
+#define pin15 (15u)
+#define pin16 (16u)
+#define pin17 (17u)
+#define pin18 (18u)
+#define pin19 (19u)
+#define pin24 (24u)
+#define pin25 (25u)
+#define pin28 (28u)
+#define pin32 (32u)
+#define pin34 (34u)
+#define pin36 (36u)
+#define pin41 (41u)
+#define pin40 (40u)
+#define pin48 (48u)
+
+#define LED_BUILTIN     36
+#define BUTTON_BUILTIN  32
 
 static const uint8_t A0 = (25u);
 static const uint8_t A1 = (24u);
@@ -61,10 +64,10 @@ TUYA_PWM_BASE_CFG_T pwmCfgGet(uint8_t pin);
 // SPI
 #define SPI_DEFAULT_CLOCK  (8000000u)
 
-#define PIN_SPI0_MISO       (p17)
-#define PIN_SPI0_MOSI       (p16)
-#define PIN_SPI0_SCK        (p14)
-#define PIN_SPI0_CS         (p15)
+#define PIN_SPI0_MISO       (17)
+#define PIN_SPI0_MOSI       (16)
+#define PIN_SPI0_SCK        (14)
+#define PIN_SPI0_CS         (15)
 
 #if defined(__cplusplus) && !defined(c_plusplus)
 }

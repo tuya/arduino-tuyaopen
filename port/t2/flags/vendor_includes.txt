@@ -53,7 +53,6 @@
 -iwithprefixbefore driver/general_dma
 -iwithprefixbefore driver/spidma
 -iwithprefixbefore driver/icu
--iwithprefixbefore driver/spi
 -iwithprefixbefore func/include
 -iwithprefixbefore func/misc
 -iwithprefixbefore func/rf_test

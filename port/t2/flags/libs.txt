@@ -4,3 +4,4 @@
 -lt2Vendor
 -lt2Tkl
 -ltuyaos
+-lmftest

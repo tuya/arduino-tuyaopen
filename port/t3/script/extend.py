@@ -57,10 +57,19 @@ appVersion = appVersionParse(appConfigTmpFile)
 binFilePath = os.path.join(outputPath, 'tuyaTmp', 'output', appVersion)
 
 # delete binFilePath
-if os.path.exists(binFilePath):
-    shutil.rmtree(binFilePath)
+def deleteDirectoryContents(directory_path):
+    for item in os.listdir(directory_path):
+        item_path = os.path.join(directory_path, item)
+        if os.path.isfile(item_path):
+            os.remove(item_path)
+        elif os.path.isdir(item_path):
+            shutil.rmtree(item_path)
 
-os.makedirs(binFilePath)
+if os.path.exists(binFilePath):
+    deleteDirectoryContents(binFilePath)
+else:
+    os.makedirs(binFilePath)
+
 # change to binFilePath
 os.chdir(binFilePath)
 
@@ -185,9 +194,9 @@ t3PackCommand = [
 logging.debug("t3PackCommand: " + ' '.join(t3PackCommand))
 subprocess.run(t3PackCommand)
 
-if platform == "win32":
-    # wait cmake_encrypt_crc.exe tools
-    sys.exit(0)
+# if platform == "win32":
+#     # wait cmake_encrypt_crc.exe tools
+#     sys.exit(0)
 
 # Crc package binary
 CrcAllAppPack = os.path.join(binFilePath, 'all_app_pack_crc.bin')

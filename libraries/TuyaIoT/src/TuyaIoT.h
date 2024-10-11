@@ -136,6 +136,9 @@ public:
   uint8_t eventGetDpId(tuya_event_msg_t* event, uint16_t index);
 
   int remove(void);
+
+  // license
+  int readBoardLicense(tuya_iot_license_t* license);
 private:
   char _pid[MAX_LENGTH_PRODUCT_ID+1]  = {0}; // +1 is '\0'
   char _version[MAX_LENGTH_SW_VER+1]  = {0};
