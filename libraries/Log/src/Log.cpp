@@ -7,9 +7,9 @@ extern "C" void _log_output_cb(const char *str)
   Serial.print(str);
 }
 
-LogClass::LogClass()
+LogClass::LogClass(int buffer)
 {
-  tal_log_init(TAL_LOG_LEVEL_DEBUG, OPEN_SDK_LOG_BUFFER_SIZE, (TAL_LOG_OUTPUT_CB)_log_output_cb);
+  tal_log_init(TAL_LOG_LEVEL_DEBUG, buffer, (TAL_LOG_OUTPUT_CB)_log_output_cb);
   tal_log_color_enable_set(FALSE);
 }
 
@@ -38,4 +38,4 @@ void LogClass::setColor(LogLevel level, ColorMode mode, ColorFont font, ColorBG 
   tal_log_color_set(static_cast<TAL_LOG_LEVEL_E>(level), static_cast<TAL_LOG_DISPLAY_MODE_E>(mode), static_cast<TAL_LOG_FONT_COLOR_E>(font), static_cast<TAL_LOG_BACKGROUND_COLOR_E>(background));
 }
 
-LogClass Log;
+LogClass Log(OPEN_SDK_LOG_BUFFER_SIZE);
