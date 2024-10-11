@@ -78,7 +78,7 @@ void app_iot_task_start(const char *pid, const char *version)
   strncpy(sg_softwareVersion, version, MAX_LENGTH_SW_VER);
   strncpy(sg_productID, pid, MAX_LENGTH_PRODUCT_ID);
 
-  THREAD_CFG_T thrd_param = {4096, THREAD_PRIO_1, "iot_task"};
+  THREAD_CFG_T thrd_param = {5 * 1024, THREAD_PRIO_1, "iot_task"};
   tal_thread_create_and_start(&iot_thread, NULL, NULL, tuya_app_thread, NULL, &thrd_param);
   return;
 }
