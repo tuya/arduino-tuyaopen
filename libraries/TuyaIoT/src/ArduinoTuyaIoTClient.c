@@ -31,10 +31,10 @@ typedef void (*EvevntCallbackFunc_T)(tuya_event_msg_t* event);
 /******************************************************************************
  * GLOBAL VARIABLES
  ******************************************************************************/
-static char sg_softwareVersion[MAX_LENGTH_PRODUCT_ID+1] = {0};
-static char sg_productID[MAX_LENGTH_SW_VER+1] = {0};
-static char sg_uuid[MAX_LENGTH_UUID+1] = {0};
-static char sg_authKey[MAX_LENGTH_AUTHKEY+1] = {0};
+static const char* sg_softwareVersion = NULL;
+static const char* sg_productID = NULL;
+static const char* sg_uuid = NULL;
+static const char* sg_authKey = NULL;
 
 static EvevntCallbackFunc_T eventCallback = NULL;
 
@@ -61,22 +61,15 @@ void app_iot_event_register_cb(void (*callback)(tuya_event_msg_t* event))
 
 void app_iot_license_set(const char *uuid, const char *authKey)
 {
-  memset(sg_uuid, 0, sizeof(sg_uuid));
-  memset(sg_authKey, 0, sizeof(sg_authKey));
-
-  strncpy(sg_uuid, uuid, MAX_LENGTH_UUID);
-  strncpy(sg_authKey, authKey, MAX_LENGTH_AUTHKEY);
-
+  sg_uuid = uuid;
+  sg_authKey = authKey;
   return;
 }
 
 void app_iot_task_start(const char *pid, const char *version)
 {
-  memset(sg_softwareVersion, 0, sizeof(sg_softwareVersion));
-  memset(sg_productID, 0, sizeof(sg_productID));
-
-  strncpy(sg_softwareVersion, version, MAX_LENGTH_SW_VER);
-  strncpy(sg_productID, pid, MAX_LENGTH_PRODUCT_ID);
+  sg_softwareVersion = version;
+  sg_productID = pid;
 
   THREAD_CFG_T thrd_param = {5 * 1024, THREAD_PRIO_1, "iot_task"};
   tal_thread_create_and_start(&iot_thread, NULL, NULL, tuya_app_thread, NULL, &thrd_param);
