@@ -14,6 +14,7 @@
 -iwithprefixbefore include/security
 -iwithprefixbefore include/spi
 -iwithprefixbefore include/system
+-iwithprefixbefore include/i2c/include
 -iwithprefixbefore include/timer
 -iwithprefixbefore include/uart
 -iwithprefixbefore include/utilities

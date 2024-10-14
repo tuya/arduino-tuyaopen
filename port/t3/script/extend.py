@@ -194,10 +194,6 @@ t3PackCommand = [
 logging.debug("t3PackCommand: " + ' '.join(t3PackCommand))
 subprocess.run(t3PackCommand)
 
-# if platform == "win32":
-#     # wait cmake_encrypt_crc.exe tools
-#     sys.exit(0)
-
 # Crc package binary
 CrcAllAppPack = os.path.join(binFilePath, 'all_app_pack_crc.bin')
 t3CrcPackCommand = [

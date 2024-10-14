@@ -25,11 +25,6 @@
 #include "lwip_init.h"
 #endif
 
-#if defined(ARDUINO_TUYA_T3)
-#include "tkl_uart.h"
-#include <components/system.h>
-#endif
-
 /***********************************************************
 ************************macro define************************
 ***********************************************************/
@@ -102,7 +97,6 @@ static void ArduinoThread(void *arg)
 #endif // defined(ARDUINO_TUYA_T2)
 
 #if defined(ARDUINO_TUYA_T3)
-  // bk_set_printf_port(0); // use uart0(Serial) as log ouput
   tkl_uart_deinit(TUYA_UART_NUM_0);
   // tkl_uart_deinit(TUYA_UART_NUM_1); // TODO: close T3 vendor log
 #endif

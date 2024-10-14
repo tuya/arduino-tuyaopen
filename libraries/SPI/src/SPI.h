@@ -32,7 +32,7 @@ public:
   void detachInterrupt() override { /* noop */ }
 
   void begin();
-  void begin(bool autoCS);
+  void begin(int csPin);
   void end();
 
   void setCS(int csPin) { _csPin = csPin; }
@@ -40,16 +40,14 @@ private:
   void _spiConfigInitAlwaysInline(TUYA_SPI_NUM_E port, TUYA_SPI_BASE_CFG_T cfg) __attribute__((__always_inline__)) {
     this->_port = port;
     memcpy(&_cfg, &cfg, sizeof(TUYA_SPI_BASE_CFG_T));
-
-    _csPin = PIN_SPI0_CS;
-    _autoCS = false;
   }
 
   TUYA_SPI_NUM_E _port;
   TUYA_SPI_BASE_CFG_T _cfg;
 
-  int _csPin;
-  bool _autoCS;
+  int _csPin = -1;
+
+  uint8_t _isBeginTransaction = 0;
 };
 
 } // namespace arduino

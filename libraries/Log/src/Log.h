@@ -8,9 +8,7 @@ extern "C" {
 
 namespace arduino {
 
-#define OPEN_SDK_LOG_BUFFER_SIZE 1024
-
-
+#define OPEN_SDK_LOG_BUFFER_SIZE (512)
 
 class LogClass {
 public:
@@ -27,7 +25,7 @@ public:
     BG_BLACK = 40, BG_RED, BG_GREEN, BG_YELLOW, BG_BLUE, BG_PURPLE, BG_CYAN, BG_WHITE, BG_DEFAULT = 49
   };
 
-  LogClass();
+  LogClass(int buffer);
   ~LogClass();
 
   void setLevel(LogLevel level);

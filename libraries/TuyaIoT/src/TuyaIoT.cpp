@@ -8,6 +8,7 @@ extern "C" {
 #include <string.h>
 
 #include "tuya_iot_dp.h"
+#include "tal_time_service.h"
 }
 
 
@@ -275,6 +276,29 @@ int TuyaIoTCloudClass::remove(void)
 int TuyaIoTCloudClass::readBoardLicense(tuya_iot_license_t* license)
 {
   return tuya_iot_license_read(license);
+}
+
+bool TuyaIoTCloudClass::networkCheck(void)
+{
+  if (ArduinoIoTClient.config.network_check && ArduinoIoTClient.config.network_check()) {
+    return true;
+  }
+
+  return false;
+}
+
+bool TuyaIoTCloudClass::isActivated(void)
+{
+  return tuya_iot_activated(&ArduinoIoTClient);
+}
+
+bool TuyaIoTCloudClass::isTimeSync(void)
+{
+  int rt = OPRT_OK;
+
+  rt = tal_time_check_time_sync();
+
+  return (OPRT_OK == rt) ? (true) : (false);
 }
 
 /******************************************************************************
