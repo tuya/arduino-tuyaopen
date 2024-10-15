@@ -1,5 +1,5 @@
 /*
- *  This sketch trys to Connect to the best AP based on a given list
+ *  This sketch tries to connect to the best AP based on a given list
  *
  */
 
