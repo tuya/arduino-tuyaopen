@@ -12,7 +12,7 @@ void setup()
     if(err == false) {
         Serial.println("Dual Antenna configuration failed!");
     } else {
-        Serial.println("Dual Antenna configuration successfuly done!");
+        Serial.println("Dual Antenna configuration successfully done!");
     }
 
     WiFi.disconnect();
