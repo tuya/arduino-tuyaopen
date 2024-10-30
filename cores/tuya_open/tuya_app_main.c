@@ -96,9 +96,9 @@ static void ArduinoThread(void *arg)
   tkl_uart_deinit(TUYA_UART_NUM_1);
 #endif // defined(ARDUINO_TUYA_T2)
 
-#if defined(ARDUINO_TUYA_T3)
+#if defined(ARDUINO_TUYA_T3) || defined(ARDUINO_TUYA_T5)
   tkl_uart_deinit(TUYA_UART_NUM_0);
-  // tkl_uart_deinit(TUYA_UART_NUM_1); // TODO: close T3 vendor log
+  // tkl_uart_deinit(TUYA_UART_NUM_1); // TODO: close vendor log
 #endif
 
   app_open_sdk_init();

@@ -153,3 +153,84 @@ t3.upload.tool.default=tyutool
 
 # monitor
 t3.monitor_port.serial.baudrate=115200
+
+#
+############################################ T5 ############################################
+#
+t5.name=T5
+t5.build.board=TUYA_T5
+t5.build.core=tuya_open
+t5.build.variant=t5
+
+# T5 toolchain
+t5.compiler.path={runtime.tools.gcc-arm-none-eabi.path}/bin/
+t5.compiler.c.cmd={compiler.path}arm-none-eabi-gcc
+t5.compiler.cpp.cmd={compiler.path}arm-none-eabi-g++
+t5.compiler.S.cmd={compiler.path}arm-none-eabi-gcc
+t5.compiler.as.cmd={compiler.path}arm-none-eabi-as
+t5.compiler.ar.cmd={compiler.path}arm-none-eabi-ar
+t5.compiler.combine.cmd={compiler.path}arm-none-eabi-g++
+
+# T5 port path
+t5.compiler.port.path={runtime.platform.path}/port/t5/
+
+# T5 app define (-D)
+t5.appBuild.flags=@{compiler.port.path}flags/appBuildDefine.txt
+
+# T5 flags files
+t5.compiler.flags.path={compiler.port.path}flags/
+t5.compiler.c.flags={compiler.flags.path}c_flags.txt
+t5.compiler.cpp.flags={compiler.flags.path}cpp_flags.txt
+t5.compiler.S.flags={compiler.flags.path}S_flags.txt
+t5.compiler.ar.flags={compiler.flags.path}ar_flags.txt
+t5.compiler.combine.flags={compiler.flags.path}combine_flags.txt
+
+# T5 ld script
+t5.ld_scripts.flags=-Wl,--cref -Wl,-Map={build.path}/{build.project_name}.map -T{compiler.port.path}bk7258_out.ld -o "{build.path}/{build.project_name}.elf"
+
+# T5 port(tkl) include files
+t5.compiler.port_includes.prefix={runtime.tools.vendor-t5.path}/platform/t5/tuyaos/tuyaos_adapter/
+t5.compiler.port_includes.flags={compiler.flags.path}port_includes.txt
+
+# T5 vendor include files
+# t5.compiler.vendor_includes.prefix={runtime.tools.vendor-t5.path}/t5_os/
+# t5.compiler.vendor_includes.flags={compiler.flags.path}vendor_includes.txt
+
+t5.compiler.vendor_includes.prefix=
+t5.compiler.vendor_includes.flags=
+
+# Tuya open sdk include files
+t5.compiler.open_sdk_includes.prefix={runtime.tools.vendor-t5.path}/src/
+t5.compiler.open_sdk_includes.flags={compiler.port.path}open_sdk_includes.txt
+
+# T5 libs
+t5.compiler.libs.path={compiler.port.path}libs/
+t5.compiler.libs.flags={compiler.flags.path}libs.txt
+
+t5.libs.files = -L{compiler.libs.path} -Wl,--start-group @{compiler.libs.flags} "{archive_file_path}" -ltuyaos -ltuyaos_adapter -lm -lgcc -lc -lnosys -Wl,--end-group
+
+# python3 path
+t5.python3.cmd.w={runtime.tools.env-python.path}/python.exe
+t5.python3.cmd.l={runtime.tools.env-python.path}/venv/bin/python3
+
+# prebuild
+t5.prebuild.cmd.w={python3.cmd.w} -u {compiler.port.path}script/prebuild.py --compiler-path {compiler.path} --port-path {runtime.platform.path}/port/t5/ --vendor-path {runtime.tools.vendor-t5.path}/ --platform-path {runtime.platform.path}/ --build-path {build.path}/ --sketch-path {sketch_path}/ --use-python-venv 1
+t5.prebuild.cmd.l=bash {compiler.port.path}script/prebuild.sh {runtime.tools.env-python.path}/venv/ {compiler.port.path}script --compiler-path {compiler.path} --port-path {runtime.platform.path}/port/t5/ --vendor-path {runtime.tools.vendor-t5.path}/ --platform-path {runtime.platform.path}/ --build-path {build.path}/ --sketch-path {sketch_path}/
+t5.prebuild.cmd.m=echo "TODO"
+
+# extend
+t5.compiler.extend.cmd.w={python3.cmd.w} {compiler.port.path}script/extend.py --compiler-path "{compiler.path}" --port-path {runtime.platform.path}/port/t5/ --output-path "{build.path}" --output-name "{build.project_name}"
+t5.compiler.extend.cmd.l={python3.cmd.l} {compiler.port.path}script/extend.py --compiler-path "{compiler.path}" --port-path {runtime.platform.path}/port/t5/ --output-path "{build.path}" --output-name "{build.project_name}"
+t5.compiler.extend.cmd.m=echo "TODO"
+
+# export compiled binary
+t5.export.binary.cmd.w=echo "TODO"
+t5.export.binary.cmd.l=echo "TODO"
+t5.export.binary.cmd.m=echo "TODO"
+
+# upload tool
+t5.upload.tool=tyutool
+t5.upload.tool.default=tyutool
+
+# monitor
+t5.monitor_port.serial.baudrate=115200

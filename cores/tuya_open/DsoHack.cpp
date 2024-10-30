@@ -15,7 +15,7 @@
  */
 
 // This hack is needed because Beken SDK is not linking against libstdc++ correctly.
-#if defined (ARDUINO_TUYA_T2) || defined (ARDUINO_TUYA_T3)
+#if defined (ARDUINO_TUYA_T2) || defined (ARDUINO_TUYA_T3) || defined(ARDUINO_TUYA_T5)
  extern "C" {
  void * __dso_handle = 0;
  }

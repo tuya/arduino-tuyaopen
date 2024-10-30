@@ -11,13 +11,19 @@ recipe.hooks.prebuild.1.pattern.linux={prebuild.cmd.l}
 recipe.hooks.prebuild.1.pattern.macosx={prebuild.cmd.m}
 
 ## Compile c files
-recipe.c.o.pattern="{compiler.c.cmd}" @{compiler.c.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" -iprefix "{compiler.vendor_includes.prefix}" "@{compiler.vendor_includes.flags}" {includes} {source_file} -o {object_file}
+## recipe.c.o.pattern="{compiler.c.cmd}" @{compiler.c.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" -iprefix "{compiler.vendor_includes.prefix}" "@{compiler.vendor_includes.flags}" {includes} {source_file} -o {object_file}
+
+recipe.c.o.pattern="{compiler.c.cmd}" @{compiler.c.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" {includes} {source_file} -o {object_file}
 
 ## Compile cpp files
-recipe.cpp.o.pattern="{compiler.cpp.cmd}" @{compiler.cpp.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" -iprefix "{compiler.vendor_includes.prefix}" "@{compiler.vendor_includes.flags}" {includes} {source_file} -o {object_file}
+## recipe.cpp.o.pattern="{compiler.cpp.cmd}" @{compiler.cpp.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" -iprefix "{compiler.vendor_includes.prefix}" "@{compiler.vendor_includes.flags}" {includes} {source_file} -o {object_file}
+
+recipe.cpp.o.pattern="{compiler.cpp.cmd}" @{compiler.cpp.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" {includes} {source_file} -o {object_file}
 
 ## Compile S files
-recipe.S.o.pattern="{compiler.S.cmd}" @{compiler.S.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" -iprefix "{compiler.vendor_includes.prefix}" "@{compiler.vendor_includes.flags}" {includes} {source_file} -o {object_file}
+## recipe.S.o.pattern="{compiler.S.cmd}" @{compiler.S.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" -iprefix "{compiler.vendor_includes.prefix}" "@{compiler.vendor_includes.flags}" {includes} {source_file} -o {object_file}
+
+recipe.S.o.pattern="{compiler.S.cmd}" @{compiler.S.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" {includes} {source_file} -o {object_file}
 
 ## ar
 recipe.ar.pattern="{compiler.ar.cmd}" @{compiler.ar.flags} "{archive_file_path}" "{object_file}"
