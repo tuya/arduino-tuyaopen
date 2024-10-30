@@ -13,11 +13,12 @@ The IoT products developed based on tuya-open-sdk-for-device can use the functio
 At the same time, tuya-open-sdk-for-device will continue to expand, providing more cloud platform access functions, as well as voice, video, and face recognition functions, and arduino-tuyaopen will also be updated to support more functions.
 
 # Supported chips
-Currently, the project supports T2 and T3 two chips
+Currently, the project supports T2, T3 and T5 chips.
 | Chip |                          Datasheet                           |
 | :--: | :----------------------------------------------------------: |
-|  T2  | [T2](https://developer.tuya.com/cn/docs/iot/T2-U-module-datasheet?id=Kce1tncb80ldq) |
-|  T3  | [T3](https://developer.tuya.com/cn/docs/iot/T3-U-Module-Datasheet?id=Kdd4pzscwf0il) |
+|  T2  | [T2](https://developer.tuya.com/en/docs/iot/T2-U-module-datasheet?id=Kce1tncb80ldq) |
+|  T3  | [T3](https://developer.tuya.com/en/docs/iot/T3-U-Module-Datasheet?id=Kdd4pzscwf0il) |
+|  T5  | [T5](https://developer.tuya.com/en/docs/iot/T5-E1-Module-Datasheet?id=Kdar6hf0kzmfi) |
 
 # Supported operating systems
 

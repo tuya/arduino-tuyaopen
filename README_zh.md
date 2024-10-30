@@ -13,11 +13,12 @@ arduino-tuyaopen 基于 [tuya-open-sdk-for-device](https://github.com/tuya/tuya-
 同时 tuya-open-sdk-for-device 将不断拓展，提供更多云平台接入功能，及语音、视频、人脸识别等功能，arduino-tuyaopen 也会同步更新支持更多功能。
 
 ## 支持的芯片
-目前该项目已支持 T2，T3 两款芯片
+目前该项目已支持 T2，T3 和 T5 芯片。
 | 芯片 |                          Datasheet                           |
 | :--: | :----------------------------------------------------------: |
 |  T2  | [T2](https://developer.tuya.com/cn/docs/iot/T2-U-module-datasheet?id=Kce1tncb80ldq) |
 |  T3  | [T3](https://developer.tuya.com/cn/docs/iot/T3-U-Module-Datasheet?id=Kdd4pzscwf0il) |
+|  T5  | [T5](https://developer.tuya.com/cn/docs/iot/T5-E1-Module-Datasheet?id=Kdar6hf0kzmfi) |
 
 ## 支持的操作系统
 
