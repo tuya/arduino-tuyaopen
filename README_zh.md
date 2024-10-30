@@ -24,7 +24,8 @@ arduino-tuyaopen 基于 [tuya-open-sdk-for-device](https://github.com/tuya/tuya-
 | 芯片 | Windows  | Linux |  macOS   |
 | :--: | :------: | :---: | :------: |
 |  T2  |   支持   | 支持  | 暂不支持 |
-|  T3  | 暂不支持 | 支持  | 暂不支持 |
+|  T3  |   支持   | 支持  | 暂不支持 |
+|  T5  |   支持   | 支持  | 暂不支持 |
 
 > 注意：当前部分芯片未支持某些操作系统，我们正在全力支持中，敬请期待！
 
@@ -39,6 +40,12 @@ arduino-tuyaopen 基于 [tuya-open-sdk-for-device](https://github.com/tuya/tuya-
   https://github.com/tuya/arduino-tuyaopen/releases/download/global/package_tuya_open_index.json
   ```
 
+  对于中国大陆地区的开发者可以选择下方开发板管理地址：
+
+  ```
+  https://github.com/tuya/arduino-tuyaopen/releases/download/global/package_tuya_open_index_cn.json
+  ```
+
 + 启动 Arduino IDE 2，并依次点击 “文件” -> “首选项” ，打开首选项窗口。
 
   ![Preferences](https://images.tuyacn.com/fe-static/docs/img/9f354b85-5f9d-4af6-be60-c114d7b1e822.png)
@@ -49,12 +56,11 @@ arduino-tuyaopen 基于 [tuya-open-sdk-for-device](https://github.com/tuya/tuya-
 
 + 在 “开发板管理器”，输入 "Tuya Open" 查找并安装最新版本。
 
-  ![BoardManager](https://images.tuyacn.com/fe-static/docs/img/120abc55-49dc-4690-8f01-c12e1f45c127.png)
-
 ## 开发板硬件简介
 
 + [T2-U 开发板](https://developer.tuya.com/cn/docs/iot/t2-u-board?id=Kce6cq9e9vlmv)
 + [T3-U 模组规格书](https://developer.tuya.com/cn/docs/iot/T3-U-Module-Datasheet?id=Kdd4pzscwf0il)
++ [T5-E1 模组规格书](https://developer.tuya.com/cn/docs/iot/T5-E1-Module-Datasheet?id=Kdar6hf0kzmfi)
 
 ## 支持
 
