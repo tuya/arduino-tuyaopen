@@ -24,7 +24,8 @@ Currently, the project supports T2 and T3 two chips
 | Chip | Windows  | Linux |  macOS   |
 | :--: | :------: | :---: | :------: |
 |  T2  |   Support   | Support  | Temporarily not supported |
-|  T3  | Temporarily not supported | Support  | Temporarily not supported |
+|  T3  |   Support   | Support  | Temporarily not supported |
+|  T5  |   Support   | Support  | Temporarily not supported |
 
 > Note: Some chips have not been supported on certain operating systems, and we are working hard to support them, please look forward to it!
 
@@ -38,6 +39,12 @@ It is recommended to install and use the latest version of Arduino IDE 2, which 
   https://github.com/tuya/arduino-tuyaopen/releases/download/global/package_tuya_open_index.json
   ```
 
+  For developers in mainland China, you can choose the following development board management address:
+
+  ```
+  https://github.com/tuya/arduino-tuyaopen/releases/download/global/package_tuya_open_index_cn.json
+  ```
+
 + Open Arduino IDE 2 and click "File" -> "Preferences" to open the preferences window.
 
   ![Preferences](https://images.tuyacn.com/fe-static/docs/img/581335e7-e012-4895-aece-7af21d00bbf5.png)
@@ -48,12 +55,11 @@ It is recommended to install and use the latest version of Arduino IDE 2, which 
 
 + In the "Board Manager", search for "Tuya Open" and install the latest version.
 
-  ![BoardManager](https://images.tuyacn.com/fe-static/docs/img/1aa17f8d-1991-405a-a08e-def5d1db04de.png)
-
 ## Hardware Introduction for Development Board
 
 + [T2-U Development Board](https://developer.tuya.com/cn/docs/iot/t2-u-board?id=Kce6cq9e9vlmv)
 + [T3-U Module Datasheet](https://developer.tuya.com/cn/docs/iot/T3-U-Module-Datasheet?id=Kdd4pzscwf0il)
++ [T5-E1 Module Datasheet](https://developer.tuya.com/en/docs/iot/T5-E1-Module-Datasheet?id=Kdar6hf0kzmfi)
 
 ## Support
 
