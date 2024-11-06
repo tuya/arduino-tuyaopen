@@ -43,6 +43,7 @@ It is recommended to install and use the latest version of Arduino IDE 2, which 
   For developers in mainland China, you can choose the following development board management address:
 
   ```
+  https://gitee.com/tuya-open/arduino-tuyaopen/releases/download/global/package_tuya_open_index_cn.json
   https://github.com/tuya/arduino-tuyaopen/releases/download/global/package_tuya_open_index_cn.json
   ```
 
