@@ -18,9 +18,14 @@
 #define TUYA_DEVICE_UUID    "uuidxxxxxxxxxxxxxxxx"
 #define TUYA_DEVICE_AUTHKEY "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
+void tuyaIoTEventCallback(tuya_event_msg_t *event);
+void buttonCheck(void);
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
+
+  Log.begin();
 
   // button
   pinMode(buttonPin, INPUT_PULLUP);
@@ -110,6 +115,17 @@ void tuyaIoTEventCallback(tuya_event_msg_t *event)
   }
 }
 
+void buttonClick()
+{
+  Serial.println("Button clicked");
+}
+
+void buttonLongPressStart()
+{
+  Serial.println("Button long press, remove Tuya IoT device.");
+  TuyaIoT.remove();
+}
+
 void buttonCheck(void)
 {
   static uint32_t buttonPressMs = 0;
@@ -143,13 +159,3 @@ void buttonCheck(void)
   }
 }
 
-void buttonClick()
-{
-  Serial.println("Button clicked");
-}
-
-void buttonLongPressStart()
-{
-  Serial.println("Button long press, remove Tuya IoT device.");
-  TuyaIoT.remove();
-}

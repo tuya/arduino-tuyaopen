@@ -1,46 +1,38 @@
 name=Tuya
-version=1.0.3
+version=1.1.1
 
 #
 ## Arduino build
 #
-
 ## prebuild
-recipe.hooks.prebuild.1.pattern.windows={prebuild.cmd.w}
-recipe.hooks.prebuild.1.pattern.linux={prebuild.cmd.l}
-recipe.hooks.prebuild.1.pattern.macosx={prebuild.cmd.m}
+recipe.hooks.prebuild.1.pattern="{runtime.tools.env-python.path}/python3" -I "{runtime.platform.path}/tools/prebuild.py" --sketch-path "{sketch_path}" --build-path "{build.path}"
+recipe.hooks.prebuild.1.pattern.windows="{runtime.tools.env-python.path}/python.exe" -I "{runtime.platform.path}/tools/prebuild.py" --sketch-path "{sketch_path}" --build-path "{build.path}"
 
 ## Compile c files
-## recipe.c.o.pattern="{compiler.c.cmd}" @{compiler.c.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" -iprefix "{compiler.vendor_includes.prefix}" "@{compiler.vendor_includes.flags}" {includes} {source_file} -o {object_file}
-
-recipe.c.o.pattern="{compiler.c.cmd}" @{compiler.c.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" {includes} {source_file} -o {object_file}
+recipe.c.o.pattern="{compiler.cmd.c}" {compiler.flags.c} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" {compiler.includes} {includes} {source_file} -o {object_file}
 
 ## Compile cpp files
-## recipe.cpp.o.pattern="{compiler.cpp.cmd}" @{compiler.cpp.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" -iprefix "{compiler.vendor_includes.prefix}" "@{compiler.vendor_includes.flags}" {includes} {source_file} -o {object_file}
-
-recipe.cpp.o.pattern="{compiler.cpp.cmd}" @{compiler.cpp.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" {includes} {source_file} -o {object_file}
+recipe.cpp.o.pattern="{compiler.cmd.cpp}" {compiler.flags.cpp} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" {compiler.includes} {includes} {source_file} -o {object_file}
 
 ## Compile S files
-## recipe.S.o.pattern="{compiler.S.cmd}" @{compiler.S.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" -iprefix "{compiler.vendor_includes.prefix}" "@{compiler.vendor_includes.flags}" {includes} {source_file} -o {object_file}
-
-recipe.S.o.pattern="{compiler.S.cmd}" @{compiler.S.flags} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -iprefix "{compiler.port_includes.prefix}" "@{compiler.port_includes.flags}" -iprefix "{compiler.open_sdk_includes.prefix}" "@{compiler.open_sdk_includes.flags}" {includes} {source_file} -o {object_file}
+recipe.S.o.pattern="{compiler.cmd.S}" {compiler.flags.S} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" {compiler.includes} {includes} {source_file} -o {object_file}
 
 ## ar
-recipe.ar.pattern="{compiler.ar.cmd}" @{compiler.ar.flags} "{archive_file_path}" "{object_file}"
+archive_file_path={build.path}/{archive_file}
+recipe.ar.pattern="{compiler.cmd.ar}" {compiler.flags.ar} "{archive_file_path}" "{object_file}"
 
 ## combine
-recipe.c.combine.pattern="{compiler.combine.cmd}" "@{compiler.combine.flags}" {object_files} {libs.files} {ld_scripts.flags}
+recipe.c.combine.pattern="{compiler.cmd.ld}" "{compiler.flags.ld}" {object_files} -Wl,--start-group {archive_file_path} {compiler.flags.libs} -Wl,--end-group {compiler.flags.ld_scripts}
 
-## pack
-recipe.hooks.linking.postlink.1.pattern.windows={compiler.extend.cmd.w}
-recipe.hooks.linking.postlink.1.pattern.linux={compiler.extend.cmd.l}
-recipe.hooks.linking.postlink.1.pattern.mac={compiler.extend.cmd.m}
+## objcopy
+recipe.objcopy.bin.1.pattern="{runtime.tools.env-python.path}/python3" -I "{runtime.platform.path}/tools/objcopy.py" --compiler-path "{compiler.path}" --chip "{build.chip}" --vendor-path "{vendor.path}" --build-path "{build.path}" --sketch-name "{build.project_name}"
+recipe.objcopy.bin.1.pattern.windows="{runtime.tools.env-python.path}/python.exe" -I "{runtime.platform.path}/tools/objcopy.py" --compiler-path "{compiler.path}" --chip "{build.chip}" --vendor-path "{vendor.path}" --build-path "{build.path}" --sketch-name "{build.project_name}"
 
 ## upload
 tools.tyutool.upload.protocol=serial
-tools.tyutool.upload.pattern={runtime.tools.tyutool.path}/tyutool_cli write -d t2 -p {upload.port.address} -b 921600 -s 0x000000 -f {build.path}/{build.project_name}_QIO.bin --tqdm
+tools.tyutool.upload.pattern={runtime.tools.tyutool.path}/tyutool_cli write -d {build.chip} -p {upload.port.address} -b {upload.tool.baud_rate} -s 0x000000 -f {build.path}/{build.project_name}_QIO.bin --tqdm
+tools.tyutool.upload.pattern.windows={runtime.tools.tyutool.path}/tyutool_cli.exe write -d {build.chip} -p {upload.port.address} -b {upload.tool.baud_rate} -s 0x000000 -f {build.path}/{build.project_name}_QIO.bin --tqdm
 
 ## export compiled binary
-recipe.hooks.savehex.postsavehex.1.pattern.windows={export.binary.cmd.w}
-recipe.hooks.savehex.postsavehex.1.pattern.linux={export.binary.cmd.l}
-recipe.hooks.savehex.postsavehex.1.pattern.macosx={export.binary.cmd.m}
+recipe.hooks.savehex.postsavehex.1.pattern="{runtime.tools.env-python.path}/python3" -I "{runtime.platform.path}/tools/export_binary.py" --build-path {build.path} --sketch-path {sketch_path}
+recipe.hooks.savehex.postsavehex.1.pattern.windows="{runtime.tools.env-python.path}/python.exe" -I "{runtime.platform.path}/tools/export_binary.py" --build-path {build.path} --sketch-path {sketch_path}
