@@ -46,7 +46,7 @@ arduino-tuyaopen 基于 [tuya-open-sdk-for-device](https://github.com/tuya/tuya-
   对于中国大陆地区的开发者可以选择下方开发板管理地址：
 
   ```
-  https://github.com/tuya/arduino-tuyaopen/releases/download/global/package_tuya_open_index_cn.json
+  https://gitee.com/tuya-open/arduino-tuyaopen/releases/download/global/package_tuya_open_index_cn.json
   ```
 
 + 启动 Arduino IDE 2，并依次点击 “文件” -> “首选项” ，打开首选项窗口。
