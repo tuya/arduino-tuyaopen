@@ -1,5 +1,7 @@
 # Home
 
+![Spell Check](https://img.shields.io/github/actions/workflow/status/tuya/arduino-tuyaopen/spell-check.yml?style=plastic&label=Spell%20Check)
+
 [English](README.md) | [简体中文](README_zh.md)
 
 ## 简介
@@ -24,9 +26,9 @@ arduino-tuyaopen 基于 [tuya-open-sdk-for-device](https://github.com/tuya/tuya-
 
 | 芯片 | Windows  | Linux |  macOS   |
 | :--: | :------: | :---: | :------: |
-|  T2  |   支持   | 支持  | 暂不支持 |
-|  T3  |   支持   | 支持  | 暂不支持 |
-|  T5  |   支持   | 支持  | 暂不支持 |
+|  T2  |   支持   | 支持  |  暂不支持  |
+|  T3  |   支持   | 支持  |   支持    |
+|  T5  |   支持   | 支持  |   支持    |
 
 > 注意：当前部分芯片未支持某些操作系统，我们正在全力支持中，敬请期待！
 
@@ -44,7 +46,6 @@ arduino-tuyaopen 基于 [tuya-open-sdk-for-device](https://github.com/tuya/tuya-
   对于中国大陆地区的开发者可以选择下方开发板管理地址：
 
   ```
-  https://gitee.com/tuya-open/arduino-tuyaopen/releases/download/global/package_tuya_open_index_cn.json
   https://github.com/tuya/arduino-tuyaopen/releases/download/global/package_tuya_open_index_cn.json
   ```
 
