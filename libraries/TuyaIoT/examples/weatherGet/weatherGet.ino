@@ -26,6 +26,10 @@ tLed led(ledPin, LOW);
 
 #define DPID_SWITCH 1
 
+void tuyaIoTEventCallback(tuya_event_msg_t *event);
+void buttonCheck(void);
+void weatherGetDemo(void);
+
 void heapCallback() {
   PR_NOTICE("Free heap: %d", tal_system_get_free_heap_size());
 }
@@ -33,6 +37,8 @@ void heapCallback() {
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
+
+  Log.begin();
 
   freeHeapTicker.attach(5, heapCallback);
 
@@ -115,6 +121,24 @@ void tuyaIoTEventCallback(tuya_event_msg_t *event)
   }
 }
 
+void buttonClick()
+{
+  Serial.println("Button clicked");
+  uint8_t ledState = led.getState();
+
+  ledState = !ledState;
+  led.setState(ledState);
+
+  Serial.print("Upload DPID_SWITCH: "); Serial.println(ledState);
+  TuyaIoT.write(DPID_SWITCH, ledState);
+}
+
+void buttonLongPressStart()
+{
+  Serial.println("Button long press, remove Tuya IoT device.");
+  TuyaIoT.remove();
+}
+
 void buttonCheck(void)
 {
   static uint32_t buttonPressMs = 0;
@@ -146,24 +170,6 @@ void buttonCheck(void)
     }
     isPress = 0;
   }
-}
-
-void buttonClick()
-{
-  Serial.println("Button clicked");
-  uint8_t ledState = led.getState();
-
-  ledState = !ledState;
-  led.setState(ledState);
-
-  Serial.print("Upload DPID_SWITCH: "); Serial.println(ledState);
-  TuyaIoT.write(DPID_SWITCH, ledState);
-}
-
-void buttonLongPressStart()
-{
-  Serial.println("Button long press, remove Tuya IoT device.");
-  TuyaIoT.remove();
 }
 
 void weatherGetDemo(void)

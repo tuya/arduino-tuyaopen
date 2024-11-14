@@ -1,1 +1,0 @@
--c -g -marm -mthumb-interwork -mcpu=arm968e-s -march=armv5te -x assembler-with-cpp

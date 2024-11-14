@@ -85,7 +85,7 @@ void app_open_sdk_init(void)
 static void ArduinoThread(void *arg)
 {
 
-#if defined(ARDUINO_TUYA_T2)
+#if defined(ARDUINO_T2)
   // wait rf cali
   extern char get_rx2_flag(void);
   while (get_rx2_flag() == 0) {
@@ -94,9 +94,9 @@ static void ArduinoThread(void *arg)
   // deinit t2 uart
   tkl_uart_deinit(TUYA_UART_NUM_0);
   tkl_uart_deinit(TUYA_UART_NUM_1);
-#endif // defined(ARDUINO_TUYA_T2)
+#endif // defined(ARDUINO_T2)
 
-#if defined(ARDUINO_TUYA_T3) || defined(ARDUINO_TUYA_T5)
+#if defined(ARDUINO_T3) || defined(ARDUINO_T5)
   tkl_uart_deinit(TUYA_UART_NUM_0);
   // tkl_uart_deinit(TUYA_UART_NUM_1); // TODO: close vendor log
 #endif
@@ -108,7 +108,7 @@ static void ArduinoThread(void *arg)
 
 void tuya_app_main(void)
 {
-#if defined(ARDUINO_TUYA_T2) || defined(ARDUINO_TUYA_T3)
+#if defined(ARDUINO_T2) || defined(ARDUINO_T3)
   __asm("BL __libc_init_array");
 #endif
 
