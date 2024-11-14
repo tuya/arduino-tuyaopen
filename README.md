@@ -1,5 +1,7 @@
 # Home
 
+![Spell Check](https://img.shields.io/github/actions/workflow/status/tuya/arduino-tuyaopen/spell-check.yml?style=plastic&label=Spell%20Check)
+
 [English](README.md) | [简体中文](README_zh.md)
 
 # Introduction
@@ -25,8 +27,8 @@ Currently, the project supports T2, T3 and T5 chips.
 | Chip | Windows  | Linux |  macOS   |
 | :--: | :------: | :---: | :------: |
 |  T2  |   Support   | Support  | Temporarily not supported |
-|  T3  |   Support   | Support  | Temporarily not supported |
-|  T5  |   Support   | Support  | Temporarily not supported |
+|  T3  |   Support   | Support  | Support |
+|  T5  |   Support   | Support  | Support |
 
 > Note: Some chips have not been supported on certain operating systems, and we are working hard to support them, please look forward to it!
 
@@ -43,7 +45,6 @@ It is recommended to install and use the latest version of Arduino IDE 2, which 
   For developers in mainland China, you can choose the following development board management address:
 
   ```
-  https://gitee.com/tuya-open/arduino-tuyaopen/releases/download/global/package_tuya_open_index_cn.json
   https://github.com/tuya/arduino-tuyaopen/releases/download/global/package_tuya_open_index_cn.json
   ```
 
