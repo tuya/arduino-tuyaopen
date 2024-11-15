@@ -5,8 +5,8 @@ version=1.1.1
 ## Arduino build
 #
 ## prebuild
-recipe.hooks.prebuild.1.pattern="{runtime.tools.env-python.path}/python3" -I "{runtime.platform.path}/tools/prebuild.py" --sketch-path "{sketch_path}" --build-path "{build.path}"
-recipe.hooks.prebuild.1.pattern.windows="{runtime.tools.env-python.path}/python.exe" -I "{runtime.platform.path}/tools/prebuild.py" --sketch-path "{sketch_path}" --build-path "{build.path}"
+recipe.hooks.prebuild.1.pattern="{runtime.tools.env-python.path}/python3" -I "{runtime.platform.path}/tools/prebuild.py" --chip "{build.chip}" --sketch-path "{sketch_path}" --build-path "{build.path}"
+recipe.hooks.prebuild.1.pattern.windows="{runtime.tools.env-python.path}/python.exe" -I "{runtime.platform.path}/tools/prebuild.py" --chip "{build.chip}" --sketch-path "{sketch_path}" --build-path "{build.path}"
 
 ## Compile c files
 recipe.c.o.pattern="{compiler.cmd.c}" {compiler.flags.c} {appBuild.flags} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" {compiler.includes} {includes} {source_file} -o {object_file}
