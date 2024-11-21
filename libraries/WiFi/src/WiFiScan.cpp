@@ -31,16 +31,16 @@ void WiFiScanClass::scanDelete()
     PR_INFO("scanDelete Done!\n"); 
 }
 
-void * WiFiScanClass::_getScanInfoByIndex(int i)
+void * WiFiScanClass::_getScanInfoByIndex(uint32_t i)
 {
     if (i >= ap_num || !ap_info)
     {
-       return 0;
+        return 0;
     }
     return (AP_IF_S*)(ap_info + i);
 }
 
-bool WiFiScanClass::getNetworkInfo(uint8_t i, String &ssid, uint8_t &encType, int32_t &rssi, uint8_t* &bssid, int32_t &channel)
+bool WiFiScanClass::getNetworkInfo(uint32_t i, String &ssid, uint8_t &encType, int32_t &rssi, uint8_t* &bssid, int32_t &channel)
 {
     AP_IF_S* it = reinterpret_cast<AP_IF_S*>(_getScanInfoByIndex(i));
     if(!it) {

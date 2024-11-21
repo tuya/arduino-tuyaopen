@@ -12,18 +12,18 @@ class WiFiClientSocketHandle;
 class LwIPClient : public Client
 {
 public:
-        virtual int connect(IPAddress ip, uint16_t port, int32_t timeout) = 0;
-        virtual int connect(const char *host, uint16_t port, int32_t timeout) = 0;
-        virtual int setTimeout(uint32_t seconds) = 0;
+    virtual int connect(IPAddress ip, uint16_t port, int32_t timeout) = 0;
+    virtual int connect(const char *host, uint16_t port, int32_t timeout) = 0;
+    virtual int setTimeout(uint32_t seconds) = 0;
 };
 
 class WiFiClient : public LwIPClient
 {
 protected:
     std::shared_ptr<WiFiClientSocketHandle> clientSocketHandle;
-    bool _connected ;
-    int _timeout;
     cbuf *_rxBuff;
+    bool _connected;
+    int _timeout;
 public:
     WiFiClient *next;
     WiFiClient();

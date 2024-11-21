@@ -82,8 +82,8 @@ def build_flags(bi):
     # tuya adapter includes
     print(f"{bi.name}.compiler.includes.tkl=-iprefix {vendor_path}/ @{vendor_path}/flags/include_tkl.txt")
     # chip vendor includes
-    # print(f"{bi.name}.compiler.includes.vendor=@{vendor_path}/flags/include_vendor.txt")
-    print(f"{bi.name}.compiler.includes={{compiler.includes.tuya_open}} {{compiler.includes.tkl}}")
+    print(f"{bi.name}.compiler.includes.vendor=@{vendor_path}/flags/include_vendor.txt")
+    print(f"{bi.name}.compiler.includes={{compiler.includes.tuya_open}} {{compiler.includes.tkl}} {{compiler.includes.vendor}}")
 
     ## combine
     print()
