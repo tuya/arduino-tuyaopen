@@ -2,6 +2,7 @@
 #include "WiFiGeneric.h"
 #include "WiFiAP.h"
 #include "tal_log.h"
+#include "tal_memory.h"
 #include "tkl_wifi.h"
 
 extern "C" {
@@ -99,6 +100,11 @@ uint8_t WiFiAPClass::softAPgetStationNum()
     sta_info = NULL;
     sta_num = 0;
     if( tkl_wifi_get_all_sta_info(&sta_info,&sta_num)== OPRT_OK) {
+        if (sta_info) {
+            tal_free(sta_info);
+            sta_info = NULL;
+        }
+
         return sta_num;
     }
     return 0;
