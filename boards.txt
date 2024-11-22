@@ -25,7 +25,7 @@ t2.appBuild.flags=@{build.path}/tuyaTmp/appConfig/appBuildDefine.txt
 
 t2.compiler.includes.tuya_open=-iprefix {runtime.tools.vendor-t2.path}/ @{runtime.tools.vendor-t2.path}/flags/include_tuya_open.txt
 t2.compiler.includes.tkl=-iprefix {runtime.tools.vendor-t2.path}/ @{runtime.tools.vendor-t2.path}/flags/include_tkl.txt
-t2.compiler.includes.vendor=@{runtime.tools.vendor-t2.path}/flags/include_vendor.txt
+t2.compiler.includes.vendor=-iprefix {runtime.tools.vendor-t2.path}/ @{runtime.tools.vendor-t2.path}/flags/include_vendor.txt
 t2.compiler.includes={compiler.includes.tuya_open} {compiler.includes.tkl} {compiler.includes.vendor}
 
 t2.compiler.flags.ld=@{runtime.tools.vendor-t2.path}/flags/ld_flags.txt
@@ -64,7 +64,7 @@ t3.appBuild.flags=@{build.path}/tuyaTmp/appConfig/appBuildDefine.txt
 
 t3.compiler.includes.tuya_open=-iprefix {runtime.tools.vendor-t3.path}/ @{runtime.tools.vendor-t3.path}/flags/include_tuya_open.txt
 t3.compiler.includes.tkl=-iprefix {runtime.tools.vendor-t3.path}/ @{runtime.tools.vendor-t3.path}/flags/include_tkl.txt
-t3.compiler.includes.vendor=@{runtime.tools.vendor-t3.path}/flags/include_vendor.txt
+t3.compiler.includes.vendor=-iprefix {runtime.tools.vendor-t3.path}/ @{runtime.tools.vendor-t3.path}/flags/include_vendor.txt
 t3.compiler.includes={compiler.includes.tuya_open} {compiler.includes.tkl} {compiler.includes.vendor}
 
 t3.compiler.flags.ld=@{runtime.tools.vendor-t3.path}/flags/ld_flags.txt
@@ -103,7 +103,7 @@ t5.appBuild.flags=@{build.path}/tuyaTmp/appConfig/appBuildDefine.txt
 
 t5.compiler.includes.tuya_open=-iprefix {runtime.tools.vendor-t5.path}/ @{runtime.tools.vendor-t5.path}/flags/include_tuya_open.txt
 t5.compiler.includes.tkl=-iprefix {runtime.tools.vendor-t5.path}/ @{runtime.tools.vendor-t5.path}/flags/include_tkl.txt
-t5.compiler.includes.vendor=@{runtime.tools.vendor-t5.path}/flags/include_vendor.txt
+t5.compiler.includes.vendor=-iprefix {runtime.tools.vendor-t5.path}/ @{runtime.tools.vendor-t5.path}/flags/include_vendor.txt
 t5.compiler.includes={compiler.includes.tuya_open} {compiler.includes.tkl} {compiler.includes.vendor}
 
 t5.compiler.flags.ld=@{runtime.tools.vendor-t5.path}/flags/ld_flags.txt
