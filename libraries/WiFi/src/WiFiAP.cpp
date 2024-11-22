@@ -2,6 +2,7 @@
 #include "WiFiGeneric.h"
 #include "WiFiAP.h"
 #include "tal_log.h"
+#include "tkl_wifi.h"
 
 extern "C" {
 #include <stdint.h>

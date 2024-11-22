@@ -22,6 +22,7 @@
 #include "lwip/sockets.h"
 #include "lwip/netdb.h"
 #include <errno.h>
+#include "tal_memory.h"
 #include "tal_log.h"
 #include "tal_network.h"
 
@@ -311,7 +312,7 @@ size_t WiFiClient::write_P(PGM_P buf, size_t size)
 
 size_t WiFiClient::write(Stream &stream)
 {
-    uint8_t * buf = (uint8_t *)malloc(1360);
+    uint8_t * buf = (uint8_t *)tal_malloc(1360);
     if(!buf){
         return 0;
     }
@@ -323,7 +324,7 @@ size_t WiFiClient::write(Stream &stream)
         written += write(buf, toWrite);
         available = stream.available();
     }
-    free(buf);
+    tal_free(buf);
     return written;
 }
 
@@ -352,7 +353,7 @@ int WiFiClient::read(uint8_t *buf, size_t size)
     res = tal_net_select( fd() + 1, &readfds, NULL, NULL, 1);
    
     if (res > 0 && TAL_FD_ISSET( fd(), &readfds)) {
-        tmpBuff = (uint8_t *)malloc(RECV_TMP_BUFF_SIZE);
+        tmpBuff = (uint8_t *)tal_malloc(RECV_TMP_BUFF_SIZE);
         if (NULL == tmpBuff) {
             PR_ERR("tmpBuff malloc fail!\n");
             return -1;
@@ -366,7 +367,7 @@ int WiFiClient::read(uint8_t *buf, size_t size)
                 break;
             }
         }
-        free(tmpBuff);
+        tal_free(tmpBuff);
         tmpBuff = NULL;
     }
     #else
