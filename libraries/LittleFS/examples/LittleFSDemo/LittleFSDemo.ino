@@ -28,7 +28,7 @@ void test1()
 
   fs.open("/test.txt","r");
   fs.read(rbuff,11,fd);                        
-  Serial.println(rbuff);                        //Hello, Worl 
+  Serial.println(rbuff);                        //Hello, World
   char ch;
   ch = fs.read(fd);
   Serial.println(ch);                           //  d
