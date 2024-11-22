@@ -25,17 +25,143 @@
 #include "tal_memory.h"
 #include "tal_log.h"
 #include "tal_network.h"
+#include "tal_log.h"
 
 #define WIFI_CLIENT_DEF_CONN_TIMEOUT_MS  (3000)
 #define WIFI_CLIENT_MAX_WRITE_RETRY      (10)
 #define WIFI_CLIENT_SELECT_TIMEOUT_US    (1000000)
-
-#define WIFI_CLIENT_RECV_TIMEOUT_MS      (50)
-#define RECV_TMP_BUFF_SIZE              (125)
+#define WIFI_CLIENT_FLUSH_BUFFER_SIZE    (1024)
 
 #undef connect
 #undef write
 #undef read
+
+class WiFiClientRxBuffer {
+private:
+        size_t _size;
+        uint8_t *_buffer;
+        size_t _pos;
+        size_t _fill;
+        int _fd;
+        bool _failed;
+
+        size_t r_available()
+        {
+            if(_fd < 0){
+                return 0;
+            }
+            int count;
+
+            int res = lwip_ioctl(_fd, FIONREAD, &count);
+            if(res < 0) {
+                _failed = true;
+                return 0;
+            }
+            return count;
+        }
+
+        size_t fillBuffer()
+        {
+            if(!_buffer){
+                _buffer = (uint8_t *)tal_malloc(_size);
+                if(!_buffer) {
+                    PR_ERR("Not enough memory to allocate buffer");
+                    _failed = true;
+                    return 0;
+                }
+            }
+            if(_fill && _pos == _fill){
+                _fill = 0;
+                _pos = 0;
+            }
+            if(!_buffer || _size <= _fill || !r_available()) {
+                return 0;
+            }
+            int res = recv(_fd, _buffer + _fill, _size - _fill, MSG_DONTWAIT);
+            if(res < 0) {
+                if(errno != EWOULDBLOCK) {
+                    _failed = true;
+                }
+                return 0;
+            }
+            _fill += res;
+            return res;
+        }
+
+public:
+    WiFiClientRxBuffer(int fd, size_t size=1436)
+        :_size(size)
+        ,_buffer(NULL)
+        ,_pos(0)
+        ,_fill(0)
+        ,_fd(fd)
+        ,_failed(false)
+    {
+        //_buffer = (uint8_t *)tal_malloc(_size);
+    }
+
+    ~WiFiClientRxBuffer()
+    {
+        tal_free(_buffer);
+    }
+
+    bool failed(){
+        return _failed;
+    }
+
+    int read(uint8_t * dst, size_t len){
+        if(!dst || !len || (_pos == _fill && !fillBuffer())){
+            return _failed ? -1 : 0;
+        }
+        size_t a = _fill - _pos;
+        if(len <= a || ((len - a) <= (_size - _fill) && fillBuffer() >= (len - a))){
+            if(len == 1){
+                *dst = _buffer[_pos];
+            } else {
+                memcpy(dst, _buffer + _pos, len);
+            }
+            _pos += len;
+            return len;
+        }
+        size_t left = len;
+        size_t toRead = a;
+        uint8_t * buf = dst;
+        memcpy(buf, _buffer + _pos, toRead);
+        _pos += toRead;
+        left -= toRead;
+        buf += toRead;
+        while(left){
+            if(!fillBuffer()){
+                return len - left;
+            }
+            a = _fill - _pos;
+            toRead = (a > left)?left:a;
+            memcpy(buf, _buffer + _pos, toRead);
+            _pos += toRead;
+            left -= toRead;
+            buf += toRead;
+        }
+        return len;
+    }
+
+    int peek(){
+        if(_pos == _fill && !fillBuffer()){
+            return -1;
+        }
+        return _buffer[_pos];
+    }
+
+    size_t available(){
+        return _fill - _pos + r_available();
+    }
+
+    void flush(){
+        if(r_available()){
+            fillBuffer();
+        }
+        _pos = _fill;
+    }
+};
 
 class WiFiClientSocketHandle {
 private:
@@ -57,14 +183,14 @@ public:
     }
 };
 
-
-WiFiClient::WiFiClient():_rxBuff(nullptr),_connected(false),_timeout(WIFI_CLIENT_DEF_CONN_TIMEOUT_MS),next(NULL)
+WiFiClient::WiFiClient():_rxBuffer(nullptr),_connected(false),_timeout(WIFI_CLIENT_DEF_CONN_TIMEOUT_MS),next(NULL)
 {
 }
 
-WiFiClient::WiFiClient(int fd):_rxBuff(nullptr),_connected(true),_timeout(WIFI_CLIENT_DEF_CONN_TIMEOUT_MS),next(NULL)
+WiFiClient::WiFiClient(int fd):_connected(true),_timeout(WIFI_CLIENT_DEF_CONN_TIMEOUT_MS),next(NULL)
 {
     clientSocketHandle.reset(new WiFiClientSocketHandle(fd));
+    _rxBuffer.reset(new WiFiClientRxBuffer(fd));
 }
 
 WiFiClient::~WiFiClient()
@@ -76,7 +202,7 @@ WiFiClient & WiFiClient::operator=(const WiFiClient &other)
 {
     stop();
     clientSocketHandle = other.clientSocketHandle;
-    _rxBuff = other._rxBuff;
+    _rxBuffer = other._rxBuffer;
     _connected = other._connected;
     return *this;
 }
@@ -84,7 +210,7 @@ WiFiClient & WiFiClient::operator=(const WiFiClient &other)
 void WiFiClient::stop()
 {
     clientSocketHandle = NULL;
-    _rxBuff = NULL;
+    _rxBuffer = NULL;
     _connected = false;
 }
 
@@ -92,18 +218,18 @@ int WiFiClient::connect(IPAddress ip, uint16_t port)
 {
     return connect(ip,port,_timeout);
 }
-
 int WiFiClient::connect(IPAddress ip, uint16_t port, int32_t timeout_ms)
 {
     PR_INFO("connect: %s,port:%d\r\n", ip.toString().c_str(),port);
     _timeout = timeout_ms;
+
     int sockfd = tal_net_socket_create(PROTOCOL_TCP);
     if (sockfd < 0) {
         PR_ERR("socket: %d\r\n", errno);
         return 0;
     }
     tal_net_set_block(sockfd,0);
-
+   
     uint32_t tmpIP = static_cast<uint32_t>(ip);
     TUYA_IP_ADDR_T serverIP = (TUYA_IP_ADDR_T)UNI_HTONL(tmpIP);
 
@@ -111,11 +237,12 @@ int WiFiClient::connect(IPAddress ip, uint16_t port, int32_t timeout_ms)
     TAL_FD_ZERO(&fdset);
     TAL_FD_SET(sockfd, &fdset);
 
+
     struct timeval tv;
     tv.tv_sec = _timeout / 1000;
     tv.tv_usec = (_timeout  % 1000) * 1000;
 
-    int res = tal_net_connect(sockfd,serverIP,port);
+    int res = tal_net_connect(sockfd,serverIP, port);
 
     if (res < 0 && errno != EINPROGRESS) {
         PR_ERR("connect on fd %d, errno: %d, \"%s\"", sockfd, errno, strerror(errno));
@@ -134,8 +261,9 @@ int WiFiClient::connect(IPAddress ip, uint16_t port, int32_t timeout_ms)
         return 0;
     } else {
         int sockerr;
-        int  len = (int)sizeof(int);
-        res = tal_net_getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &sockerr, &len);
+        int len = (int  )sizeof(int);
+        res =  tal_net_getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &sockerr, &len);
+
         if (res < 0) {
             PR_ERR("getsockopt on fd %d, errno: %d, \"%s\"", sockfd, errno, strerror(errno));
             tal_net_close(sockfd);
@@ -149,17 +277,18 @@ int WiFiClient::connect(IPAddress ip, uint16_t port, int32_t timeout_ms)
         }
     }
 
-    #define ROE_WIFICLIENT(x,msg) { if (((x)<0)) { printf("Setsockopt '" msg "'' on fd %d failed. errno: %d, \"%s\"", sockfd, errno, strerror(errno)); return 0; }}
+#define ROE_WIFICLIENT(x,msg) { if (((x)<0)) { PR_ERR("Setsockopt '" msg "'' on fd %d failed. errno: %d, \"%s\"", sockfd, errno, strerror(errno)); return 0; }}
     ROE_WIFICLIENT(tal_net_setsockopt(sockfd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv)),"SO_SNDTIMEO");
     ROE_WIFICLIENT(tal_net_setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv)),"SO_RCVTIMEO");
 
     // These are also set in WiFiClientSecure, should be set here too?
-    //ROE_WIFICLIENT(setsockopt(sockfd, IPPROTO_TCP, TCP_NODELAY, &enable, sizeof(enable)),"TCP_NODELAY"); 
-    //ROE_WIFICLIENT (setsockopt(sockfd, SOL_SOCKET, SO_KEEPALIVE, &enable, sizeof(enable)),"SO_KEEPALIVE");
-    tal_net_set_block(sockfd,1);
+    //ROE_WIFICLIENT(tal_net_setsockopt(sockfd, IPPROTO_TCP, TCP_NODELAY, &enable, sizeof(enable)),"TCP_NODELAY"); 
+    //ROE_WIFICLIENT (tal_net_setsockopt(sockfd, SOL_SOCKET, SO_KEEPALIVE, &enable, sizeof(enable)),"SO_KEEPALIVE");
 
-    //fcntl( sockfd, F_SETFL, fcntl( sockfd, F_GETFL, 0 ) & (~O_NONBLOCK) );
+    tal_net_set_block(sockfd,1);
     clientSocketHandle.reset(new WiFiClientSocketHandle(sockfd));
+    _rxBuffer.reset(new WiFiClientRxBuffer(sockfd));
+
     _connected = true;
     return 1;
 }
@@ -217,7 +346,7 @@ int WiFiClient::setOption(int option, int *value)
 
 int WiFiClient::getOption(int option, int *value)
 {
-    int size = sizeof(int);
+	int size = sizeof(int);
     int res = tal_net_getsockopt(fd(), IPPROTO_TCP, option, (char *)value, &size);
     if(res < 0) {
         PR_ERR("getOption fail on fd %d, errno: %d, \"%s\"", fd(), errno, strerror(errno));
@@ -245,9 +374,16 @@ size_t WiFiClient::write(uint8_t data)
 
 int WiFiClient::read()
 {
-    uint8_t readVal;
-    read(&readVal, 1);
-    return (int)readVal;
+    uint8_t data = 0;
+    int res = read(&data, 1);
+    if(res < 0) {
+        return res;
+    }
+    if (res == 0) {  //  No data available.
+        return -1;
+    }
+
+    return data;
 }
 
 size_t WiFiClient::write(const uint8_t *buf, size_t size)
@@ -276,7 +412,7 @@ size_t WiFiClient::write(const uint8_t *buf, size_t size)
         }
 
         if(TAL_FD_ISSET(socketFileDescriptor, &set)) {
-            res = tal_net_send(socketFileDescriptor, (void*) buf, bytesRemaining);
+            res = send(socketFileDescriptor, (void*) buf, bytesRemaining, MSG_DONTWAIT);
             if(res > 0) {
                 totalBytesSent += res;
                 if (totalBytesSent >= size) {
@@ -330,78 +466,49 @@ size_t WiFiClient::write(Stream &stream)
 
 int WiFiClient::read(uint8_t *buf, size_t size)
 {
-    int res = 0;
-
-    if (nullptr == _rxBuff) {
-        _rxBuff = new cbuf(TCP_RX_PACKET_MAX_SIZE);
-        if (nullptr == _rxBuff) {
-            PR_ERR("_rxBuff new fail!\n");
-            return -1;
+    int res = -1;
+    if (_rxBuffer) {
+        res = _rxBuffer->read(buf, size);
+        if(_rxBuffer->failed()) {
+            PR_ERR("read fail on fd %d, errno: %d, \"%s\"", fd(), errno, strerror(errno));
+            stop();
         }
     }
-
-    uint8_t *tmpBuff = NULL;
-    if (-1 == fd()) {
-        return 0;
-    }
-
-    TUYA_FD_SET_T readfds;
-    TAL_FD_ZERO(&readfds);
-    TAL_FD_SET( fd(),&readfds);
-
-    #if 1
-    res = tal_net_select( fd() + 1, &readfds, NULL, NULL, 1);
-   
-    if (res > 0 && TAL_FD_ISSET( fd(), &readfds)) {
-        tmpBuff = (uint8_t *)tal_malloc(RECV_TMP_BUFF_SIZE);
-        if (NULL == tmpBuff) {
-            PR_ERR("tmpBuff malloc fail!\n");
-            return -1;
-        }
-        while (1) {
-            res = tal_net_recv(fd(),tmpBuff,RECV_TMP_BUFF_SIZE);
-            if (res > 0) {
-                _rxBuff->write((const char*)tmpBuff, (size_t)res);
-                break;
-            } else {
-                break;
-            }
-        }
-        tal_free(tmpBuff);
-        tmpBuff = NULL;
-    }
-    #else
-    // LWIP_SO_RCVBUF is not available
-    // int res = lwip_ioctl(fd(), FIONREAD, &count);
-    #endif
-    if (nullptr != buf && size > 0) {
-        res=_rxBuff->read((char *)buf, size);
-    }
-    else 
-        res = 0;
     return res;
 }
 
 int WiFiClient::peek()
 {
     int res = -1;
-    if (_rxBuff) {
-        res = _rxBuff->peek();
+    if (_rxBuffer) {
+        res = _rxBuffer->peek();
+        if(_rxBuffer->failed()) {
+            PR_ERR("peek fail on fd %d, errno: %d, \"%s\"", fd(), errno, strerror(errno));
+            stop();
+        }
     }
     return res;
 }
 
 int WiFiClient::available()
-{  
-    read(nullptr, 0);
-    return (int)_rxBuff->available();
+{
+    if(!_rxBuffer)
+    {
+        return 0;
+    }
+    int res = _rxBuffer->available();
+    if(_rxBuffer->failed()) {
+        PR_ERR("available fail on fd %d, errno: %d, \"%s\"", fd(), errno, strerror(errno));
+        stop();
+    }
+    return res;
 }
 
 // Though flushing means to send all pending data,
 // seems that in Arduino it also means to clear RX
 void WiFiClient::flush() {
-    if (_rxBuff != nullptr) {
-        _rxBuff->flush();
+    if (_rxBuffer != nullptr) {
+        _rxBuffer->flush();
     }
 }
 
