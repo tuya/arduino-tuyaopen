@@ -9,7 +9,7 @@ current_path = os.path.normpath(current_path)
 compiler_path = "{runtime.tools.gcc-arm-none-eabi.path}"
 
 class board_info_class():
-    def __init__(self, name, chip, vendor_name, product_name, variant, upload_baud_rate, toolchain=compiler_path, core="tuya_open"):
+    def __init__(self, name, chip, vendor_name, product_name, variant, upload_baud_rate_list, toolchain=compiler_path, core="tuya_open"):
         self.name = name
         self.chip = chip
         self.vendor_name = vendor_name
@@ -19,7 +19,7 @@ class board_info_class():
         self.core = core
 
         # upload baud rate
-        self.upload_baud_rate = upload_baud_rate
+        self.upload_baud_rate_list = upload_baud_rate_list
 
         # arduino ide display name
         self.board_name_ide = ""
@@ -96,16 +96,27 @@ def build_upload(bi):
     print()
     print(f"{bi.name}.upload.tool=tyutool")
     print(f"{bi.name}.upload.tool.default=tyutool")
-    print(f"{bi.name}.upload.tool.baud_rate={bi.upload_baud_rate}")
+    # print(f"{bi.name}.upload.tool.baud_rate={bi.upload_baud_rate}")
+    # print(f"{bi.name}.upload.tool.baud_rate={{upload.speed}}")
 
 def build_monitor(bi):
     print()
     print(f"{bi.name}.monitor_port.serial.baudrate=115200")
 
-def make_board(name, chip, vendor_name, product_name, variant, upload_baud_rate=921600):
-    board_info = board_info_class(name, chip, vendor_name, product_name, variant, upload_baud_rate)
+def build_menu_head():
+    print(f"menu.UploadSpeed=Upload Speed")
+
+def build_menu(bi):
+    print()
+    for baud_rate in bi.upload_baud_rate_list:
+        print(f"{bi.name}.menu.UploadSpeed.{baud_rate}={baud_rate}")
+        print(f"{bi.name}.menu.UploadSpeed.{baud_rate}.upload.speed={baud_rate}")
+
+def make_board(name, chip, vendor_name, product_name, variant, upload_baud_rate_list):
+    board_info = board_info_class(name, chip, vendor_name, product_name, variant, upload_baud_rate_list)
 
     build_header(board_info)
+    build_menu(board_info)
     build_toolchain(board_info)
     build_flags(board_info)
     build_upload(board_info)
@@ -116,10 +127,18 @@ def make_board(name, chip, vendor_name, product_name, variant, upload_baud_rate=
 if __name__ == "__main__":
     # print() redirect to a file
     board_file = os.path.join(current_path, "../" "boards.txt")
+    board_file = os.path.normpath(board_file)
     sys.stdout = open(board_file, "w", newline='\n')
 
-    make_board("t2", "t2", "", "T2", "t2", 921600)
-    make_board("t3", "t3", "", "T3", "t3", 921600)
-    make_board("t5", "t5", "", "T5", "t5", 921600)
+    build_menu_head()
+
+    t2_upload_speed_list = [921600, 115200, 230400, 460800, 1500000, 2000000]
+    make_board("t2", "t2", "", "T2", "t2", t2_upload_speed_list)
+
+    t3_upload_speed_list = [921600, 115200, 230400, 460800, 1500000, 2000000]
+    make_board("t3", "t3", "", "T3", "t3", t3_upload_speed_list)
+
+    t5_upload_speed_list = [921600, 115200, 230400, 460800, 1500000, 2000000]
+    make_board("t5", "t5", "", "T5", "t5", t5_upload_speed_list)
 
 

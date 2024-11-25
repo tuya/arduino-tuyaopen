@@ -1,3 +1,4 @@
+menu.UploadSpeed=Upload Speed
 
 # --------------------------------------------------
 #                         T2                        
@@ -7,6 +8,19 @@ t2.build.chip=t2
 t2.build.board=T2
 t2.build.core=tuya_open
 t2.build.variant=t2
+
+t2.menu.UploadSpeed.921600=921600
+t2.menu.UploadSpeed.921600.upload.speed=921600
+t2.menu.UploadSpeed.115200=115200
+t2.menu.UploadSpeed.115200.upload.speed=115200
+t2.menu.UploadSpeed.230400=230400
+t2.menu.UploadSpeed.230400.upload.speed=230400
+t2.menu.UploadSpeed.460800=460800
+t2.menu.UploadSpeed.460800.upload.speed=460800
+t2.menu.UploadSpeed.1500000=1500000
+t2.menu.UploadSpeed.1500000.upload.speed=1500000
+t2.menu.UploadSpeed.2000000=2000000
+t2.menu.UploadSpeed.2000000.upload.speed=2000000
 
 t2.compiler.path={runtime.tools.gcc-arm-none-eabi.path}
 t2.compiler.cmd.S={compiler.path}/bin/arm-none-eabi-gcc
@@ -34,7 +48,6 @@ t2.compiler.flags.ld_scripts=-Wl,--cref -Wl,-Map={build.path}/{build.project_nam
 
 t2.upload.tool=tyutool
 t2.upload.tool.default=tyutool
-t2.upload.tool.baud_rate=921600
 
 t2.monitor_port.serial.baudrate=115200
 
@@ -46,6 +59,19 @@ t3.build.chip=t3
 t3.build.board=T3
 t3.build.core=tuya_open
 t3.build.variant=t3
+
+t3.menu.UploadSpeed.921600=921600
+t3.menu.UploadSpeed.921600.upload.speed=921600
+t3.menu.UploadSpeed.115200=115200
+t3.menu.UploadSpeed.115200.upload.speed=115200
+t3.menu.UploadSpeed.230400=230400
+t3.menu.UploadSpeed.230400.upload.speed=230400
+t3.menu.UploadSpeed.460800=460800
+t3.menu.UploadSpeed.460800.upload.speed=460800
+t3.menu.UploadSpeed.1500000=1500000
+t3.menu.UploadSpeed.1500000.upload.speed=1500000
+t3.menu.UploadSpeed.2000000=2000000
+t3.menu.UploadSpeed.2000000.upload.speed=2000000
 
 t3.compiler.path={runtime.tools.gcc-arm-none-eabi.path}
 t3.compiler.cmd.S={compiler.path}/bin/arm-none-eabi-gcc
@@ -73,7 +99,6 @@ t3.compiler.flags.ld_scripts=-Wl,--cref -Wl,-Map={build.path}/{build.project_nam
 
 t3.upload.tool=tyutool
 t3.upload.tool.default=tyutool
-t3.upload.tool.baud_rate=921600
 
 t3.monitor_port.serial.baudrate=115200
 
@@ -85,6 +110,19 @@ t5.build.chip=t5
 t5.build.board=T5
 t5.build.core=tuya_open
 t5.build.variant=t5
+
+t5.menu.UploadSpeed.921600=921600
+t5.menu.UploadSpeed.921600.upload.speed=921600
+t5.menu.UploadSpeed.115200=115200
+t5.menu.UploadSpeed.115200.upload.speed=115200
+t5.menu.UploadSpeed.230400=230400
+t5.menu.UploadSpeed.230400.upload.speed=230400
+t5.menu.UploadSpeed.460800=460800
+t5.menu.UploadSpeed.460800.upload.speed=460800
+t5.menu.UploadSpeed.1500000=1500000
+t5.menu.UploadSpeed.1500000.upload.speed=1500000
+t5.menu.UploadSpeed.2000000=2000000
+t5.menu.UploadSpeed.2000000.upload.speed=2000000
 
 t5.compiler.path={runtime.tools.gcc-arm-none-eabi.path}
 t5.compiler.cmd.S={compiler.path}/bin/arm-none-eabi-gcc
@@ -112,6 +150,5 @@ t5.compiler.flags.ld_scripts=-Wl,--cref -Wl,-Map={build.path}/{build.project_nam
 
 t5.upload.tool=tyutool
 t5.upload.tool.default=tyutool
-t5.upload.tool.baud_rate=921600
 
 t5.monitor_port.serial.baudrate=115200
