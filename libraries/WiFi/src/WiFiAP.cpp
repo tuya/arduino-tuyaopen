@@ -15,7 +15,13 @@ extern "C" {
 #include <lwip/ip_addr.h>
 #include "lwip/err.h"
 #include "lwip/dns.h"
+
+#if defined(ARDUINO_T5)
+#include "net.h"
+#else
 #include "lwip/net.h"
+#endif
+
 #include "lwip/netif.h"
 }
 
