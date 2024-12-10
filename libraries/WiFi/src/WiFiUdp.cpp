@@ -25,6 +25,7 @@
 #include <errno.h>
 #include "tal_log.h"
 #include "tal_network.h"
+#include "tal_memory.h"
 
 #undef write
 #undef read
@@ -49,7 +50,7 @@ uint8_t WiFiUDP::begin(IPAddress address, uint16_t port){
 
   server_port = port;
 
-  tx_buffer = (char *)malloc(1460);
+  tx_buffer = (char *)tal_malloc(1460);
   if(!tx_buffer){
     PR_ERR("could not create tx buffer: %d\r\n", errno);
     return 0;
@@ -101,7 +102,7 @@ uint8_t WiFiUDP::beginMulticast(IPAddress a, uint16_t p){
 
 void WiFiUDP::stop(){
   if(tx_buffer){
-    free(tx_buffer);
+    tal_free(tx_buffer);
     tx_buffer = NULL;
   }
   tx_buffer_len = 0;
@@ -137,7 +138,7 @@ int WiFiUDP::beginPacket(){
 
   // allocate tx_buffer if is necessary
   if(!tx_buffer){
-    tx_buffer = (char *)malloc(1460);
+    tx_buffer = (char *)tal_malloc(1460);
     if(!tx_buffer){
       PR_ERR("could not create tx buffer: %d", errno);
       return 0;
@@ -206,12 +207,12 @@ int WiFiUDP::parsePacket(){
   TUYA_IP_ADDR_T ip;
   uint16_t port;
   int len;
-  char *buf = (char *)malloc(1460);
+  char *buf = (char *)tal_malloc(1460);
   if(!buf) {
     return 0;
   }
   if ((len = tal_net_recvfrom(udp_server, buf, 1460,&ip,&port)) == -1){
-    free(buf);
+    tal_free(buf);
     if(errno == EWOULDBLOCK){
       return 0;
     }
@@ -224,7 +225,7 @@ int WiFiUDP::parsePacket(){
     rx_buffer = new(std::nothrow) cbuf(len);
     rx_buffer->write(buf, len);
   }
-  free(buf);
+  tal_free(buf);
   return len;
 }
 

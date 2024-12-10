@@ -10,6 +10,7 @@
 #include <lwip/ip_addr.h>
 #include "lwip/err.h"
 #include "lwip/dns.h"
+#include "lwip/inet.h"
 #include "FreeRTOS.h"
 #include "event_groups.h"
 #include "tal_log.h"
@@ -124,12 +125,13 @@ bool WiFiSTAClass::config(IPAddress local_ip, IPAddress gateway, IPAddress subne
     if(!WiFi.enableSTA(true)) {
         return false;
     }
-    sta_ip.dhcpen = 0;
-    strcpy(sta_ip.ip, local_ip.toString().c_str()); 
-    strcpy(sta_ip.gw, gateway.toString().c_str()); 
-    strcpy(sta_ip.mask, subnet.toString().c_str()); 
-    strcpy(sta_ip.dns, dns1.toString().c_str()); 
-    int res = tkl_wifi_set_ip(WF_STATION,&sta_ip);
+
+    memset(&sta_ip, 0, sizeof(NW_IP_S));
+    strcpy(sta_ip.ip, local_ip.toString().c_str());
+    strcpy(sta_ip.gw, gateway.toString().c_str());
+    strcpy(sta_ip.mask, subnet.toString().c_str());
+    int res = tkl_wifi_set_ip(WF_STATION, &sta_ip);
+
     return res;
 }
 
@@ -226,12 +228,15 @@ IPAddress WiFiSTAClass::dnsIP(uint8_t dns_no)
     if(WiFiGenericClass::getMode() == WWM_POWERDOWN){
         return IPAddress();
     }
-    NW_IP_S ip_info;
-    if(tkl_wifi_get_ip(WF_STATION,&ip_info) != OPRT_OK){
-        PR_ERR("Netif Get IP Failed!\r\n");
-    	return IPAddress();
-    }
-    return IPAddress(ip_info.dns);
+    const ip_addr_t* p_dns = dns_getserver(dns_no);
+
+    char dns_str[40];
+
+    memset(dns_str, 0, sizeof(dns_str));
+
+    ipaddr_ntoa_r(p_dns, dns_str, sizeof(dns_str));
+
+    return IPAddress(dns_str);
 }
 
 IPAddress WiFiSTAClass::broadcastIP()

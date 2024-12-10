@@ -5,11 +5,20 @@ extern "C" {
 #include "tal_log.h"
 }
 
-#if defined(ARDUINO_TUYA_T2)
+#if defined(ARDUINO_T2)
 extern "C" void tkl_spi_set_spic_flag(void);
 #endif
 
 using namespace arduino;
+
+#if defined(ARDUINO_T3)
+static volatile uint8_t _spi_transfer_complete = 0;
+extern "C" void _arduino_spi_irq_cb(TUYA_SPI_NUM_E port, TUYA_SPI_IRQ_EVT_E event)
+{
+  _spi_transfer_complete = 1;
+  return;
+}
+#endif
 
 SPIClassTuyaOpen::SPIClassTuyaOpen()
 {
@@ -34,7 +43,7 @@ SPIClassTuyaOpen::SPIClassTuyaOpen(TUYA_SPI_NUM_E port)
   cfg.mode = TUYA_SPI_MODE0;
   cfg.type = TUYA_SPI_AUTO_TYPE;
   cfg.databits = TUYA_SPI_DATA_BIT8;
-  cfg.bitorder = TUYA_SPI_ORDER_LSB2MSB;
+  cfg.bitorder = TUYA_SPI_ORDER_LSB2MSB; // TODO: T2->TUYA_SPI_ORDER_LSB2MSB?
   cfg.freq_hz = SPI_DEFAULT_CLOCK;
   cfg.spi_dma_flags = 1;
 
@@ -45,7 +54,7 @@ SPIClassTuyaOpen::SPIClassTuyaOpen(TUYA_SPI_NUM_E port, TUYA_SPI_BASE_CFG_T cfg)
 {
   _spiConfigInitAlwaysInline(port, cfg);
 
-#if defined(ARDUINO_TUYA_T2)
+#if defined(ARDUINO_T2)
   tkl_spi_set_spic_flag();
 #endif
 }
@@ -58,6 +67,7 @@ SPIClassTuyaOpen::~SPIClassTuyaOpen()
 void SPIClassTuyaOpen::begin()
 {
   // nothing to do
+  begin(-1);
   return;
 }
 
@@ -70,6 +80,10 @@ void SPIClassTuyaOpen::begin(int csPin)
     digitalWrite(_csPin, HIGH);
     _cfg.type = TUYA_SPI_SOFT_TYPE;
   }
+
+#if defined(ARDUINO_T3)
+  tkl_spi_irq_init(_port, _arduino_spi_irq_cb);
+#endif
 }
 
 void SPIClassTuyaOpen::end()
@@ -114,6 +128,7 @@ void SPIClassTuyaOpen::beginTransaction(SPISettings settings)
   if (-1 != _csPin) {
     digitalWrite(_csPin, LOW);
   }
+
 }
 
 void SPIClassTuyaOpen::endTransaction(void)
@@ -122,6 +137,15 @@ void SPIClassTuyaOpen::endTransaction(void)
     return;
   }
   _isBeginTransaction = 0;
+
+#if defined(ARDUINO_T3)
+  while (0 == _spi_transfer_complete) {
+    delay(1); // wait for transfer complete
+  }
+
+  tkl_spi_irq_disable(_port);
+  // PR_DEBUG("irq_disable");
+#endif
 
   tkl_spi_deinit(_port);
 
@@ -159,6 +183,12 @@ uint16_t SPIClassTuyaOpen::transfer16(uint16_t data)
 
 void SPIClassTuyaOpen::transfer(void *buf, size_t count)
 {
+#if defined(ARDUINO_T3)
+  _spi_transfer_complete = 0;
+  tkl_spi_irq_enable(_port);
+  // PR_DEBUG("irq_enable");
+#endif
+  // PR_DEBUG("send: %d", count);
   tkl_spi_send(_port, buf, count);
 }
 

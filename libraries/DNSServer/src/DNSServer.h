@@ -49,7 +49,7 @@ struct DNSHeader
     struct {
       uint16_t RD : 1;      // recursion desired
       uint16_t Trunc : 1;      // truncated message
-      uint16_t AuthAns : 1;      // authoritive answer
+      uint16_t AuthAns : 1;      // authoritative answer
       uint16_t OPCode : 4;  // message_type
       uint16_t QRFlag : 1;      // query/response flag
       uint16_t RspCode : 4;   // response code

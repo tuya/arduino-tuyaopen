@@ -7,10 +7,6 @@
 #include <stdlib.h>
 #include <inttypes.h>
 #include <string.h>
-#include "projdefs.h"
-#include "portmacro.h"
-#include "tal_thread.h"
-#include "tal_queue.h"
 #include "FreeRTOS.h"
 #include "event_groups.h"
 #include "lwip/ip_addr.h"
@@ -21,8 +17,7 @@
 #include <vector>
 #include "lwip_netif_address.h"
 #include "net.h"
-
-#include "tal_log.h"
+#include "tal_api.h"
 #include "tkl_wifi.h"
 #include "tal_wifi.h"
 
@@ -41,7 +36,7 @@ typedef struct WiFiEventCbList {
 
 static bool _bk_wifi_started = false;
 static QUEUE_HANDLE _arduino_event_queue = NULL;
-static TaskHandle_t _arduino_event_task_handle = NULL;
+static THREAD_HANDLE _arduino_event_task_handle = NULL;
 static EventGroupHandle_t _arduino_event_group = NULL;
 static bool lowLevelInitDone = false;
 static std::vector<WiFiEventCbList_t> cbEventList;
@@ -51,7 +46,6 @@ bool WiFiGenericClass::_persistent = true;
 bool WiFiGenericClass::_long_range = false;
 
 wifi_event_id_t WiFiEventCbList::current_id = 1;
-
 
 static void _arduino_event_task(void * arg)
 {
@@ -68,10 +62,10 @@ static void _arduino_event_task(void * arg)
 
 int postArduinoEvent(arduino_event_t *data)
 {
-	if(data == NULL){
+    if (data == NULL) {
         return OPRT_COM_ERROR;
-	}
-     
+    }
+
     int ret = tal_queue_post(_arduino_event_queue, data, 0) ;
     if (ret != OPRT_OK) {
         PR_ERR("Arduino Event Send Failed!\r\n");
@@ -112,7 +106,6 @@ static void __netconn_wifi_event(WF_EVENT_E event, void *arg)
 
 static bool _start_network_event_task()
 {
-   
     if(!_arduino_event_group){
         _arduino_event_group = xEventGroupCreate();
         if(!_arduino_event_group){
@@ -122,22 +115,22 @@ static bool _start_network_event_task()
         xEventGroupSetBits(_arduino_event_group, WIFI_DNS_IDLE_BIT);
     }
     if(!_arduino_event_queue){
-    	tal_queue_create_init(&_arduino_event_queue,sizeof(arduino_event_t),32);
+        tal_queue_create_init(&_arduino_event_queue,sizeof(arduino_event_t),32);
         if(!_arduino_event_queue){
             PR_ERR("Network Event Queue Create Failed!");
             return false;
         }
     }
-   
+
     tkl_wifi_init(__netconn_wifi_event);
 
     THREAD_CFG_T param;
     param.priority = THREAD_PRIO_3;
     param.stackDepth = 4096;
     param.thrdname =  "arduino_events";
- 
+
     if(!_arduino_event_task_handle)
-    {        
+    {
         tal_thread_create_and_start( &_arduino_event_task_handle, NULL, NULL, _arduino_event_task, NULL, &param);
         if(!_arduino_event_task_handle){
             PR_ERR("Network Event Task Start Failed!");
@@ -153,7 +146,7 @@ bool tcpipInit(){
         initialized = true;
         
         if(initialized){
-        	initialized = _start_network_event_task();
+            initialized = _start_network_event_task();
         } else {
             PR_ERR("netif_init failed!\r\n");
         }
@@ -339,8 +332,8 @@ int WiFiGenericClass::_eventCallback(arduino_event_t *event)
         setStatusBits(STA_CONNECTED_BIT);
 
     } else if(event->event_id == ARDUINO_EVENT_WIFI_STA_DISCONNECTED) {
-       WiFiSTAClass::_setStatus(WSS_CONN_FAIL);
-    }                 
+        WiFiSTAClass::_setStatus(WSS_CONN_FAIL);
+    }
 
     for(uint32_t i = 0; i < cbEventList.size(); i++) {
     WiFiEventCbList_t entry = cbEventList[i];

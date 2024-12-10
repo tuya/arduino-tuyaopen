@@ -1,7 +1,8 @@
 #include <Arduino.h>
 #include "WiFiMulti.h"
-#include "tkl_system.h"
+#include "tal_system.h"
 #include "tal_log.h"
+#include "tal_memory.h"
 
 extern "C" {
 #include <limits.h>
@@ -17,10 +18,10 @@ WiFiMulti::~WiFiMulti()
     for(uint32_t i = 0; i < APlist.size(); i++) {
         WifiAPlist_t entry = APlist[i];
         if(entry.ssid) {
-            free(entry.ssid);
+            tal_free(entry.ssid);
         }
         if(entry.passphrase) {
-            free(entry.passphrase);
+            tal_free(entry.passphrase);
         }
     }
     APlist.clear();
@@ -41,7 +42,7 @@ bool WiFiMulti::addAP(const char* ssid, const char *passphrase)
         PR_ERR("[WIFI][APlistAdd] passphrase too long\r\n");
         return false;
     }
-    newAP.ssid =(char*) malloc(sizeof(char)*strlen(ssid));
+    newAP.ssid =(char*) tal_malloc(sizeof(char)*strlen(ssid));
     strcpy(newAP.ssid,ssid);
 
     if(!newAP.ssid) {
@@ -50,11 +51,11 @@ bool WiFiMulti::addAP(const char* ssid, const char *passphrase)
     }
 
     if(passphrase && *passphrase != 0x00) {
-        newAP.passphrase =(char*) malloc(sizeof(char)*strlen(passphrase));
+        newAP.passphrase =(char*) tal_malloc(sizeof(char)*strlen(passphrase));
         strcpy(newAP.passphrase,passphrase);
         if(!newAP.passphrase) {
             PR_ERR("[WIFI][APlistAdd] fail newAP.passphrase == 0\r\n");
-            free(newAP.ssid);
+            tal_free(newAP.ssid);
             return false;
         }
     } else {
@@ -81,7 +82,7 @@ uint8_t WiFiMulti::run(uint32_t connectTimeout)
         PR_ERR("WiFi.disconnect\r\n");
         WiFi.disconnect(false,false);
     
-        tkl_system_delay(10);
+        tal_system_sleep(10);
         status = WiFi.status();
     }
 
@@ -152,7 +153,7 @@ uint8_t WiFiMulti::run(uint32_t connectTimeout)
             // wait for connection, fail, or timeout
             while(status != WSS_GOT_IP && status != WSS_NO_AP_FOUND && status != WSS_CONN_FAIL && (millis() - startTime) <= connectTimeout) {
                 //rtos_delay_milliseconds(10);
-                tkl_system_delay(10);
+                tal_system_sleep(10);
                 status = WiFi.status();
             }
 

@@ -1,5 +1,6 @@
 #include <WiFi.h>
 #include <WiFiMulti.h>
+#include "tal_api.h"
 
 WiFiMulti wifiMulti;
 
@@ -86,7 +87,7 @@ void loop() {
     //check UART for data
     if(Serial.available()){
       size_t len = Serial.available();
-      uint8_t *sbuf = (uint8_t *)malloc(len);
+      uint8_t *sbuf = (uint8_t *)tal_malloc(len);
       Serial.readBytes(sbuf, len);
       //push UART data to all connected telnet clients
       for(i = 0; i < MAX_SRV_CLIENTS; i++){
@@ -95,7 +96,7 @@ void loop() {
           delay(1);
         }
       }
-      free(sbuf);
+      tal_free(sbuf);
     }
   }
   else {

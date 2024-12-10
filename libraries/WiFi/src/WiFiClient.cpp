@@ -22,6 +22,8 @@
 #include "lwip/sockets.h"
 #include "lwip/netdb.h"
 #include <errno.h>
+#include "tal_memory.h"
+#include "tal_log.h"
 #include "tal_network.h"
 #include "tal_log.h"
 
@@ -61,7 +63,7 @@ private:
         size_t fillBuffer()
         {
             if(!_buffer){
-                _buffer = (uint8_t *)malloc(_size);
+                _buffer = (uint8_t *)tal_malloc(_size);
                 if(!_buffer) {
                     PR_ERR("Not enough memory to allocate buffer");
                     _failed = true;
@@ -95,12 +97,12 @@ public:
         ,_fd(fd)
         ,_failed(false)
     {
-        //_buffer = (uint8_t *)malloc(_size);
+        //_buffer = (uint8_t *)tal_malloc(_size);
     }
 
     ~WiFiClientRxBuffer()
     {
-        free(_buffer);
+        tal_free(_buffer);
     }
 
     bool failed(){
@@ -446,7 +448,7 @@ size_t WiFiClient::write_P(PGM_P buf, size_t size)
 
 size_t WiFiClient::write(Stream &stream)
 {
-    uint8_t * buf = (uint8_t *)malloc(1360);
+    uint8_t * buf = (uint8_t *)tal_malloc(1360);
     if(!buf){
         return 0;
     }
@@ -458,7 +460,7 @@ size_t WiFiClient::write(Stream &stream)
         written += write(buf, toWrite);
         available = stream.available();
     }
-    free(buf);
+    tal_free(buf);
     return written;
 }
 

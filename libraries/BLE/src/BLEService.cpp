@@ -2,6 +2,7 @@
 #include "BLEServer.h"
 #include "BLECharacteristic.h"
 #include <string.h>
+#include "tal_api.h"
 
 static int hex2num(char c)
 {
@@ -53,13 +54,13 @@ BLEService::BLEService(std::string uuid)
 	char_index = 0;
 			
     if (!ble_gatt_service) {
-        ble_gatt_service = (TKL_BLE_GATTS_PARAMS_T*)malloc(sizeof(TKL_BLE_GATTS_PARAMS_T));
+        ble_gatt_service = (TKL_BLE_GATTS_PARAMS_T*)tal_malloc(sizeof(TKL_BLE_GATTS_PARAMS_T));
     }
     if (!ble_service) {
-        ble_service = (TKL_BLE_SERVICE_PARAMS_T*)malloc(sizeof(TKL_BLE_SERVICE_PARAMS_T));
+        ble_service = (TKL_BLE_SERVICE_PARAMS_T*)tal_malloc(sizeof(TKL_BLE_SERVICE_PARAMS_T));
     }
     if (!ble_service_char) {
-        ble_service_char = (TKL_BLE_CHAR_PARAMS_T *)malloc(sizeof(TKL_BLE_CHAR_PARAMS_T) * TKL_BLE_GATT_CHAR_MAX_NUM);
+        ble_service_char = (TKL_BLE_CHAR_PARAMS_T *)tal_malloc(sizeof(TKL_BLE_CHAR_PARAMS_T) * TKL_BLE_GATT_CHAR_MAX_NUM);
     }
 
 	ble_gatt_service->svc_num  = 1 ;

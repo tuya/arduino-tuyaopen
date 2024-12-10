@@ -182,7 +182,7 @@ void DNSServer::replyWithIP()
   _Udp.write( (unsigned char*) &_DnsQuestion->QClass, 2 ) ;
 
   // Write the answer 
-  // Use DNS name compression : instead of repeating the name in this RNAME occurence,
+  // Use DNS name compression : instead of repeating the name in this RNAME occurrence,
   // set the two MSB of the byte corresponding normally to the length to 1. The following
   // 14 bits must be used to specify the offset of the domain name in the message 
   // (<255 here so the first byte has the 6 LSB at 0) 

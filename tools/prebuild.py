@@ -3,6 +3,7 @@
 
 import sys
 import os
+import platform
 import logging
 import argparse
 
@@ -26,6 +27,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--sketch-path", type=str, required=True, help="path to sketch")
     parser.add_argument("--build-path", type=str, required=True, help="path to build")
+    parser.add_argument("--chip", type=str, required=True, help="chip type")
     parser.add_argument("-v", "--verbose", action='store_true', help="verbose output")
     return parser.parse_args()
 
@@ -35,6 +37,12 @@ if __name__ == "__main__":
         log_config(logging.DEBUG)
     else:
         log_config()
+
+    logging.debug(f"platform system: {platform.system()}")
+
+    if platform.system() == "Darwin" and args.chip == "t2":
+        logging.error("t2 not support Darwin")
+        sys.exit(1)
 
     logging.debug(f"Toolspath: {toolspath}")
 

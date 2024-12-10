@@ -29,12 +29,11 @@ static void mqtt_disconnected_cb(void *client, void *userdata)
 
 static void mqtt_subscribed_cb(void *client, uint16_t msgid, void *userdata)
 {
-    PR_DEBUG("Subscribe successed ID:%d", msgid);
+    PR_DEBUG("Subscribe succeeded ID:%d", msgid);
 }
 
 static void mqtt_puback_cb(void *client, uint16_t msgid, void *userdata)
 {
-
     PR_DEBUG("PUBACK ID:%d", msgid);
 }
 
@@ -105,7 +104,7 @@ int MQTTClient::disconnect(void *client)
     {
         mqtt_client_status_t mqtt_status;
         mqtt_status = mqtt_client_disconnect(client);
-        PR_ERR("MQTT disconenct :%d", mqtt_status);
+        PR_ERR("MQTT disconnect :%d", mqtt_status);
         is_connected = false;
         return OPRT_OK;
     }
