@@ -2,6 +2,12 @@
 
 #include "tal_system.h"
 
+unsigned long micros(void)
+{
+    unsigned long us = tal_system_get_millisecond() * 1000;
+    return us;
+}
+
 unsigned long millis()
 {
     unsigned long ms = tal_system_get_millisecond();

@@ -27,10 +27,12 @@ void TwoWire::setClock(uint32_t freq) {
 
 bool TwoWire::setSDA(pin_size_t sda) {
   _sda = sda;
+  return true;
 }
 
 bool TwoWire::setSCL(pin_size_t scl) {
   _scl = scl;
+  return true;
 }
 
 void TwoWire::begin() {
