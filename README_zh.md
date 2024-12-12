@@ -43,7 +43,7 @@ arduino-tuyaopen 基于 [tuya-open-sdk-for-device](https://github.com/tuya/tuya-
   https://github.com/tuya/arduino-tuyaopen/releases/download/global/package_tuya_open_index.json
   ```
 
-  对于中国大陆地区的开发者可以选择下方开发板管理地址：
+  或使用 gitee 地址：
 
   ```
   https://gitee.com/tuya-open/arduino-tuyaopen/releases/download/global/package_tuya_open_index_cn.json
