@@ -29,6 +29,7 @@ arduino-tuyaopen 基于 [tuya-open-sdk-for-device](https://github.com/tuya/tuya-
 |  T2  |   支持   | 支持  |  暂不支持  |
 |  T3  |   支持   | 支持  |   支持    |
 |  T5  |   支持   | 支持  |   支持    |
+|  LN882H  |   支持   | 支持  |   支持    |
 
 > 注意：当前部分芯片未支持某些操作系统，我们正在全力支持中，敬请期待！
 

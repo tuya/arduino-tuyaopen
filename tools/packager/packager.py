@@ -10,6 +10,7 @@ import subprocess
 from .chip_info import chip_info_class
 from .packager_t2 import get_qio_binary_t2
 from .packager_t3_t5 import get_qio_binary_t3_t5
+from .packager_ln882h import get_qio_binary_ln882h
 
 class packager_class():
     def __init__(self, chip, compiler_path, tools_path, output_path, sketch_name, sketch_version):
@@ -52,6 +53,8 @@ class packager_class():
             return get_qio_binary_t2(self.chip_info)
         elif self.chip_info.chip == 't3' or self.chip_info.chip == 't5':
             return get_qio_binary_t3_t5(self.chip_info)
+        elif self.chip_info.chip == 'ln882h':
+            return get_qio_binary_ln882h(self.chip_info)
         else:
             return False
 

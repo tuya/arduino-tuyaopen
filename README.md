@@ -29,6 +29,7 @@ Currently, the project supports T2, T3 and T5 chips.
 |  T2  |   Support   | Support  | Temporarily not supported |
 |  T3  |   Support   | Support  | Support |
 |  T5  |   Support   | Support  | Support |
+|  LN882H  |   Support   | Support  | Support |
 
 > Note: Some chips have not been supported on certain operating systems, and we are working hard to support them, please look forward to it!
 
