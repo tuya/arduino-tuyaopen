@@ -152,3 +152,54 @@ t5.upload.tool=tyutool
 t5.upload.tool.default=tyutool
 
 t5.monitor_port.serial.baudrate=115200
+
+# --------------------------------------------------
+#                       LN882H                      
+# --------------------------------------------------
+ln882h.name=LN882H
+ln882h.build.chip=ln882h
+ln882h.build.board=LN882H
+ln882h.build.core=tuya_open
+ln882h.build.variant=ln882h
+
+ln882h.menu.UploadSpeed.921600=921600
+ln882h.menu.UploadSpeed.921600.upload.speed=921600
+ln882h.menu.UploadSpeed.115200=115200
+ln882h.menu.UploadSpeed.115200.upload.speed=115200
+ln882h.menu.UploadSpeed.230400=230400
+ln882h.menu.UploadSpeed.230400.upload.speed=230400
+ln882h.menu.UploadSpeed.460800=460800
+ln882h.menu.UploadSpeed.460800.upload.speed=460800
+ln882h.menu.UploadSpeed.1500000=1500000
+ln882h.menu.UploadSpeed.1500000.upload.speed=1500000
+ln882h.menu.UploadSpeed.2000000=2000000
+ln882h.menu.UploadSpeed.2000000.upload.speed=2000000
+
+ln882h.compiler.path={runtime.tools.gcc-arm-none-eabi.path}
+ln882h.compiler.cmd.S={compiler.path}/bin/arm-none-eabi-gcc
+ln882h.compiler.cmd.c={compiler.path}/bin/arm-none-eabi-gcc
+ln882h.compiler.cmd.cpp={compiler.path}/bin/arm-none-eabi-g++
+ln882h.compiler.cmd.ar={compiler.path}/bin/arm-none-eabi-ar
+ln882h.compiler.cmd.ld={compiler.path}/bin/arm-none-eabi-g++
+
+ln882h.vendor.path={runtime.tools.vendor-ln882h.path}
+ln882h.compiler.flags.S=@{runtime.tools.vendor-ln882h.path}/flags/S_flags.txt
+ln882h.compiler.flags.c=@{runtime.tools.vendor-ln882h.path}/flags/c_flags.txt
+ln882h.compiler.flags.cpp=@{runtime.tools.vendor-ln882h.path}/flags/cpp_flags.txt
+ln882h.compiler.flags.ar=@{runtime.tools.vendor-ln882h.path}/flags/ar_flags.txt
+
+ln882h.appBuild.flags=@{build.path}/tuyaTmp/appConfig/appBuildDefine.txt
+
+ln882h.compiler.includes.tuya_open=-iprefix {runtime.tools.vendor-ln882h.path}/ @{runtime.tools.vendor-ln882h.path}/flags/include_tuya_open.txt
+ln882h.compiler.includes.tkl=-iprefix {runtime.tools.vendor-ln882h.path}/ @{runtime.tools.vendor-ln882h.path}/flags/include_tkl.txt
+ln882h.compiler.includes.vendor=-iprefix {runtime.tools.vendor-ln882h.path}/ @{runtime.tools.vendor-ln882h.path}/flags/include_vendor.txt
+ln882h.compiler.includes={compiler.includes.tuya_open} {compiler.includes.tkl} {compiler.includes.vendor}
+
+ln882h.compiler.flags.ld=@{runtime.tools.vendor-ln882h.path}/flags/ld_flags.txt
+ln882h.compiler.flags.libs=-L{runtime.tools.vendor-ln882h.path}/libs @{runtime.tools.vendor-ln882h.path}/flags/libs_flags.txt
+ln882h.compiler.flags.ld_scripts=-Wl,--cref -Wl,-Map={build.path}/{build.project_name}.map -T{runtime.tools.vendor-ln882h.path}/packager-tools/ln882h.ld -o {build.path}/{build.project_name}.elf
+
+ln882h.upload.tool=tyutool
+ln882h.upload.tool.default=tyutool
+
+ln882h.monitor_port.serial.baudrate=921600

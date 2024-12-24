@@ -141,4 +141,5 @@ if __name__ == "__main__":
     t5_upload_speed_list = [921600, 115200, 230400, 460800, 1500000, 2000000]
     make_board("t5", "t5", "", "T5", "t5", t5_upload_speed_list)
 
-
+    ln882h_upload_speed_list = [921600, 115200, 230400, 460800, 1500000, 2000000]
+    make_board("ln882h", "ln882h", "", "LN882H", "ln882h", ln882h_upload_speed_list)
