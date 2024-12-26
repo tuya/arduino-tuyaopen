@@ -10,22 +10,25 @@ extern "C" {
 #endif // __cplusplus
 
 // Number of pins defined in PinDescription array
-#define pin0  (0u)
-#define pin1  (1u)
-#define pin6  (6u)
-#define pin7  (7u)
-#define pin8  (8u)
-#define pin9  (9u)
-#define pin14 (14u)
-#define pin15 (15u)
-#define pin16 (16u)
-#define pin17 (17u)
-#define pin20 (20u)
-#define pin22 (22u)
-#define pin23 (23u)
-#define pin24 (24u)
-#define pin26 (26u)
-#define pin28 (28u)
+#define pin0  (0u) // PB9
+#define pin1  (1u) // PB8
+#define pin6  (6u) // PA11
+#define pin7  (7u) // PA10
+#define pin8  (8u) // PA7
+#define pin9  (9u) // PB5
+#define pin10 (10u) // PA3
+#define pin11 (11u) // PA2
+#define pin14 (14u) // PA5
+#define pin15 (15u) // PB7
+#define pin16 (16u) // PA6
+#define pin17 (17u) // PB6
+#define pin20 (20u) // PA4
+#define pin21 (21u) // PA9
+#define pin22 (22u) // PA0
+#define pin23 (23u) // PA1
+#define pin24 (24u) // PB3
+#define pin26 (26u) // PA12
+#define pin28 (28u) // PB4
 
 #define LED_BUILTIN     26
 #define BUTTON_BUILTIN  7
