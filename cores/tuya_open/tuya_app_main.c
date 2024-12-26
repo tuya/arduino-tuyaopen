@@ -86,20 +86,18 @@ static void ArduinoThread(void *arg)
 {
 
 #if defined(ARDUINO_T2)
-  // wait rf cali
   extern char get_rx2_flag(void);
   while (get_rx2_flag() == 0) {
     tal_system_sleep(1);
   }
-  // deinit t2 uart
-  tkl_uart_deinit(TUYA_UART_NUM_0);
-  tkl_uart_deinit(TUYA_UART_NUM_1);
 #endif // defined(ARDUINO_T2)
 
-#if defined(ARDUINO_T3) || defined(ARDUINO_T5)
+#if (!defined(ARDUINO_LN882H))
   tkl_uart_deinit(TUYA_UART_NUM_0);
-  // tkl_uart_deinit(TUYA_UART_NUM_1); // TODO: close vendor log
+#if (!defined(ARDUINO_T3) && !defined(ARDUINO_T5))
+  tkl_uart_deinit(TUYA_UART_NUM_1); // TODO: close vendor log
 #endif
+#endif // (!defined(ARDUINO_LN882H))
 
   app_open_sdk_init();
 
@@ -108,7 +106,7 @@ static void ArduinoThread(void *arg)
 
 void tuya_app_main(void)
 {
-#if defined(ARDUINO_T2) || defined(ARDUINO_T3)
+#if (!defined(ARDUINO_T5))
   __asm("BL __libc_init_array");
 #endif
 
