@@ -9,13 +9,14 @@ current_path = os.path.normpath(current_path)
 compiler_path = "{runtime.tools.gcc-arm-none-eabi.path}"
 
 class board_info_class():
-    def __init__(self, name, chip, vendor_name, product_name, variant, upload_baud_rate_list, toolchain=compiler_path, core="tuya_open"):
-        self.name = name
-        self.chip = chip
-        self.vendor_name = vendor_name
-        self.product_name = product_name
-        self.variant = variant
-        self.toolchain = toolchain
+    def __init__(self, name, chip, vendor_name, product_name, variant, upload_baud_rate_list, toolchain=compiler_path, toolchain_pre="arm-none-eabi-", core="tuya_open"):
+        self.name = name # board name in boards.txt
+        self.chip = chip # chip name
+        self.vendor_name = vendor_name # board manufacturer name
+        self.product_name = product_name # board name
+        self.variant = variant # variant name
+        self.toolchain = toolchain # toolchain
+        self.toolchain_pre = toolchain_pre # toolchain prefix
         self.core = core
 
         # upload baud rate
@@ -49,16 +50,15 @@ def build_header(bi):
 
 def build_toolchain(bi):
     print()
-    # compiler_path = bi.toolchain
     print(f"{bi.name}.compiler.path={bi.toolchain}")
-    print(f"{bi.name}.compiler.cmd.S={{compiler.path}}/bin/arm-none-eabi-gcc")
-    print(f"{bi.name}.compiler.cmd.c={{compiler.path}}/bin/arm-none-eabi-gcc")
-    print(f"{bi.name}.compiler.cmd.cpp={{compiler.path}}/bin/arm-none-eabi-g++")
-    print(f"{bi.name}.compiler.cmd.ar={{compiler.path}}/bin/arm-none-eabi-ar")
+    print(f"{bi.name}.compiler.cmd.S={{compiler.path}}/bin/{bi.toolchain_pre}gcc")
+    print(f"{bi.name}.compiler.cmd.c={{compiler.path}}/bin/{bi.toolchain_pre}gcc")
+    print(f"{bi.name}.compiler.cmd.cpp={{compiler.path}}/bin/{bi.toolchain_pre}g++")
+    print(f"{bi.name}.compiler.cmd.ar={{compiler.path}}/bin/{bi.toolchain_pre}ar")
     if bi.chip == "t2" or bi.chip == "t3":
-        print(f"{bi.name}.compiler.cmd.ld={{compiler.path}}/bin/arm-none-eabi-gcc")
+        print(f"{bi.name}.compiler.cmd.ld={{compiler.path}}/bin/{bi.toolchain_pre}gcc")
     else:
-        print(f"{bi.name}.compiler.cmd.ld={{compiler.path}}/bin/arm-none-eabi-g++")
+        print(f"{bi.name}.compiler.cmd.ld={{compiler.path}}/bin/{bi.toolchain_pre}g++")
 
 def build_flags(bi):
     print()
@@ -88,16 +88,18 @@ def build_flags(bi):
     ## combine
     print()
     print(f"{bi.name}.compiler.flags.ld=@{vendor_path}/flags/ld_flags.txt")
-    print(f"{bi.name}.compiler.flags.libs=-L{vendor_path}/libs @{vendor_path}/flags/libs_flags.txt")
-    ld_scripts_path = vendor_path + "/packager-tools/" + bi.chip + ".ld"
-    print(f"{bi.name}.compiler.flags.ld_scripts=-Wl,--cref -Wl,-Map={{build.path}}/{{build.project_name}}.map -T{ld_scripts_path} -o {{build.path}}/{{build.project_name}}.elf")
+    if bi.chip == 'esp32':
+        print(f"{bi.name}.compiler.flags.libs=-L{vendor_path}/libs -L{vendor_path}/link_path/tuya_open_sdk/build/esp-idf/esp_system/ld -L{vendor_path}/link_path/esp-idf/components/bt/controller/lib_esp32/esp32 -L{vendor_path}/link_path/esp-idf/components/esp_coex/lib/esp32 -L{vendor_path}/link_path/esp-idf/components/esp_phy/lib/esp32 -L{vendor_path}/link_path/esp-idf/components/esp_rom/esp32/ld -L{vendor_path}/link_path/esp-idf/components/esp_wifi/lib/esp32 -L{vendor_path}/link_path/esp-idf/components/soc/esp32/ld @{vendor_path}/flags/libs_flags.txt")
+        print(f"{bi.name}.compiler.flags.ld_scripts=-Wl,--cref -Wl,-Map={{build.path}}/{{build.project_name}}.map -o {{build.path}}/{{build.project_name}}.elf")
+    else:
+        print(f"{bi.name}.compiler.flags.libs=-L{vendor_path}/libs @{vendor_path}/flags/libs_flags.txt")
+        ld_scripts_path = vendor_path + "/packager-tools/" + bi.chip + ".ld"
+        print(f"{bi.name}.compiler.flags.ld_scripts=-Wl,--cref -Wl,-Map={{build.path}}/{{build.project_name}}.map -T{ld_scripts_path} -o {{build.path}}/{{build.project_name}}.elf")
 
 def build_upload(bi):
     print()
     print(f"{bi.name}.upload.tool=tyutool")
     print(f"{bi.name}.upload.tool.default=tyutool")
-    # print(f"{bi.name}.upload.tool.baud_rate={bi.upload_baud_rate}")
-    # print(f"{bi.name}.upload.tool.baud_rate={{upload.speed}}")
 
 def build_monitor(bi):
     print()
@@ -112,8 +114,7 @@ def build_menu(bi):
         print(f"{bi.name}.menu.UploadSpeed.{baud_rate}={baud_rate}")
         print(f"{bi.name}.menu.UploadSpeed.{baud_rate}.upload.speed={baud_rate}")
 
-def make_board(name, chip, vendor_name, product_name, variant, upload_baud_rate_list):
-    board_info = board_info_class(name, chip, vendor_name, product_name, variant, upload_baud_rate_list)
+def make_board(board_info):
 
     build_header(board_info)
     build_menu(board_info)
@@ -133,13 +134,21 @@ if __name__ == "__main__":
     build_menu_head()
 
     t2_upload_speed_list = [921600, 115200, 230400, 460800, 1500000, 2000000]
-    make_board("t2", "t2", "", "T2", "t2", t2_upload_speed_list)
+    t2_bi = board_info_class("t2", "t2", "", "T2", "t2", t2_upload_speed_list, compiler_path, "arm-none-eabi-", "tuya_open")
+    make_board(t2_bi)
 
     t3_upload_speed_list = [921600, 115200, 230400, 460800, 1500000, 2000000]
-    make_board("t3", "t3", "", "T3", "t3", t3_upload_speed_list)
+    t3_bi = board_info_class("t3", "t3", "", "T3", "t3", t3_upload_speed_list, compiler_path, "arm-none-eabi-", "tuya_open")
+    make_board(t3_bi)
 
     t5_upload_speed_list = [921600, 115200, 230400, 460800, 1500000, 2000000]
-    make_board("t5", "t5", "", "T5", "t5", t5_upload_speed_list)
+    t5_bi = board_info_class("t5", "t5", "", "T5", "t5", t5_upload_speed_list, compiler_path, "arm-none-eabi-", "tuya_open")
+    make_board(t5_bi)
 
     ln882h_upload_speed_list = [921600, 115200, 230400, 460800, 1500000, 2000000]
-    make_board("ln882h", "ln882h", "", "LN882H", "ln882h", ln882h_upload_speed_list)
+    ln882h_bi = board_info_class("ln882h", "ln882h", "", "LN882H", "ln882h", ln882h_upload_speed_list, compiler_path, "arm-none-eabi-", "tuya_open")
+    make_board(ln882h_bi)
+
+    esp32_upload_speed_list = [921600, 115200, 230400, 460800, 1500000, 2000000]
+    esp_bi = board_info_class("esp32", "esp32", "", "ESP32", "esp32", esp32_upload_speed_list, "{runtime.tools.xtensa-esp-elf.path}", "xtensa-esp32-elf-", "tuya_open")
+    make_board(esp_bi)

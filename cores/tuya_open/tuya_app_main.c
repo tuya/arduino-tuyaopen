@@ -41,6 +41,7 @@
 ***********************variable define**********************
 ***********************************************************/
 static THREAD_HANDLE arduino_thrd_hdl = NULL;
+static char thread_name[] = "arduino_thread";
 
 /***********************************************************
 ***********************function define**********************
@@ -79,7 +80,9 @@ void app_open_sdk_init(void)
   // TODO: set country code
   // TODO: use netconn_wifi functions
   tal_wifi_init(__wifi_callback_event);
+#if (!defined(ARDUINO_T5) && !defined(ARDUINO_ESP32))
   tal_wifi_set_country_code("CN");
+#endif
 }
 
 static void ArduinoThread(void *arg)
@@ -92,9 +95,9 @@ static void ArduinoThread(void *arg)
   }
 #endif // defined(ARDUINO_T2)
 
-#if (!defined(ARDUINO_LN882H))
+#if (!defined(ARDUINO_LN882H)&& !defined(ARDUINO_ESP32))
   tkl_uart_deinit(TUYA_UART_NUM_0);
-#if (!defined(ARDUINO_T3) && !defined(ARDUINO_T5))
+#if (!defined(ARDUINO_T3) && !defined(ARDUINO_T5) && !defined(ARDUINO_ESP32))
   tkl_uart_deinit(TUYA_UART_NUM_1); // TODO: close vendor log
 #endif
 #endif // (!defined(ARDUINO_LN882H))
@@ -106,10 +109,10 @@ static void ArduinoThread(void *arg)
 
 void tuya_app_main(void)
 {
-#if (!defined(ARDUINO_T5))
+#if (!defined(ARDUINO_T5) && !defined(ARDUINO_ESP32))
   __asm("BL __libc_init_array");
 #endif
 
-  THREAD_CFG_T thrd_param = {1024 * 4, THREAD_PRIO_1, "arduino_thread"};
+  THREAD_CFG_T thrd_param = {1024 * 4, THREAD_PRIO_1, thread_name};
   tal_thread_create_and_start(&arduino_thrd_hdl, NULL, NULL, ArduinoThread, NULL, &thrd_param);
 }
