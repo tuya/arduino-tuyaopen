@@ -202,4 +202,55 @@ ln882h.compiler.flags.ld_scripts=-Wl,--cref -Wl,-Map={build.path}/{build.project
 ln882h.upload.tool=tyutool
 ln882h.upload.tool.default=tyutool
 
-ln882h.monitor_port.serial.baudrate=921600
+ln882h.monitor_port.serial.baudrate=115200
+
+# --------------------------------------------------
+#                       ESP32                       
+# --------------------------------------------------
+esp32.name=ESP32
+esp32.build.chip=esp32
+esp32.build.board=ESP32
+esp32.build.core=tuya_open
+esp32.build.variant=esp32
+
+esp32.menu.UploadSpeed.921600=921600
+esp32.menu.UploadSpeed.921600.upload.speed=921600
+esp32.menu.UploadSpeed.115200=115200
+esp32.menu.UploadSpeed.115200.upload.speed=115200
+esp32.menu.UploadSpeed.230400=230400
+esp32.menu.UploadSpeed.230400.upload.speed=230400
+esp32.menu.UploadSpeed.460800=460800
+esp32.menu.UploadSpeed.460800.upload.speed=460800
+esp32.menu.UploadSpeed.1500000=1500000
+esp32.menu.UploadSpeed.1500000.upload.speed=1500000
+esp32.menu.UploadSpeed.2000000=2000000
+esp32.menu.UploadSpeed.2000000.upload.speed=2000000
+
+esp32.compiler.path={runtime.tools.xtensa-esp-elf.path}
+esp32.compiler.cmd.S={compiler.path}/bin/xtensa-esp32-elf-gcc
+esp32.compiler.cmd.c={compiler.path}/bin/xtensa-esp32-elf-gcc
+esp32.compiler.cmd.cpp={compiler.path}/bin/xtensa-esp32-elf-g++
+esp32.compiler.cmd.ar={compiler.path}/bin/xtensa-esp32-elf-ar
+esp32.compiler.cmd.ld={compiler.path}/bin/xtensa-esp32-elf-g++
+
+esp32.vendor.path={runtime.tools.vendor-esp32.path}
+esp32.compiler.flags.S=@{runtime.tools.vendor-esp32.path}/flags/S_flags.txt
+esp32.compiler.flags.c=@{runtime.tools.vendor-esp32.path}/flags/c_flags.txt
+esp32.compiler.flags.cpp=@{runtime.tools.vendor-esp32.path}/flags/cpp_flags.txt
+esp32.compiler.flags.ar=@{runtime.tools.vendor-esp32.path}/flags/ar_flags.txt
+
+esp32.appBuild.flags=@{build.path}/tuyaTmp/appConfig/appBuildDefine.txt
+
+esp32.compiler.includes.tuya_open=-iprefix {runtime.tools.vendor-esp32.path}/ @{runtime.tools.vendor-esp32.path}/flags/include_tuya_open.txt
+esp32.compiler.includes.tkl=-iprefix {runtime.tools.vendor-esp32.path}/ @{runtime.tools.vendor-esp32.path}/flags/include_tkl.txt
+esp32.compiler.includes.vendor=-iprefix {runtime.tools.vendor-esp32.path}/ @{runtime.tools.vendor-esp32.path}/flags/include_vendor.txt
+esp32.compiler.includes={compiler.includes.tuya_open} {compiler.includes.tkl} {compiler.includes.vendor}
+
+esp32.compiler.flags.ld=@{runtime.tools.vendor-esp32.path}/flags/ld_flags.txt
+esp32.compiler.flags.libs=-L{runtime.tools.vendor-esp32.path}/libs -L{runtime.tools.vendor-esp32.path}/link_path/tuya_open_sdk/build/esp-idf/esp_system/ld -L{runtime.tools.vendor-esp32.path}/link_path/esp-idf/components/bt/controller/lib_esp32/esp32 -L{runtime.tools.vendor-esp32.path}/link_path/esp-idf/components/esp_coex/lib/esp32 -L{runtime.tools.vendor-esp32.path}/link_path/esp-idf/components/esp_phy/lib/esp32 -L{runtime.tools.vendor-esp32.path}/link_path/esp-idf/components/esp_rom/esp32/ld -L{runtime.tools.vendor-esp32.path}/link_path/esp-idf/components/esp_wifi/lib/esp32 -L{runtime.tools.vendor-esp32.path}/link_path/esp-idf/components/soc/esp32/ld @{runtime.tools.vendor-esp32.path}/flags/libs_flags.txt
+esp32.compiler.flags.ld_scripts=-Wl,--cref -Wl,-Map={build.path}/{build.project_name}.map -o {build.path}/{build.project_name}.elf
+
+esp32.upload.tool=tyutool
+esp32.upload.tool.default=tyutool
+
+esp32.monitor_port.serial.baudrate=115200
