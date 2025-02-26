@@ -59,6 +59,10 @@ It is recommended to install and use the latest version of Arduino IDE 2, which 
 
 + In the "Board Manager", search for "Tuya Open" and install the latest version.
 
+## How to use arduino-tuyaopen for cloud connection
+
++ [Connect to Tuya IoT Platform](./libraries/TuyaIoT/examples/quickStart/README.md)
+
 ## Hardware Introduction for Development Board
 
 + [T2-U Development Board](https://developer.tuya.com/cn/docs/iot/t2-u-board?id=Kce6cq9e9vlmv)

@@ -60,6 +60,10 @@ arduino-tuyaopen 基于 [tuya-open-sdk-for-device](https://github.com/tuya/tuya-
 
 + 在 “开发板管理器”，输入 "Tuya Open" 查找并安装最新版本。
 
+## 如何使用 arduino-tuyaopen 进行云连接
+
++ [连接 Tuya IoT 平台](./libraries/TuyaIoT/examples/quickStart/README_zh.md)
+
 ## 开发板硬件简介
 
 + [T2-U 开发板](https://developer.tuya.com/cn/docs/iot/t2-u-board?id=Kce6cq9e9vlmv)
