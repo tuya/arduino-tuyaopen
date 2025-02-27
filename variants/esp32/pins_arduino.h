@@ -50,8 +50,8 @@ extern "C" {
 #define pin38  (38u)
 #define pin39  (39u)
 
-#define LED_BUILTIN     pin7
-#define BUTTON_BUILTIN  pin8
+#define LED_BUILTIN     pin33
+#define BUTTON_BUILTIN  pin35
 
 static const uint8_t A0 = (14u);
 static const uint8_t A1 = (15u);
