@@ -79,8 +79,8 @@ void app_open_sdk_init(void)
   // wifi init
   // TODO: set country code
   // TODO: use netconn_wifi functions
-  tal_wifi_init(__wifi_callback_event);
 #if (!defined(ARDUINO_T5) && !defined(ARDUINO_ESP32))
+  tal_wifi_init(__wifi_callback_event);
   tal_wifi_set_country_code("CN");
 #endif
 }
