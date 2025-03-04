@@ -12,12 +12,92 @@
         {
           "name": "Tuya Open",
           "architecture": "tuya_open",
+          "version": "1.1.5",
+          "category": "Contributed",
+          "help": {
+            "online": ""
+          },
+          "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/1.1.5/arduino_tuya_open-1.1.5.zip",
+          "archiveFileName": "arduino_tuya_open-1.1.5.zip",
+          "size": "228878",
+          "checksum": "SHA-256:7337c765b0e307cdf5d69dd699ccfec741aac6b4ff9bee0dae8b6dde031ebfa5",
+          "help": {
+            "online": ""
+          },
+          "boards": [
+            {
+              "name": "t2"
+            },
+            {
+              "name": "t3"
+            },
+            {
+              "name": "t5"
+            },
+            {
+              "name": "ln882h"
+            },
+            {
+              "name": "esp32"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "tuya_open",
+              "name": "gcc-arm-none-eabi",
+              "version": "10.3"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "xtensa-esp-elf",
+              "version": "13.2.0"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "vendor-t2",
+              "version": "1.0.2"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "vendor-t3",
+              "version": "0.0.4"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "vendor-t5",
+              "version": "0.0.4"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "vendor-ln882h",
+              "version": "0.0.2"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "vendor-esp32",
+              "version": "0.0.1"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "env-python",
+              "version": "3.12.4"
+            },
+            {
+              "packager": "tuya_open",
+              "name": "tyutool",
+              "version": "1.8.3"
+            }
+          ]
+        },
+        {
+          "name": "Tuya Open",
+          "architecture": "tuya_open",
           "version": "1.1.4",
           "category": "Contributed",
           "help": {
             "online": ""
           },
-          "url": "https://github.com/shiliu-yang/arduino-tuyaopen/releases/download/1.1.4/arduino_tuya_open-1.1.4.zip",
+          "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/1.1.4/arduino_tuya_open-1.1.4.zip",
           "archiveFileName": "arduino_tuya_open-1.1.4.zip",
           "size": "228874",
           "checksum": "SHA-256:f648963ed36b23e908608d4b7d908c2c4c5a27812e993de2f97fcaa133d089e2",
@@ -553,28 +633,28 @@
           "systems": [
             {
               "host": "x86_64-linux-gnu",
-              "url": "https://github.com/shiliu-yang/arduino-tuyaopen/releases/download/1.1.4/xtensa-esp-elf-13.2.0_20230928-x86_64-linux-gnu.tar.xz",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/1.1.4/xtensa-esp-elf-13.2.0_20230928-x86_64-linux-gnu.tar.xz",
               "archiveFileName": "xtensa-esp-elf-13.2.0_20230928-x86_64-linux-gnu.tar.xz",
               "size": "112588084",
               "checksum": "SHA-256:bae7da23ea8516fb7e42640f4420c4dd1ebfd64189a14fc330d73e173b3a038b"
             },
             {
               "host": "x86_64-cygwin",
-              "url": "https://github.com/shiliu-yang/arduino-tuyaopen/releases/download/1.1.4/xtensa-esp-elf-13.2.0_20230928-i686-w64-mingw32.zip",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/1.1.4/xtensa-esp-elf-13.2.0_20230928-i686-w64-mingw32.zip",
               "archiveFileName": "xtensa-esp-elf-13.2.0_20230928-i686-w64-mingw32.zip",
               "size": "266511200",
               "checksum": "SHA-256:7a2822ef554be175bbe5c67c2010a6dd29aec6221bdb5ed8970f164e2744714a"
             },
             {
               "host": "arm64-apple-darwin",
-              "url": "https://github.com/shiliu-yang/arduino-tuyaopen/releases/download/1.1.4/xtensa-esp-elf-13.2.0_20230928-aarch64-apple-darwin.tar.xz",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/1.1.4/xtensa-esp-elf-13.2.0_20230928-aarch64-apple-darwin.tar.xz",
               "archiveFileName": "xtensa-esp-elf-13.2.0_20230928-aarch64-apple-darwin.tar.xz",
               "size": "100098880",
               "checksum": "SHA-256:687243e5cbefb7cf05603effbdd6fde5769f94daff7e519f5bbe61f43c4c0ef6"
             },
             {
               "host": "x86_64-apple-darwin",
-              "url": "https://github.com/shiliu-yang/arduino-tuyaopen/releases/download/1.1.4/xtensa-esp-elf-13.2.0_20230928-x86_64-apple-darwin.tar.xz",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/1.1.4/xtensa-esp-elf-13.2.0_20230928-x86_64-apple-darwin.tar.xz",
               "archiveFileName": "xtensa-esp-elf-13.2.0_20230928-x86_64-apple-darwin.tar.xz",
               "size": "115211408",
               "checksum": "SHA-256:b9b7a6d1dc4ea065bf6763fa904729e1c808d6dfbf1dfabf12852e2929251ee9"
@@ -1063,28 +1143,28 @@
           "systems": [
             {
               "host": "x86_64-linux-gnu",
-              "url": "https://github.com/shiliu-yang/arduino-tuyaopen/releases/download/1.1.4/vendor-esp32-0.0.1.tar.bz2",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/1.1.4/vendor-esp32-0.0.1.tar.bz2",
               "archiveFileName": "vendor-esp32-0.0.1.tar.bz2",
               "size": "186996621",
               "checksum": "SHA-256:24944871c753eba738c8a3578ad14c27ebb7a87c3436043c2616fcadb970e442"
             },
             {
               "host": "x86_64-cygwin",
-              "url": "https://github.com/shiliu-yang/arduino-tuyaopen/releases/download/1.1.4/vendor-esp32-0.0.1.tar.bz2",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/1.1.4/vendor-esp32-0.0.1.tar.bz2",
               "archiveFileName": "vendor-esp32-0.0.1.tar.bz2",
               "size": "186996621",
               "checksum": "SHA-256:24944871c753eba738c8a3578ad14c27ebb7a87c3436043c2616fcadb970e442"
             },
             {
               "host": "arm64-apple-darwin",
-              "url": "https://github.com/shiliu-yang/arduino-tuyaopen/releases/download/1.1.4/vendor-esp32-0.0.1.tar.bz2",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/1.1.4/vendor-esp32-0.0.1.tar.bz2",
               "archiveFileName": "vendor-esp32-0.0.1.tar.bz2",
               "size": "186996621",
               "checksum": "SHA-256:24944871c753eba738c8a3578ad14c27ebb7a87c3436043c2616fcadb970e442"
             },
             {
               "host": "x86_64-apple-darwin",
-              "url": "https://github.com/shiliu-yang/arduino-tuyaopen/releases/download/1.1.4/vendor-esp32-0.0.1.tar.bz2",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/1.1.4/vendor-esp32-0.0.1.tar.bz2",
               "archiveFileName": "vendor-esp32-0.0.1.tar.bz2",
               "size": "186996621",
               "checksum": "SHA-256:24944871c753eba738c8a3578ad14c27ebb7a87c3436043c2616fcadb970e442"
@@ -1131,28 +1211,28 @@
           "systems": [
             {
               "host": "x86_64-linux-gnu",
-              "url": "https://github.com/shiliu-yang/arduino-tuyaopen/releases/download/1.1.4/tyutool-linux-1.8.3.zip",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/1.1.4/tyutool-linux-1.8.3.zip",
               "archiveFileName": "tyutool-linux-1.8.3.zip",
               "size": "9787531",
               "checksum": "SHA-256:312ff2ccc8397522cc938f38044dec11deb37d0546d17e3f046ea6407c958574"
             },
             {
               "host": "x86_64-cygwin",
-              "url": "https://github.com/shiliu-yang/arduino-tuyaopen/releases/download/1.1.4/tyutool-win-1.8.3.zip",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/1.1.4/tyutool-win-1.8.3.zip",
               "archiveFileName": "tyutool-win-1.8.3.zip",
               "size": "9108733",
               "checksum": "SHA-256:6d55c8eac09d1b3da5178554b50b69f773e0222a14af57aa51f4205317080a9e"
             },
             {
               "host": "arm64-apple-darwin",
-              "url": "https://github.com/shiliu-yang/arduino-tuyaopen/releases/download/1.1.4/tyutool-drawin-arm64-1.8.3.zip",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/1.1.4/tyutool-drawin-arm64-1.8.3.zip",
               "archiveFileName": "tyutool-drawin-arm64-1.8.3.zip",
               "size": "10950107",
               "checksum": "SHA-256:696acba0075f62933d6d192057de1b443e15e631f81d2fb79b8f99dbbc7f3335"
             },
             {
               "host": "x86_64-apple-darwin",
-              "url": "https://github.com/shiliu-yang/arduino-tuyaopen/releases/download/1.1.4/tyutool-drawin-x86-1.8.3.zip",
+              "url": "https://github.com/tuya/arduino-tuyaopen/releases/download/1.1.4/tyutool-drawin-x86-1.8.3.zip",
               "archiveFileName": "tyutool-drawin-x86-1.8.3.zip",
               "size": "9885468",
               "checksum": "SHA-256:0c6379ecfd101cc9c62b350f9c54901250384afc79e98894b9ed675cf23cffe8"
