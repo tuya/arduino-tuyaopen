@@ -30,8 +30,8 @@ recipe.objcopy.bin.1.pattern.windows="{runtime.tools.env-python.path}/python.exe
 
 ## upload
 tools.tyutool.upload.protocol=serial
-tools.tyutool.upload.pattern={runtime.tools.tyutool.path}/tyutool_cli write -d {build.chip} -p {upload.port.address} -b {upload.speed} -s 0x000000 -f {build.path}/{build.project_name}_QIO.bin --tqdm
-tools.tyutool.upload.pattern.windows={runtime.tools.tyutool.path}/tyutool_cli.exe write -d {build.chip} -p {upload.port.address} -b {upload.speed} -s 0x000000 -f {build.path}/{build.project_name}_QIO.bin --tqdm
+tools.tyutool.upload.pattern={runtime.tools.tyutool.path}/tyutool_cli -n write -d {build.chip} -p {upload.port.address} -b {upload.speed} -s 0x000000 -f {build.path}/{build.project_name}_QIO.bin --tqdm
+tools.tyutool.upload.pattern.windows={runtime.tools.tyutool.path}/tyutool_cli.exe -n write -d {build.chip} -p {upload.port.address} -b {upload.speed} -s 0x000000 -f {build.path}/{build.project_name}_QIO.bin --tqdm
 
 ## export compiled binary
 recipe.hooks.savehex.postsavehex.1.pattern="{runtime.tools.env-python.path}/python3" -I "{runtime.platform.path}/tools/export_binary.py" --build-path {build.path} --sketch-path {sketch_path}
